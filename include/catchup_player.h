@@ -1,5 +1,5 @@
-#if !defined(CATCHUP_UNIT_H)
-#define CATCHUP_UNIT_H
+#if !defined(CATCHUP_PLAYER_H)
+#define CATCHUP_PLAYER_H
 
 #include <geometry.h>
 #include <stdbool.h>
@@ -7,7 +7,6 @@
 typedef struct {
     Point position;
     bool is_tagger;
-} CatchupUnit;
+} CatchupPlayer;
 
-
-#endif // CATCHUP_UNIT_H
+#endif // CATCHUP_PLAYER_H

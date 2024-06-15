@@ -1,23 +1,36 @@
 CC = gcc
 CFLAGS = -Wall -std=c99 -O2
-DEP_LIB_DIR = dependencies/library
-DEP_INCLUDE_DIR = dependencies/include
 INCLUDE_DIR = include
 OUTPUT = app.out
+TESTS_OUTPUT = app_tests.out
+
 SRC_DIR = src
-SRC = $(wildcard $(SRC_DIR)/*.c)
-OBJ = $(SRC:.c=.o)
+MAIN = $(SRC_DIR)/main
+SRC = $(filter-out $(MAIN).c, $(wildcard $(SRC_DIR)/*.c))
+
+TESTS_DIR = tests
+TESTS_SRC = $(wildcard $(TESTS_DIR)/*.c)
+
+MAIN_OBJ = $(MAIN).o
+SRC_OBJ = $(SRC:.c=.o)
+TESTS_OBJ = $(TESTS_SRC:.c=.o)
 
 all: $(OUTPUT)
 
-$(OUTPUT): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $^ -L $(DEP_LIB_DIR)
+$(OUTPUT): $(MAIN_OBJ) $(SRC_OBJ) 
+	$(CC) $(CFLAGS) -o $@ $^
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $< -I $(INCLUDE_DIR) -I $(DEP_INCLUDE_DIR)
+	$(CC) $(CFLAGS) -c -o $@ $< -I $(INCLUDE_DIR)
 
-clean:
-	rm -rf *.o $(OUTPUT)
+test: $(TESTS_OUTPUT)
+	./$(TESTS_OUTPUT)
+
+$(TESTS_OUTPUT): $(TESTS_OBJ) $(SRC_OBJ) 
+	$(CC) $(CFLAGS) -o $@ $^
 
 run: $(OUTPUT)
-	./$(APP)
+	./$(OUTPUT)
+
+clean:
+	rm -rf $(SRC_DIR)/*.o $(TESTS_DIR)/*.o $(OUTPUT) $(TESTS_OUTPUT) $(MAIN).o
