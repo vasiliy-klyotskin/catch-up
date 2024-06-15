@@ -1,13 +1,14 @@
 CC = gcc
 CFLAGS = -Wall -std=c99 -O2
-INCLUDE_DIR = include
 OUTPUT = app.out
 TESTS_OUTPUT = app_tests.out
 
+INCLUDE_DIR = include
 SRC_DIR = src
 MAIN = $(SRC_DIR)/main
 SRC = $(filter-out $(MAIN).c, $(wildcard $(SRC_DIR)/*.c))
 
+TESTS_INCLUDE_DIR = tests
 TESTS_DIR = tests
 TESTS_SRC = $(wildcard $(TESTS_DIR)/*.c)
 
@@ -21,7 +22,7 @@ $(OUTPUT): $(MAIN_OBJ) $(SRC_OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $< -I $(INCLUDE_DIR)
+	$(CC) $(CFLAGS) -c -o $@ $< -I $(INCLUDE_DIR) -I $(TESTS_INCLUDE_DIR)
 
 test: $(TESTS_OUTPUT)
 	./$(TESTS_OUTPUT)
