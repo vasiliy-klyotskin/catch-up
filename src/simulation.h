@@ -9,8 +9,8 @@ typedef struct {
     int size;
 } Simulation;
 
-void initSimulation(Simulation *simulation);
-void addRunner(Simulation *simulation, Point position);
+void init_simulation(Simulation *simulation);
+void add_runner(Simulation *simulation, Point position);
 void tick(Simulation *simulation);
 
 #endif // SIMULATION_H

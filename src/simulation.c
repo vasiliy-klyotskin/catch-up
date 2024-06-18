@@ -1,10 +1,10 @@
 #include <simulation.h>
 
-void initSimulation(Simulation *simulation) {
+void init_simulation(Simulation *simulation) {
 
 }
 
-void addRunner(Simulation *simulation, Point position) {
+void add_runner(Simulation *simulation, Point position) {
 
 }
 
