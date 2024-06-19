@@ -17,21 +17,21 @@ void *_init_dyn_array(size_t capacity, size_t stride) {
     arr[CAPACITY] = capacity;
     arr[LENGTH] = 0;
     arr[STRIDE] = stride;
-    return (void *) (arr + HEADER_FIELDS);
+    return arr + HEADER_FIELDS;
 }
 
-size_t get_header_field(void *array, size_t field) {
+static size_t get_header_field(void *array, size_t field) {
     return ((size_t *)(array) - HEADER_FIELDS)[field];
 }
 
-void set_header_field(void *array, size_t field, size_t value) {
+static void set_header_field(void *array, size_t field, size_t value) {
     ((size_t *)(array) - HEADER_FIELDS)[field] = value;
 }
 
 void *_push_dyn_array(void *array, void *element) {
-    size_t capacity = get_header_field(array, CAPACITY);
-    size_t length = get_header_field(array, LENGTH);
-    size_t stride = get_header_field(array, STRIDE);
+    const size_t capacity = get_header_field(array, CAPACITY);
+    const size_t length = get_header_field(array, LENGTH);
+    const size_t stride = get_header_field(array, STRIDE);
     if (capacity <= length) {
         void *temp = _init_dyn_array(capacity * RESIZE_FACTOR, stride);
         memcpy(temp, array, capacity * stride);
@@ -44,16 +44,20 @@ void *_push_dyn_array(void *array, void *element) {
 }
 
 void pop_dyn_array(void *array, void *target) {
-    size_t length = get_header_field(array, LENGTH);
-    size_t stride = get_header_field(array, STRIDE);
-    if (length == 0) return;
+    const size_t length = get_header_field(array, LENGTH);
+    const size_t stride = get_header_field(array, STRIDE);
+    if (length == 0) { 
+        return; 
+    }
     memcpy(target, (char *)array + (length -1) * stride, stride);
     set_header_field(array, LENGTH, length - 1);
 }
 
 void remove_last_dyn_array(void *array) {
-    size_t length = get_header_field(array, LENGTH);
-    if (length == 0) return;
+    const size_t length = get_header_field(array, LENGTH);
+    if (length == 0) { 
+        return;
+    }
     set_header_field(array, LENGTH, length - 1);
 }
 
