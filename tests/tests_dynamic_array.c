@@ -23,6 +23,43 @@ void test_array_has_correct_length_after_pushing_and_removing() {
     free_dyn_array(array);
 }
 
+void test_array_pushes_correct_values() {
+    int *array = init_dyn_array(int);
+    push_rval_dyn_array(array, int, 5);
+    push_rval_dyn_array(array, int, 10);
+    push_rval_dyn_array(array, int, 8);
+
+    assert_eq(array[0], 5);
+    assert_eq(array[1], 10);
+    assert_eq(array[2], 8);
+
+    free_dyn_array(array);
+}
+
+void test_array_pops_correct_values() {
+    int *array = init_dyn_array(int);
+    push_rval_dyn_array(array, int, 3);
+    push_rval_dyn_array(array, int, 1);
+    push_rval_dyn_array(array, int, 9);
+
+    int t1;
+    pop_dyn_array(array, &t1);
+    assert_eq(t1, 9);
+
+    int t2;
+    pop_dyn_array(array, &t2);
+    assert_eq(t2, 1);
+
+    int t3;
+    pop_dyn_array(array, &t3);
+    assert_eq(t3, 3);
+
+    free_dyn_array(array);
+    printf("%d", array[33]);
+}
+
 void tests_dynamic_array() {
     test_array_has_correct_length_after_pushing_and_removing();
+    test_array_pushes_correct_values();
+    test_array_pops_correct_values();
 }

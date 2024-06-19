@@ -48,14 +48,14 @@ void *_push_dyn_array(void *array, void *element) {
         free_dyn_array(array);
         array = temp;
     }
-    memcpy(array + get_length(array) * get_stride(array), element, get_stride(array));
+    memcpy((char *)array + get_length(array) * get_stride(array), element, get_stride(array));
     set_header_field(array, LENGTH, get_length(array) + 1);
     return array;
 }
 
 void pop_dyn_array(void *array, void *target) {
     if (get_length(array) == 0) return;
-    memcpy(target, (size_t *) array + get_length(array) * get_stride(array) ,get_stride(array));
+    memcpy(target, (char *)array + (get_length(array) -1) * get_stride(array) ,get_stride(array));
     set_header_field(array, LENGTH, get_length(array) - 1);
 }
 
@@ -69,5 +69,5 @@ size_t get_length_dyn_array(void *array) {
 }
 
 void free_dyn_array(void *array) {
-
+    free((size_t *)array - HEADER_FIELDS);
 }
