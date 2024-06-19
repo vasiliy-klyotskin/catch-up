@@ -28,44 +28,37 @@ void set_header_field(void *array, size_t field, size_t value) {
     ((size_t *)(array) - HEADER_FIELDS)[field] = value;
 }
 
-size_t get_stride(void *array) {
-    return get_header_field(array, STRIDE);
-}
-
-size_t get_length(void *array) {
-    return get_header_field(array, LENGTH);
-}
-
-size_t get_capacity(void *array) {
-    return get_header_field(array, CAPACITY);
-}
-
 void *_push_dyn_array(void *array, void *element) {
-    if (get_capacity(array) >= get_length(array)) {
-        void *temp = _init_dyn_array(get_capacity(array) * RESIZE_FACTOR, get_stride(array));
-        memcpy(temp, array, get_capacity(array) * get_stride(array));
-        set_header_field(temp, LENGTH, get_length(array));
+    size_t capacity = get_header_field(array, CAPACITY);
+    size_t length = get_header_field(array, LENGTH);
+    size_t stride = get_header_field(array, STRIDE);
+    if (capacity <= length) {
+        void *temp = _init_dyn_array(capacity * RESIZE_FACTOR, stride);
+        memcpy(temp, array, capacity * stride);
         free_dyn_array(array);
         array = temp;
     }
-    memcpy((char *)array + get_length(array) * get_stride(array), element, get_stride(array));
-    set_header_field(array, LENGTH, get_length(array) + 1);
+    memcpy((char *)array + length * stride, element, stride);
+    set_header_field(array, LENGTH, length + 1);
     return array;
 }
 
 void pop_dyn_array(void *array, void *target) {
-    if (get_length(array) == 0) return;
-    memcpy(target, (char *)array + (get_length(array) -1) * get_stride(array) ,get_stride(array));
-    set_header_field(array, LENGTH, get_length(array) - 1);
+    size_t length = get_header_field(array, LENGTH);
+    size_t stride = get_header_field(array, STRIDE);
+    if (length == 0) return;
+    memcpy(target, (char *)array + (length -1) * stride, stride);
+    set_header_field(array, LENGTH, length - 1);
 }
 
 void remove_last_dyn_array(void *array) {
-    if (get_length(array) == 0) return;
-    set_header_field(array, LENGTH, get_length(array) - 1);
+    size_t length = get_header_field(array, LENGTH);
+    if (length == 0) return;
+    set_header_field(array, LENGTH, length - 1);
 }
 
 size_t get_length_dyn_array(void *array) {
-    return get_length(array);
+    return get_header_field(array, LENGTH);
 }
 
 void free_dyn_array(void *array) {
