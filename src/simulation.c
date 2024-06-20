@@ -8,6 +8,10 @@ void add_runner(Simulation *simulation, Point position) {
 
 }
 
+void add_tagger(Simulation *Simulation, Point position) {
+    
+}
+
 void tick(Simulation *simulation) {
 
 }

@@ -6,7 +6,6 @@
 
 typedef struct {
     Point position;
-    bool is_tagger;
 } CatchupPlayer;
 
 #endif // CATCHUP_PLAYER_H

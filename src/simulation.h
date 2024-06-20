@@ -5,11 +5,13 @@
 #include <geometry.h>
 
 typedef struct {
-    CatchupPlayer *units;
+    CatchupPlayer *taggers;
+    CatchupPlayer *runners;
     int size;
 } Simulation;
 
 void init_simulation(Simulation *simulation);
+void add_tagger(Simulation *Simulation, Point position);
 void add_runner(Simulation *simulation, Point position);
 void tick(Simulation *simulation);
 
