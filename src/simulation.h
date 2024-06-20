@@ -5,9 +5,7 @@
 #include <geometry.h>
 
 typedef struct {
-    CatchupPlayer *taggers;
-    CatchupPlayer *runners;
-    int size;
+    CatchupPlayer *players;
 } Simulation;
 
 void init_simulation(Simulation *simulation);
