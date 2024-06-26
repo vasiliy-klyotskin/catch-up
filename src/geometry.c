@@ -1,8 +1,17 @@
 #include <geometry.h>
 #include <math.h>
 
-double dot_product(const Vector *const v1, const Vector *const v2) {
-    return v1->x * v2->x + v1->y * v2->y;
+Vector vector_init(double x, double y) {
+    Vector v;
+    v.x = x;
+    v.y = y;
+}
+
+Vector rotated(const Vector *const v, double radian) {
+    Vector rotated_v;
+    rotated_v.x = v->x * cos(radian) - v->y * sin(radian);
+    rotated_v.y = v->x * sin(radian) + v->y * cos(radian);
+    return rotated_v;
 }
 
 NormalizedVector normalized(const Vector *const v) {
@@ -20,11 +29,8 @@ NormalizedVector normalized(const Vector *const v) {
     return norm_v;
 }
 
-Vector rotated(const Vector *const v, double radian) {
-    Vector rotated_v;
-    rotated_v.x = v->x * cos(radian) - v->y * sin(radian);
-    rotated_v.y = v->x * sin(radian) + v->y * cos(radian);
-    return rotated_v;
+double dot_product(const Vector *const v1, const Vector *const v2) {
+    return v1->x * v2->x + v1->y * v2->y;
 }
 
 double radian_between_normalized_vectors(const NormalizedVector *const v1, const NormalizedVector *const v2) {
