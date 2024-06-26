@@ -21,7 +21,7 @@
 #define assert_gte(lhs, rhs) assert_pred(lhs, rhs, <)
 #define assert_lte(lhs, rhs) assert_pred(lhs, rhs, >)
 
-#define EPSILON 0.000001
+#define EPSILON 0.00001
 #define assert_fp_eq(lhs, rhs) assert_pred(fabs(lhs - rhs), EPSILON, >)
 
 #endif // MACROASSERT_H
