@@ -61,10 +61,21 @@ void test_friction_is_zero_when_velocity_is_not_zero() {
     assert_fp_eq(u.acceleration.y, -35);
 }
 
+void test_repulsion_if_distance_to_neighbor_is_zero() {
+    Unit unit = unit_init(0, 0);
+    Unit neighbor = unit_init(0, 0);
+
+    add_repulsion_accel(&unit, &neighbor);
+
+    assert_fp_eq(unit.acceleration.x, 0);
+    assert_fp_eq(unit.acceleration.y, 0);
+}
+
 void tests_unit() {
     test_init();
     test_return_to_middle_when_position_is_zero();
     test_return_to_middle_when_position_is_not_zero();
     test_friction_is_zero_when_velocity_is_zero();
     test_friction_is_zero_when_velocity_is_not_zero();
+    test_repulsion_if_distance_to_neighbor_is_zero();
 }
