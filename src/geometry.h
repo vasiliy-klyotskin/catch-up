@@ -2,8 +2,8 @@
 #define GEOMETRY_H
 
 typedef struct {
-    float x;
-    float y;
+    double x;
+    double y;
 } Vector;
 
 #endif // GEOMETRY_H
