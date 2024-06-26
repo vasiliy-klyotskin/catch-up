@@ -1,11 +1,11 @@
 #if !defined(SIMULATION_H)
 #define SIMULATION_H
 
-#include <catchup_player.h>
+#include <unit.h>
 #include <geometry.h>
 
 typedef struct {
-    CatchupPlayer *players;
+    Unit *players;
 } Simulation;
 
 void init_simulation(Simulation *simulation);
