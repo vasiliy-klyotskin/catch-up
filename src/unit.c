@@ -14,7 +14,7 @@ void add_return_to_middle_accel(Unit *unit, double coef) {
     unit->acceleration.y += -coef * unit->position.y;
 }
 
-void add_friction_accel(Unit *unit) {
+void add_friction_accel(Unit *unit, double coef) {
 
 }
 
