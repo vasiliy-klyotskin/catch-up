@@ -45,9 +45,29 @@ void test_rotation() {
     assert_fp_eq(rotated_v3.y, 0.5);
 }
 
+void test_radian_between_normalized_vectors() {
+    NormalizedVector nv1;
+    NormalizedVector nv2;
+    nv1.direction = (Vector){ 1, 0 };
+    nv2.direction = (Vector){ 0, 1 };
+
+    assert_fp_eq(radian_between_normalized_vectors(&nv1, &nv2), M_PI / 2);
+
+    nv1.direction = (Vector){ 0, 1 };
+    nv2.direction = (Vector){ 1, 0 };
+
+    assert_fp_eq(radian_between_normalized_vectors(&nv1, &nv2), -M_PI / 2);
+
+    nv1.direction = (Vector){ 1, 0 };
+    nv2.direction = (Vector){ 0.86602540378, 0.5 };
+
+    assert_fp_eq(radian_between_normalized_vectors(&nv1, &nv2), M_PI / 6);
+}
+
 void tests_geometry() {
     test_dot_product();
     test_normalized_when_vector_is_zero();
     test_normalized();
     test_rotation();
+    test_radian_between_normalized_vectors();
 }
