@@ -15,7 +15,8 @@ void add_return_to_middle_accel(Unit *unit, double coef) {
 }
 
 void add_friction_accel(Unit *unit, double coef) {
-
+    unit->acceleration.x += -coef * unit->velocity.x;
+    unit->acceleration.y += -coef * unit->velocity.y;
 }
 
 void add_repulsion_accel(Unit *unit, Unit *neighbor) {
