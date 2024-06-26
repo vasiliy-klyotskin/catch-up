@@ -11,10 +11,11 @@ typedef struct {
     double magnitude;
 } NormalizedVector;
 
-double dot_product(const Vector *const v1, const Vector *const v2);
-double radian_between_normalized_vectors(const NormalizedVector *const v1, const NormalizedVector *const v2);
+double vector_dot_product(const Vector *const v1, const Vector *const v2);
+double vector_magnitude(const Vector *const v);
+double normalized_vectors_radian(const NormalizedVector *const v1, const NormalizedVector *const v2);
 Vector vector_init(double x, double y);
-Vector rotated(const Vector *const v, double radian);
-NormalizedVector normalized(const Vector *const v);
+Vector vector_rotated(const Vector *const v, double radian);
+NormalizedVector vector_normalized(const Vector *const v);
 
 #endif // GEOMETRY_H

@@ -15,7 +15,7 @@ void test_init() {
     assert_fp_eq(u.position.y, 7.0);
 }
 
-void test_return_to_middle_accel_when_position_is_zero() {
+void test_return_to_middle_when_position_is_zero() {
     Unit u = unit_init(0, 0);
     u.acceleration.x = 5;
     u.acceleration.y = 5;
@@ -26,7 +26,7 @@ void test_return_to_middle_accel_when_position_is_zero() {
     assert_fp_eq(u.acceleration.y, 5);
 }
 
-void test_return_to_middle_accel_when_position_is_not_zero() {
+void test_return_to_middle_when_position_is_not_zero() {
     Unit u = unit_init(-2, 3);
     u.acceleration.x = 5;
     u.acceleration.y = 5;
@@ -63,8 +63,8 @@ void test_friction_is_zero_when_velocity_is_not_zero() {
 
 void tests_unit() {
     test_init();
-    test_return_to_middle_accel_when_position_is_zero();
-    test_return_to_middle_accel_when_position_is_not_zero();
+    test_return_to_middle_when_position_is_zero();
+    test_return_to_middle_when_position_is_not_zero();
     test_friction_is_zero_when_velocity_is_zero();
     test_friction_is_zero_when_velocity_is_not_zero();
 }

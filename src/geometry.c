@@ -5,17 +5,22 @@ Vector vector_init(double x, double y) {
     Vector v;
     v.x = x;
     v.y = y;
+    return v;
 }
 
-Vector rotated(const Vector *const v, double radian) {
+Vector vector_rotated(const Vector *const v, double radian) {
     Vector rotated_v;
     rotated_v.x = v->x * cos(radian) - v->y * sin(radian);
     rotated_v.y = v->x * sin(radian) + v->y * cos(radian);
     return rotated_v;
 }
 
-NormalizedVector normalized(const Vector *const v) {
-    double magnitude = sqrt(v->x * v->x + v->y * v->y);
+double vector_magnitude(const Vector *const v) {
+    return sqrt(v->x * v->x + v->y * v->y);
+}
+
+NormalizedVector vector_normalized(const Vector *const v) {
+    double magnitude = vector_magnitude(v);
     NormalizedVector norm_v;
     if (magnitude == 0) {
         norm_v.direction.x = 0;
@@ -29,11 +34,11 @@ NormalizedVector normalized(const Vector *const v) {
     return norm_v;
 }
 
-double dot_product(const Vector *const v1, const Vector *const v2) {
+double vector_dot_product(const Vector *const v1, const Vector *const v2) {
     return v1->x * v2->x + v1->y * v2->y;
 }
 
-double radian_between_normalized_vectors(const NormalizedVector *const v1, const NormalizedVector *const v2) {
+double normalized_vectors_radian(const NormalizedVector *const v1, const NormalizedVector *const v2) {
     double scalar_cross_product = v1->direction.x * v2->direction.y - v1->direction.y * v2->direction.x;
     return asin(scalar_cross_product);
 }

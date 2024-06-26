@@ -2,72 +2,81 @@
 #include <math.h>
 #include <macroassert.h>
 
-void test_dot_product() {
-    Vector v3 = { 2.25, -2 };
-    Vector v4 = { 3, -0.7};
-    double dp2 = dot_product(&v3, &v4);
+void test_vector_dot_product() {
+    Vector v3 = vector_init(2.25, -2);
+    Vector v4 = vector_init(3, -0.7);
+
+    double dp2 = vector_dot_product(&v3, &v4);
+
     assert_fp_eq(dp2, 8.15);
 }
 
-void test_normalized_when_vector_is_zero() {
-    Vector v = { 0, 0 };
+void test_vector_normalized_when_vector_is_zero() {
+    Vector v = vector_init(0, 0);
 
-    NormalizedVector norm_v = normalized(&v);
+    NormalizedVector norm_v = vector_normalized(&v);
 
     assert_eq(norm_v.direction.x, 0);
     assert_eq(norm_v.direction.y, 0);
     assert_eq(norm_v.magnitude, 0);
 }
 
-void test_normalized() {
-    Vector v = { 3, 4 };
+void test_vector_normalized() {
+    Vector v = vector_init(3, 4);
 
-    NormalizedVector norm_v = normalized(&v);
+    NormalizedVector norm_v = vector_normalized(&v);
 
     assert_fp_eq(norm_v.direction.x, 0.6);
     assert_fp_eq(norm_v.direction.y, 0.8);
     assert_fp_eq(norm_v.magnitude, 5);
 }
 
-void test_rotation() {
-    Vector v = { 1.0, 0.0 };
+void test_vector_rotation() {
+    Vector v = vector_init(1, 0);
 
-    Vector rotated_v1 = rotated(&v, M_PI / 2);
+    Vector rotated_v1 = vector_rotated(&v, M_PI / 2);
     assert_fp_eq(rotated_v1.x, 0);
     assert_fp_eq(rotated_v1.y, 1);
 
-    Vector rotated_v2 = rotated(&v, M_PI);
+    Vector rotated_v2 = vector_rotated(&v, M_PI);
     assert_fp_eq(rotated_v2.x, -1);
     assert_fp_eq(rotated_v2.y, 0);
 
-    Vector rotated_v3 = rotated(&v, M_PI / 6);
+    Vector rotated_v3 = vector_rotated(&v, M_PI / 6);
     assert_fp_eq(rotated_v3.x, 0.86602540378);
     assert_fp_eq(rotated_v3.y, 0.5);
 }
 
-void test_radian_between_normalized_vectors() {
+void test_normalized_vectors_radian() {
     NormalizedVector nv1;
     NormalizedVector nv2;
-    nv1.direction = (Vector){ 1, 0 };
-    nv2.direction = (Vector){ 0, 1 };
+    nv1.direction = vector_init(1, 0);
+    nv2.direction = vector_init(0, 1);
 
-    assert_fp_eq(radian_between_normalized_vectors(&nv1, &nv2), M_PI / 2);
+    assert_fp_eq(normalized_vectors_radian(&nv1, &nv2), M_PI / 2);
 
-    nv1.direction = (Vector){ 0, 1 };
-    nv2.direction = (Vector){ 1, 0 };
+    nv1.direction = vector_init(0, 1);
+    nv2.direction = vector_init(1, 0);
 
-    assert_fp_eq(radian_between_normalized_vectors(&nv1, &nv2), -M_PI / 2);
+    assert_fp_eq(normalized_vectors_radian(&nv1, &nv2), -M_PI / 2);
 
-    nv1.direction = (Vector){ 1, 0 };
-    nv2.direction = (Vector){ 0.86602540378, 0.5 };
+    nv1.direction = vector_init(1, 0);
+    nv2.direction = vector_init(0.86602540378, 0.5);
 
-    assert_fp_eq(radian_between_normalized_vectors(&nv1, &nv2), M_PI / 6);
+    assert_fp_eq(normalized_vectors_radian(&nv1, &nv2), M_PI / 6);
+}
+
+void test_vector_magnitude() {
+    Vector v = vector_init(3, 4);
+
+    assert_fp_eq(vector_magnitude(&v), 5);
 }
 
 void tests_geometry() {
-    test_dot_product();
-    test_normalized_when_vector_is_zero();
-    test_normalized();
-    test_rotation();
-    test_radian_between_normalized_vectors();
+    test_vector_dot_product();
+    test_vector_normalized_when_vector_is_zero();
+    test_vector_normalized();
+    test_vector_rotation();
+    test_vector_magnitude();
+    test_normalized_vectors_radian();
 }
