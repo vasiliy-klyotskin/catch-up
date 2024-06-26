@@ -21,6 +21,8 @@ NormalizedVector normalized(Vector *v) {
 }
 
 Vector rotated(Vector *v, double radian) {
-    Vector vec;
-    return vec;
+    Vector rotated_v;
+    rotated_v.x = v->x * cos(radian) - v->y * sin(radian);
+    rotated_v.y = v->x * sin(radian) + v->y * cos(radian);
+    return rotated_v;
 }
