@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define assert_pred(lhs, rhs, pred) do { \
     if (lhs pred rhs) { \
@@ -19,5 +20,8 @@
 
 #define assert_gte(lhs, rhs) assert_pred(lhs, rhs, <)
 #define assert_lte(lhs, rhs) assert_pred(lhs, rhs, >)
+
+#define EPSILON 0.000001
+#define assert_fp_eq(lhs, rhs) assert_pred(fabs(lhs - rhs), EPSILON, >)
 
 #endif // MACROASSERT_H
