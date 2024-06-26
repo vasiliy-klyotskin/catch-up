@@ -4,6 +4,6 @@
 typedef struct {
     float x;
     float y;
-} Point;
+} Vector;
 
 #endif // GEOMETRY_H
