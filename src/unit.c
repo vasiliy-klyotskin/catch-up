@@ -10,8 +10,8 @@ Unit unit_init(double pos_x, double pos_y) {
 }
 
 void add_return_to_middle_accel(Unit *unit, double coef) {
-    unit->acceleration.x = unit->position.x * coef;
-    unit->acceleration.y = unit->position.y * coef;
+    unit->acceleration.x += unit->position.x * coef;
+    unit->acceleration.y += unit->position.y * coef;
 }
 
 void add_friction_accel(Unit *unit) {

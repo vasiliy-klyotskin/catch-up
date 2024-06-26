@@ -33,8 +33,20 @@ void test_return_to_middle_accel() {
     assert_fp_eq(u.acceleration.y, 15.6);
 }
 
+void test_return_to_middle_accel_when_accel_is_not_zero() {
+    Unit u = unit_init(-2.1, 5.2);
+    u.acceleration.x = 5;
+    u.acceleration.y = -2;
+
+    add_return_to_middle_accel(&u, 3);
+
+    assert_fp_eq(u.acceleration.x, -1.3);
+    assert_fp_eq(u.acceleration.y, 13.6);
+}
+
 void tests_unit() {
     test_init();
     test_return_to_middle_accel_when_position_is_zero();
     test_return_to_middle_accel();
+    test_return_to_middle_accel_when_accel_is_not_zero();
 }
