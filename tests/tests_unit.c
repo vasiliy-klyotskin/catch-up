@@ -52,8 +52,7 @@ void test_friction_when_velocity_is_not_zero(void) {
     u.velocity = vector_init(-10, 20);
 
     add_friction_accel(&u, 2);
-
-    // 
+ 
     assert_fp_eq(u.acceleration.x, 25);
     assert_fp_eq(u.acceleration.y, -35);
 }
