@@ -3,11 +3,11 @@
 
 #include <unit.h>
 
-void do_euler_integration_step(Unit *const unit, double delta);
-void add_return_to_middle_accel(Unit *unit, double coef);
-void add_friction_accel(Unit *unit, double coef);
-void add_repulsion_accel(Unit *unit, Unit *neighbor, double coef);
-void add_run_away_accel(Unit *unit, Unit *catcher, double coef);
-void set_catch_velocity(Unit *unit, Unit *catchie);
+void do_euler_integration_step(Unit *const unit, const double delta);
+void add_return_to_middle_accel(Unit *const unit, const double coef);
+void add_friction_accel(Unit *const unit, const double coef);
+void add_repulsion_accel(Unit *const unit, const Unit *const neighbor, const double coef);
+void add_run_away_accel(Unit *const unit, const Unit *const catcher, const double coef);
+void set_catch_velocity(Unit *const unit, const Unit *const catchie);
 
 #endif // MOVEMENT_H
