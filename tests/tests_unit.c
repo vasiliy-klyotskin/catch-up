@@ -16,6 +16,23 @@ void test_init(void) {
     assert_fp_eq(u.position.y, 7.0);
 }
 
+void test_euler_integration_step(void) {
+    Unit u = unit_init(5, 6);
+    u.velocity = vector_init(-2, 3);
+    u.acceleration = vector_init(4, -1);
+
+    do_euler_integration_step(&u, 0.1);
+
+    // -2 + 4 * 0.1 = -1.6
+    assert_fp_eq(u.velocity.x, -1.6);
+    // 3 + -1 * 0.1 = 2.9
+    assert_fp_eq(u.velocity.y, 2.9);
+    // 5 + -1.6 * 0.1 = 4.84
+    assert_fp_eq(u.position.x, 4.84);
+    // 6 + 2.9 * 0.1 = 6.29
+    assert_fp_eq(u.position.y, 6.29);
+}
+
 void test_return_to_middle_when_position_is_zero(void) {
     Unit u = unit_init(0, 0);
 
@@ -107,6 +124,7 @@ void test_run_away(void) {
 
 void tests_unit(void) {
     test_init();
+    test_euler_integration_step();
     test_return_to_middle_when_position_is_zero();
     test_return_to_middle_when_position_is_not_zero();
     test_friction_when_velocity_is_zero();

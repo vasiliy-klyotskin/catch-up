@@ -10,6 +10,13 @@ Unit unit_init(double pos_x, double pos_y) {
     return u;
 }
 
+void do_euler_integration_step(Unit *const unit, const double delta) {
+    unit->velocity.x += unit->acceleration.x * delta;
+    unit->velocity.y += unit->acceleration.y * delta;
+    unit->position.x += unit->velocity.x * delta;
+    unit->position.y += unit->velocity.y * delta;
+}
+
 void add_return_to_middle_accel(Unit *unit, double coef) {
     unit->acceleration.x += -coef * unit->position.x;
     unit->acceleration.y += -coef * unit->position.y;
@@ -37,5 +44,5 @@ void add_run_away_accel(Unit *unit, Unit *catcher, double coef) {
 }
 
 void set_catch_velocity(Unit *unit, Unit *catchie) {
-    
+
 }

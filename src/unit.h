@@ -10,6 +10,7 @@ typedef struct {
 } Unit;
 
 Unit unit_init(double pos_x, double pos_y);
+void do_euler_integration_step(Unit *const unit, double delta);
 void add_return_to_middle_accel(Unit *unit, double coef);
 void add_friction_accel(Unit *unit, double coef);
 void add_repulsion_accel(Unit *unit, Unit *neighbor, double coef);
