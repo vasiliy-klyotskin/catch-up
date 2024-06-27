@@ -1,4 +1,5 @@
 #include <unit.h>
+#include <math.h>
 #include <geometry.h>
 
 Unit unit_init(double pos_x, double pos_y) {
@@ -19,8 +20,12 @@ void add_friction_accel(Unit *unit, double coef) {
     unit->acceleration.y += -coef * unit->velocity.y;
 }
 
-void add_repulsion_accel(Unit *unit, Unit *neighbor) {
-
+void add_repulsion_accel(Unit *unit, Unit *neighbor, double coef) {
+    Vector position_difference = vector_difference(&unit->position, &neighbor->position);
+    double distance = vector_magnitude(&position_difference);
+    double dependence = -coef / (distance * sqrt(distance));
+    unit->acceleration.x += position_difference.x * dependence;
+    unit->acceleration.y += position_difference.y * dependence;
 }
 
 void add_run_away_accel(Unit *unit, Unit *catcher) {
