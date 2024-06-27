@@ -29,7 +29,11 @@ void add_repulsion_accel(Unit *unit, Unit *neighbor, double coef) {
 }
 
 void add_run_away_accel(Unit *unit, Unit *catcher, double coef) {
-
+    Vector position_difference = vector_difference(&unit->position, &catcher->position);
+    double distance = vector_magnitude(&position_difference);
+    double dependence = -coef / (distance * distance);
+    unit->acceleration.x += position_difference.x * dependence;
+    unit->acceleration.y += position_difference.y * dependence;
 }
 
 void set_catch_velocity(Unit *unit, Unit *catchie) {
