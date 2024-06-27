@@ -2,7 +2,7 @@
 #include <math.h>
 #include <macroassert.h>
 
-void test_vector_dot_product() {
+void test_vector_dot_product(void) {
     Vector v3 = vector_init(2.25, -2);
     Vector v4 = vector_init(3, -0.7);
 
@@ -11,7 +11,7 @@ void test_vector_dot_product() {
     assert_fp_eq(dp2, 8.15);
 }
 
-void test_vector_normalized_when_vector_is_zero() {
+void test_vector_normalized_when_vector_is_zero(void) {
     Vector v = vector_init(0, 0);
 
     NormalizedVector norm_v = vector_normalized(&v);
@@ -21,7 +21,7 @@ void test_vector_normalized_when_vector_is_zero() {
     assert_eq(norm_v.magnitude, 0);
 }
 
-void test_vector_normalized() {
+void test_vector_normalized(void) {
     Vector v = vector_init(3, 4);
 
     NormalizedVector norm_v = vector_normalized(&v);
@@ -31,7 +31,7 @@ void test_vector_normalized() {
     assert_fp_eq(norm_v.magnitude, 5);
 }
 
-void test_vector_rotation() {
+void test_vector_rotation(void) {
     Vector v = vector_init(1, 0);
 
     Vector rotated_v1 = vector_rotated(&v, M_PI / 2);
@@ -47,7 +47,7 @@ void test_vector_rotation() {
     assert_fp_eq(rotated_v3.y, 0.5);
 }
 
-void test_normalized_vectors_radian() {
+void test_normalized_vectors_radian(void) {
     NormalizedVector nv1;
     NormalizedVector nv2;
     nv1.direction = vector_init(1, 0);
@@ -66,13 +66,13 @@ void test_normalized_vectors_radian() {
     assert_fp_eq(normalized_vectors_radian(&nv1, &nv2), M_PI / 6);
 }
 
-void test_vector_magnitude() {
+void test_vector_magnitude(void) {
     Vector v = vector_init(3, 4);
 
     assert_fp_eq(vector_magnitude(&v), 5);
 }
 
-void test_vector_difference() {
+void test_vector_difference(void) {
     Vector v1 = vector_init(5, 5);
     Vector v2 = vector_init(8, 7);
 
@@ -82,7 +82,7 @@ void test_vector_difference() {
     assert_fp_eq(difference.y, 2);
 }
 
-void tests_geometry() {
+void tests_geometry(void) {
     test_vector_dot_product();
     test_vector_normalized_when_vector_is_zero();
     test_vector_normalized();

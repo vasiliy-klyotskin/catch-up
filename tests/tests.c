@@ -1,11 +1,11 @@
 #include <stdio.h>
 
-void tests_simulation();
-void tests_dynamic_array();
-void tests_geometry();
-void tests_unit();
+void tests_simulation(void);
+void tests_dynamic_array(void);
+void tests_geometry(void);
+void tests_unit(void);
 
-int main() {
+int main(void) {
     tests_dynamic_array();
     tests_simulation();
     tests_geometry();
