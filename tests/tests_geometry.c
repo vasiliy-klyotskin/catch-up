@@ -72,11 +72,22 @@ void test_vector_magnitude() {
     assert_fp_eq(vector_magnitude(&v), 5);
 }
 
+void test_vector_difference() {
+    Vector v1 = vector_init(5, 5);
+    Vector v2 = vector_init(8, 7);
+
+    Vector difference = vector_difference(&v1, &v2);
+
+    assert_fp_eq(difference.x, 3);
+    assert_fp_eq(difference.y, 2);
+}
+
 void tests_geometry() {
     test_vector_dot_product();
     test_vector_normalized_when_vector_is_zero();
     test_vector_normalized();
     test_vector_rotation();
     test_vector_magnitude();
+    test_vector_difference();
     test_normalized_vectors_radian();
 }

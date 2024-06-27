@@ -19,6 +19,10 @@ double vector_magnitude(const Vector *const v) {
     return sqrt(v->x * v->x + v->y * v->y);
 }
 
+Vector vector_difference(const Vector *const v1, const Vector *const v2) {
+    return vector_init(v2->x - v1->x, v2->y - v1->y);
+}
+
 NormalizedVector vector_normalized(const Vector *const v) {
     double magnitude = vector_magnitude(v);
     NormalizedVector norm_v;
