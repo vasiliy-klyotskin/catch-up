@@ -28,7 +28,7 @@ void add_repulsion_accel(Unit *unit, Unit *neighbor, double coef) {
     unit->acceleration.y += position_difference.y * dependence;
 }
 
-void add_run_away_accel(Unit *unit, Unit *catcher) {
+void add_run_away_accel(Unit *unit, Unit *catcher, double coef) {
 
 }
 

@@ -85,6 +85,16 @@ void test_repulsion() {
     assert_fp_eq(unit.acceleration.y, -3.7155417528);
 }
 
+void test_run_away_when_distance_is_zero() {
+    Unit unit = unit_init(0, 0);
+    Unit catcher = unit_init(0, 0);
+
+    add_run_away_accel(&unit, &catcher, 2);
+
+    assert_fp_eq(unit.acceleration.x, 0);
+    assert_fp_eq(unit.acceleration.y, 0);
+}
+
 void tests_unit() {
     test_init();
     test_return_to_middle_when_position_is_zero();
@@ -93,4 +103,5 @@ void tests_unit() {
     test_friction_when_velocity_is_not_zero();
     test_repulsion_if_distance_to_neighbor_is_zero();
     test_repulsion();
+    test_run_away_when_distance_is_zero();
 }
