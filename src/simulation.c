@@ -7,7 +7,11 @@ Simulation simulation_init(
     const double unit_radius,
     const double fps
 ) {
-
+    Simulation simulation;
+    simulation.any_hit_just_occured = false;
+    simulation.catch_did_just_occured = false;
+    simulation.catch_count = 0;
+    return simulation;
 }
 
 Unit *simulation_get_catcher(void) {

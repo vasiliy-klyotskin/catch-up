@@ -1,6 +1,5 @@
 #include <movement.h>
 #include <math.h>
-#include <unit.h>
 
 void do_euler_integration_step(Unit *const unit, const double delta) {
     unit->velocity.x += unit->acceleration.x * delta;

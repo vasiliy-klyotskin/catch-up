@@ -1,6 +1,6 @@
+#include <macroassert.h>
 #include <geometry.h>
 #include <math.h>
-#include <macroassert.h>
 
 void test_vector_dot_product(void) {
     Vector v3 = vector_init(2.25, -2);

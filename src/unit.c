@@ -1,6 +1,4 @@
 #include <unit.h>
-#include <math.h>
-#include <geometry.h>
 
 Unit unit_init(double pos_x, double pos_y) {
     Unit u;

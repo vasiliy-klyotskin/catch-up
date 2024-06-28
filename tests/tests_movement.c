@@ -1,6 +1,5 @@
 #include <macroassert.h>
 #include <movement.h>
-#include <geometry.h>
 
 void test_euler_integration_step(void) {
     Unit u = unit_init(5, 6);

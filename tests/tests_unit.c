@@ -1,6 +1,5 @@
 #include <macroassert.h>
 #include <unit.h>
-#include <geometry.h>
 
 void test_init(void) {
     double x = 5.0;
