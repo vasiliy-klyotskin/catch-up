@@ -4,6 +4,14 @@
 #include <unit.h>
 #include <stdlib.h>
 
-void resolve_collisions(Unit *const units, const size_t length);
+typedef struct {
+    Unit *u1;
+    Unit *u2;
+} Collision;
+
+void detect_collisions(
+    const Unit *const units,
+    const Collision *const collisions
+);
 
 #endif // COLLISION_H

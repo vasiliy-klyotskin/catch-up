@@ -1,5 +1,8 @@
 #include <collision.h>
 
-void resolve_collisions(Unit *const units, const size_t length) {
-    
+void detect_collisions(
+    const Unit *const units,
+    const Collision *const collisions
+) {
+
 }
