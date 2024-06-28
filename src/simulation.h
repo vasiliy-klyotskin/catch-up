@@ -19,8 +19,8 @@ typedef struct {
 } Simulation;
 
 Simulation simulation_init(
-    const Unit catcher,
-    const Unit *const runners,
+    Unit catcher,
+    Unit *const runners,
     const size_t runners_size,
     const double unit_radius,
     const double fps
