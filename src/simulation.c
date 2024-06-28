@@ -1,9 +1,23 @@
 #include <simulation.h>
 
-void init_simulation(Simulation *simulation) {
+Simulation simulation_init(
+    const Unit catcher,
+    const Unit *const runners,
+    const size_t runners_size,
+    const double unit_radius,
+    const double fps
+) {
 
 }
 
-void tick(Simulation *simulation) {
+Unit *simulation_get_catcher(void) {
+
+}
+
+Unit *simulation_get_runner(const size_t index) {
+
+}
+
+void tick(const Simulation *const simulation) {
 
 }
