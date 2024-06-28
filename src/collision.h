@@ -11,7 +11,8 @@ typedef struct {
 
 void detect_collisions(
     const Unit *const units,
-    const Collision *const collisions
+    const Collision *const collisions,
+    const double radius
 );
 
 #endif // COLLISION_H
