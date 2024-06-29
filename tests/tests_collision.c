@@ -3,15 +3,6 @@
 #include <dynamic_array.h>
 #include <stdbool.h>
 
-bool __compare_units(Unit u1, Unit u2) {
-    return u1.position.x == u2.position.x &&
-    u1.position.y == u2.position.y &&
-    u1.velocity.x == u2.velocity.x &&
-    u1.velocity.y == u2.velocity.y &&
-    u1.acceleration.x == u2.acceleration.x &&
-    u1.acceleration.y == u2.acceleration.y;
-}
-
 void test_detect_collision_when_units_are_empty(void) {
     Unit *units = init_dyn_array(Unit);
     Collision *collisions = init_dyn_array(Collision);
@@ -34,16 +25,43 @@ void test_detect_collision(void) {
     detect_collisions(units, collisions, radius);
 
     assert_eq(get_length_dyn_array(collisions), 1);
+    Collision collision = collisions[0];
+    assert_fp_eq(collision.u1->position.x, 0);
+    assert_fp_eq(collision.u1->position.y, 0);
+    assert_fp_eq(collision.u2->position.x, 3.99);
+    assert_fp_eq(collision.u2->position.y, 0);
+    assert_fp_eq(collision.offset.direction.x, 1);
+    assert_fp_eq(collision.offset.direction.y, 0);
+    assert_fp_eq(collision.offset.magnitude, 3.99);
+}
 
-    bool correct_collision_detected = 
-        (__compare_units(*collisions->u1, unit_init(0, 0)) &&
-         __compare_units(*collisions->u2, unit_init(3.99, 0))) ||
-        (__compare_units(*collisions->u1, unit_init(3.99, 0)) &&
-         __compare_units(*collisions->u2, unit_init(0, 0)));
-    assert_eq(correct_collision_detected, true);
+void test_resolve_collisions(void) {
+    Unit u1 = unit_init(-0.8, -0.85);
+    u1.velocity.x = 0;
+    u1.velocity.y = 1;
+    Unit u2 = unit_init(2.8, 1.85);
+    u2.velocity.x = 0;
+    u2.velocity.y = -1;
+    double radius = 2.5;
+    NormalizedVector offset = (NormalizedVector) { vector_init(0.8, 0.6), 4.5 };
+    Collision collision = (Collision) { &u1, &u2, offset };
+    Collision *collisions = init_dyn_array(Collision);
+    push_dyn_array(collisions, collision);
+
+    resolve_collisions(collisions, radius);
+
+    assert_fp_eq(u1.position.x, -1);
+    assert_fp_eq(u1.position.y, -1);
+    assert_fp_eq(u2.position.x, 3);
+    assert_fp_eq(u2.position.y, 2);
+    assert_fp_eq(u1.velocity.x, -0.96);
+    assert_fp_eq(u1.velocity.y, 0.28);
+    assert_fp_eq(u2.velocity.x, 0.96);
+    assert_fp_eq(u2.velocity.y, -0.28);
 }
 
 void tests_collision(void) {
     test_detect_collision_when_units_are_empty();
     test_detect_collision();
+    test_resolve_collisions();
 }

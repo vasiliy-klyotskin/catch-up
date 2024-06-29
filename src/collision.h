@@ -7,12 +7,14 @@
 typedef struct {
     Unit *u1;
     Unit *u2;
+    NormalizedVector offset;
 } Collision;
 
 void detect_collisions(
-    const Unit *const units,
-    const Collision *collisions,
+    Unit *const units,
+    Collision *collisions,
     const double radius
 );
+void resolve_collisions(Collision *const collisions, const double radius);
 
 #endif // COLLISION_H
