@@ -34,6 +34,17 @@ void add_run_away_accel(Unit *const unit, const Unit *const catcher, const doubl
     unit->acceleration.y += position_difference.y * dependence;
 }
 
-void set_catch_velocity(Unit *const unit, const Unit *const catchie) {
+void set_catch_velocity(
+    Unit *const unit, 
+    const Unit *const catchie,
+    const double velocity_increment_coef,
+    const double angle_fitting_coef
+) {
 
+    Vector position_difference = vector_difference(unit, catchie);
+    NormalizedVector offset = vector_normalized(&position_difference);
+    if (unit->velocity.x == 0 && unit->velocity.y == 0) {
+        unit->velocity.x = offset.direction.x * velocity_increment_coef;
+        unit->velocity.y = offset.direction.y * velocity_increment_coef;
+    }
 }

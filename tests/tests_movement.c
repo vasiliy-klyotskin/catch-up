@@ -1,6 +1,8 @@
 #include <macroassert.h>
 #include <movement.h>
 
+#include <stdio.h>
+
 void test_euler_integration_step(void) {
     Unit u = unit_init(5, 6);
     u.velocity = vector_init(-2, 3);
@@ -107,6 +109,20 @@ void test_run_away(void) {
     assert_fp_eq(u.acceleration.y, -3.32);
 }
 
+void test_catch_when_objet_velocity_is_zero(void) {
+    Unit u = unit_init(1, 1);
+    u.velocity.x = 0;
+    u.velocity.y = 0;
+    Unit runner = unit_init(5, 4);
+    const double velocity_increment_coef = 0.01;
+    const double any_angle_fitting_coef = 0;
+
+    set_catch_velocity(&u, &runner, velocity_increment_coef, any_angle_fitting_coef);
+
+    assert_fp_eq(u.velocity.x, 0.008);
+    assert_fp_eq(u.velocity.y, 0.006);
+}
+
 void tests_movement(void) {
     test_euler_integration_step();
     test_return_to_middle_when_position_is_zero();
@@ -117,4 +133,5 @@ void tests_movement(void) {
     test_repulsion();
     test_run_away_when_distance_is_zero();
     test_run_away();
+    test_catch_when_objet_velocity_is_zero();
 }
