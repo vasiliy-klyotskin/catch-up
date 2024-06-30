@@ -85,3 +85,10 @@ void set_catch_velocity(
         fit_current_velocity(unit, disposition, max_velocity, velocity_increment_coef, angle_fitting_coef);
     }
 }
+
+void reset_velocity_when_low(Unit *const unit, const double threshold) {
+    if (vector_normalized(&unit->velocity).magnitude < threshold) {
+        unit->velocity.x = 0;
+        unit->velocity.y = 0;
+    }
+}

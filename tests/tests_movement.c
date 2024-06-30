@@ -167,6 +167,27 @@ void test_catch_velocity_should_be_equal_max_velocity_when_increment_exceeds_max
     assert_fp_eq(u.velocity.y, -0.707106);
 }
 
+void test_reset_velocity(void) {
+    Unit u = unit_init(0, 0);
+    double threshold = 1;
+
+    u.velocity.x = 0.6001;
+    u.velocity.y = 0.8;
+
+    reset_velocity_when_low(&u, threshold);
+
+    assert_fp_eq(u.velocity.x, 0.6001);
+    assert_fp_eq(u.velocity.y, 0.8);
+
+    u.velocity.x = 0.5999;
+    u.velocity.y = 0.8;
+
+    reset_velocity_when_low(&u, threshold);
+
+    assert_eq(u.velocity.x, 0);
+    assert_eq(u.velocity.y, 0);
+}
+
 void tests_movement(void) {
     test_euler_integration_step();
     test_return_to_middle_when_position_is_zero();
@@ -181,4 +202,5 @@ void tests_movement(void) {
     test_catch_when_objet_velocity_is_zero_and_max_velocity_is_less_than_increment_coef();
     test_catch_when_object_velocity_is_not_collinear_to_displacement_and_velocity_is_not_max_yet();
     test_catch_velocity_should_be_equal_max_velocity_when_increment_exceeds_max_velocity();
+    test_reset_velocity();
 }
