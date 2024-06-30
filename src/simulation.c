@@ -41,3 +41,8 @@ Unit *simulation_get_runner(const Simulation *const simulation, const size_t ind
 void tick(Simulation *const simulation) {
 
 }
+
+void free(Simulation *const simulation) {
+    free_dyn_array(simulation->__units);
+    free_dyn_array(simulation->__collisions);
+}
