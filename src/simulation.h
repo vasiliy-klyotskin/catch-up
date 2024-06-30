@@ -27,6 +27,6 @@ Simulation simulation_init(
 );
 Unit *simulation_get_catcher(const Simulation *const simulation);
 Unit *simulation_get_runner(const Simulation *const simulation, const size_t index);
-void tick(Simulation *const simulation);
+void simulation_tick(Simulation *const simulation);
 
 #endif // SIMULATION_H

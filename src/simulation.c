@@ -38,11 +38,11 @@ Unit *simulation_get_runner(const Simulation *const simulation, const size_t ind
     return &simulation->__units[RUNNERS + index];
 }
 
-void tick(Simulation *const simulation) {
+void simulation_tick(Simulation *const simulation) {
 
 }
 
-void free(Simulation *const simulation) {
+void simulation_free(Simulation *const simulation) {
     free_dyn_array(simulation->__units);
     free_dyn_array(simulation->__collisions);
 }
