@@ -92,3 +92,8 @@ void reset_velocity_when_low(Unit *const unit, const double threshold) {
         unit->velocity.y = 0;
     }
 }
+
+void reset_accel(Unit *const unit) {
+    unit->acceleration.x = 0;
+    unit->acceleration.y = 0;
+}
