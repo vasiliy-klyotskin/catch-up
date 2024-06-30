@@ -1,8 +1,6 @@
 #include <macroassert.h>
 #include <movement.h>
 
-#include <stdio.h>
-
 void test_euler_integration_step(void) {
     Unit u = unit_init(5, 6);
     u.velocity = vector_init(-2, 3);
@@ -114,13 +112,44 @@ void test_catch_when_objet_velocity_is_zero(void) {
     u.velocity.x = 0;
     u.velocity.y = 0;
     Unit runner = unit_init(5, 4);
+    const double any_max_velocity = 1;
     const double velocity_increment_coef = 0.01;
     const double any_angle_fitting_coef = 0;
 
-    set_catch_velocity(&u, &runner, velocity_increment_coef, any_angle_fitting_coef);
+    set_catch_velocity(&u, &runner, any_max_velocity, velocity_increment_coef, any_angle_fitting_coef);
 
     assert_fp_eq(u.velocity.x, 0.008);
     assert_fp_eq(u.velocity.y, 0.006);
+}
+
+void test_catch_when_objet_velocity_is_zero_and_max_velocity_is_less_than_increment_coef(void) {
+    Unit u = unit_init(1, 1);
+    u.velocity.x = 0;
+    u.velocity.y = 0;
+    Unit runner = unit_init(5, 4);
+    const double any_max_velocity = 1;
+    const double velocity_increment_coef = 1.01;
+    const double any_angle_fitting_coef = 0;
+
+    set_catch_velocity(&u, &runner, any_max_velocity, velocity_increment_coef, any_angle_fitting_coef);
+
+    assert_fp_eq(u.velocity.x, 0.8);
+    assert_fp_eq(u.velocity.y, 0.6);
+}
+
+void test_catch_when_object_velocity_is_not_collinear_to_displacement_and_velocity_is_not_max_yet(void) {
+    Unit u = unit_init(0, 1);
+    u.velocity.x = 1;
+    u.velocity.y = 0;
+    Unit runner = unit_init(0, 0);
+    const double max_velocity = 10;
+    const double velocity_increment_coef = 0.5;
+    const double angle_fitting_coef = 0.5;
+
+    set_catch_velocity(&u, &runner, max_velocity, velocity_increment_coef, angle_fitting_coef);
+
+    assert_fp_eq(u.velocity.x, 1.06066);
+    assert_fp_eq(u.velocity.y, -1.06066);
 }
 
 void tests_movement(void) {
@@ -134,4 +163,6 @@ void tests_movement(void) {
     test_run_away_when_distance_is_zero();
     test_run_away();
     test_catch_when_objet_velocity_is_zero();
+    test_catch_when_objet_velocity_is_zero_and_max_velocity_is_less_than_increment_coef();
+    test_catch_when_object_velocity_is_not_collinear_to_displacement_and_velocity_is_not_max_yet();
 }

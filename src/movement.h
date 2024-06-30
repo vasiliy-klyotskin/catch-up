@@ -11,6 +11,7 @@ void add_run_away_accel(Unit *const unit, const Unit *const catcher, const doubl
 void set_catch_velocity(
     Unit *const unit, 
     const Unit *const catchie,
+    const double max_velocity,
     const double velocity_increment_coef,
     const double angle_fitting_coef
 );
