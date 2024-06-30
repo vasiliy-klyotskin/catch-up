@@ -12,6 +12,7 @@ void *_push_dyn_array(void *array, void *element);
 void pop_dyn_array(void *array, void *target);
 void remove_last_dyn_array(void *array);
 void free_dyn_array(void *array);
+void clear_dyn_array(void *array);
 size_t get_length_dyn_array(void *array);
 
 #define init_dyn_array(type) _init_dyn_array(INITIAL_CAPACITY, sizeof(type))

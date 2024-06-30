@@ -67,9 +67,22 @@ void test_array_pops_correct_values(void) {
     free_dyn_array(array);
 }
 
+void test_array_clear(void) {
+    int *array = init_dyn_array(int);
+    push_rval_dyn_array(array, int, 3);
+
+    clear_dyn_array(array);
+    assert_eq(get_length_dyn_array(array), 0);
+
+    push_rval_dyn_array(array, int, 3);
+    assert_eq(get_length_dyn_array(array), 1);
+    assert_eq(array[0], 3);
+}
+
 void tests_dynamic_array(void) {
     test_array_has_correct_length_after_pushing_and_removing();
     test_array_pushes_correct_values();
     test_array_pushes_correct_values_big_input();
     test_array_pops_correct_values();
+    test_array_clear();
 }

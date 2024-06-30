@@ -61,6 +61,10 @@ void remove_last_dyn_array(void *array) {
     set_header_field(array, LENGTH, length - 1);
 }
 
+void clear_dyn_array(void *array) {
+    set_header_field(array, LENGTH, 0);
+}
+
 size_t get_length_dyn_array(void *array) {
     return get_header_field(array, LENGTH);
 }
