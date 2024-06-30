@@ -26,7 +26,7 @@ void detect_collisions(
     }
 }
 
-void __resolve_positions(const Collision *const collision, const double radius) {
+void resolve_positions(const Collision *const collision, const double radius) {
     double correction_coef = (2 * radius - collision->offset.magnitude) * 0.5;
     double correction_x = collision->offset.direction.x * correction_coef;
     double correction_y = collision->offset.direction.y * correction_coef;
@@ -36,7 +36,7 @@ void __resolve_positions(const Collision *const collision, const double radius) 
     collision->u2->position.y += correction_y;
 }
 
-void __resolve_velocity(Collision *const collision) {
+void resolve_velocity(Collision *const collision) {
     Vector *norm = &collision->offset.direction;
     Vector tang = vector_init(-norm->y, norm->x);
     double u1_norm_dot_prod = vector_dot_product(&collision->u1->velocity, norm);
@@ -53,7 +53,7 @@ void resolve_collisions(Collision *const collisions, const double radius) {
     size_t collisions_length = get_length_dyn_array(collisions);
     for (size_t i = 0; i < collisions_length; i++) {
         Collision *collision = &collisions[i];
-        __resolve_positions(collision, radius);
-        __resolve_velocity(collision);
+        resolve_positions(collision, radius);
+        resolve_velocity(collision);
     }
 }
