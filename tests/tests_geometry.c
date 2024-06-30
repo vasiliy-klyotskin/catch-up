@@ -2,6 +2,10 @@
 #include <geometry.h>
 #include <math.h>
 
+Vector rotated_by(double radian) {
+    return vector_init(cos(radian), sin(radian));
+}
+
 void test_vector_dot_product(void) {
     Vector v3 = vector_init(2.25, -2);
     Vector v4 = vector_init(3, -0.7);
@@ -47,23 +51,54 @@ void test_vector_rotation(void) {
     assert_fp_eq(rotated_v3.y, 0.5);
 }
 
-void test_normalized_vectors_radian(void) {
-    NormalizedVector nv1;
-    NormalizedVector nv2;
-    nv1.direction = vector_init(1, 0);
-    nv2.direction = vector_init(0, 1);
+void test_vector_radian(void) {
+    Vector v1;
+    Vector v2;
 
-    assert_fp_eq(normalized_vectors_radian(&nv1, &nv2), M_PI / 2);
+    v1 = vector_init(1, 0);
+    v2 = vector_init(1, 0);
 
-    nv1.direction = vector_init(0, 1);
-    nv2.direction = vector_init(1, 0);
+    assert_fp_eq(vector_radian(&v1, &v2), 0);
 
-    assert_fp_eq(normalized_vectors_radian(&nv1, &nv2), -M_PI / 2);
+    v1 = vector_init(1, 0);
+    v2 = vector_init(-1, 0);
 
-    nv1.direction = vector_init(1, 0);
-    nv2.direction = vector_init(0.86602540378, 0.5);
+    assert_fp_eq(fabs(vector_radian(&v1, &v2)), M_PI);
 
-    assert_fp_eq(normalized_vectors_radian(&nv1, &nv2), M_PI / 6);
+    v1 = vector_init(-0.6, 0.8);
+    v2 = vector_init(0.6, -0.8);
+
+    assert_fp_eq(fabs(vector_radian(&v1, &v2)), M_PI);
+
+    v1 = vector_init(1, 0);
+    v2 = vector_init(0, 1);
+
+    assert_fp_eq(vector_radian(&v1, &v2), M_PI / 2);
+
+    v1 = vector_init(0, 1);
+    v2 = vector_init(1, 0);
+
+    assert_fp_eq(vector_radian(&v1, &v2), -M_PI / 2);
+
+    v1 = rotated_by(M_PI * 4 / 6);
+    v2 = rotated_by(-M_PI / 6);
+
+    assert_fp_eq(vector_radian(&v1, &v2), -M_PI * 5 / 6);
+
+    v1 = rotated_by(-M_PI / 6);
+    v2 = rotated_by(M_PI * 4 / 6);
+    
+    assert_fp_eq(vector_radian(&v1, &v2), M_PI * 5 / 6);
+
+    v1 = rotated_by(M_PI * 5 / 6);
+    v2 = rotated_by(-M_PI * 5 / 6);
+
+    assert_fp_eq(vector_radian(&v1, &v2), M_PI / 3);
+
+    v1 = rotated_by(-M_PI * 5 / 6);
+    v2 = rotated_by(M_PI * 5 / 6);
+    
+    assert_fp_eq(vector_radian(&v1, &v2), -M_PI / 3);
 }
 
 void test_vector_magnitude(void) {
@@ -89,5 +124,5 @@ void tests_geometry(void) {
     test_vector_rotation();
     test_vector_magnitude();
     test_vector_difference();
-    test_normalized_vectors_radian();
+    test_vector_radian();
 }

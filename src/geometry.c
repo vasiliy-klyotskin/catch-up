@@ -1,6 +1,8 @@
 #include <geometry.h>
 #include <math.h>
 
+#include <stdio.h>
+
 Vector vector_init(double x, double y) {
     Vector v;
     v.x = x;
@@ -42,7 +44,14 @@ double vector_dot_product(const Vector *const v1, const Vector *const v2) {
     return v1->x * v2->x + v1->y * v2->y;
 }
 
-double normalized_vectors_radian(const NormalizedVector *const v1, const NormalizedVector *const v2) {
-    double scalar_cross_product = v1->direction.x * v2->direction.y - v1->direction.y * v2->direction.x;
-    return asin(scalar_cross_product);
+double vector_radian(const Vector *const v1, const Vector *const v2) {
+    double angle1 = atan2(v1->y, v1->x);
+    double angle2 = atan2(v2->y, v2->x);
+    double angle = angle2 - angle1;
+    if (angle > M_PI) {
+        angle -= 2 * M_PI;
+    } else if (angle < -M_PI) {
+        angle += 2 * M_PI;
+    }
+    return angle;
 }
