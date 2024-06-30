@@ -14,10 +14,15 @@ Simulation simulation_init(
     const double fps
 ) {
     Simulation simulation;
-    simulation.any_hit_just_occured = false;
-    simulation.catch_did_just_occured = false;
     simulation.catch_count = 0;
+    simulation.catch_did_just_occured = false;
+    simulation.any_hit_just_occured = false;
     simulation.__units = init_dyn_array(Unit);
+    simulation.__collisions = init_dyn_array(Collision);
+    simulation.__integration_delta = 1 / fps;
+    simulation.__unit_radius = unit_radius;
+    simulation.__fps = fps;
+    simulation.__ticks_since_last_catch = 0;
     push_dyn_array(simulation.__units, catcher);
     for (size_t i = 0; i < runners_size; i++) {
         push_dyn_array(simulation.__units, runners[i]);
@@ -33,6 +38,6 @@ Unit *simulation_get_runner(const Simulation *const simulation, const size_t ind
     return &simulation->__units[RUNNERS + index];
 }
 
-void tick(const Simulation *const simulation) {
+void tick(Simulation *const simulation) {
 
 }

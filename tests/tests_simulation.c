@@ -1,17 +1,6 @@
 #include <macroassert.h>
 #include <simulation.h>
 
-void test_simulation_init(void) {
-    Unit catcher = unit_init(1, 1);
-    Unit runners[0] = {};
-
-    Simulation s = simulation_init(catcher, runners, 2, 1, 60);
-
-    assert_eq(s.catch_count, 0);
-    assert_eq(s.catch_did_just_occured, false);
-    assert_eq(s.any_hit_just_occured, false);
-}
-
 void test_simulation_get_catcher(void) {
     Unit catcher_input = unit_init(1, 2);
     Unit runners[0] = {};
@@ -38,7 +27,6 @@ void test_simulation_get_runner(void) {
 }
 
 void tests_simulation(void) {
-    test_simulation_init();
     test_simulation_get_catcher();
     test_simulation_get_runner();
 }

@@ -11,7 +11,7 @@ typedef struct {
     bool catch_did_just_occured;
     bool any_hit_just_occured;
     Unit *__units;
-    Collision *const __collisions;
+    Collision *__collisions;
     double __integration_delta;
     double __unit_radius;
     double __fps;
