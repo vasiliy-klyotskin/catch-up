@@ -53,8 +53,12 @@ void set_catch_velocity(
         unit->velocity.y = norm_disposition.direction.y * multiplier;
     } else {
         NormalizedVector norm_velocity = vector_normalized(&unit->velocity);
-        unit->velocity.x += velocity_increment_coef * norm_velocity.direction.x;
-        unit->velocity.y += velocity_increment_coef * norm_velocity.direction.y;
+        double potential_vx = unit->velocity.x + velocity_increment_coef * norm_velocity.direction.x;
+        double max_vx = max_velocity * norm_velocity.direction.x;
+        double potential_vy = unit->velocity.y + velocity_increment_coef * norm_velocity.direction.y;
+        double max_vy = max_velocity * norm_velocity.direction.y;
+        unit->velocity.x = min(max_vx, potential_vx);
+        unit->velocity.y = min(max_vy, potential_vy);
         double radians = vector_radian(&unit->velocity, &disposition);
         double fit_angle = radians * angle_fitting_coef;
         unit->velocity = vector_rotated(&unit->velocity, fit_angle);

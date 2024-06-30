@@ -152,6 +152,21 @@ void test_catch_when_object_velocity_is_not_collinear_to_displacement_and_veloci
     assert_fp_eq(u.velocity.y, -1.06066);
 }
 
+void test_catch_velocity_should_be_equal_max_velocity_when_increment_exceeds_max_velocity(void) {
+    Unit u = unit_init(0, 1);
+    u.velocity.x = 0.9;
+    u.velocity.y = 0;
+    Unit runner = unit_init(0, 0);
+    const double max_velocity = 1;
+    const double velocity_increment_coef = 0.1001;
+    const double angle_fitting_coef = 0.5;
+
+    set_catch_velocity(&u, &runner, max_velocity, velocity_increment_coef, angle_fitting_coef);
+
+    assert_fp_eq(u.velocity.x, 0.707106);
+    assert_fp_eq(u.velocity.y, -0.707106);
+}
+
 void tests_movement(void) {
     test_euler_integration_step();
     test_return_to_middle_when_position_is_zero();
@@ -165,4 +180,5 @@ void tests_movement(void) {
     test_catch_when_objet_velocity_is_zero();
     test_catch_when_objet_velocity_is_zero_and_max_velocity_is_less_than_increment_coef();
     test_catch_when_object_velocity_is_not_collinear_to_displacement_and_velocity_is_not_max_yet();
+    test_catch_velocity_should_be_equal_max_velocity_when_increment_exceeds_max_velocity();
 }
