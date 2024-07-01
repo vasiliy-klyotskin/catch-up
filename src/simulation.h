@@ -12,10 +12,11 @@ typedef struct {
     bool any_hit_just_occured;
     Unit *__units;
     Collision *__collisions;
+    Unit *__unit_to_catch;
     double __integration_delta;
     double __unit_radius;
     double __fps;
-    double __ticks_before_next_catch;
+    double __min_ticks_before_next_catch;
     int __ticks_since_last_catch;
 } Simulation;
 
@@ -30,5 +31,6 @@ Unit *simulation_get_catcher(const Simulation *const s);
 Unit *simulation_get_runner(const Simulation *const s, const size_t index);
 void simulation_add_runner(Simulation *const s, const Vector position);
 void simulation_tick(Simulation *const s);
+void simulation_free(Simulation *const s);
 
 #endif // SIMULATION_H

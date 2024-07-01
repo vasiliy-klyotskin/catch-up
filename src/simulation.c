@@ -1,6 +1,17 @@
 #include <simulation.h>
 #include <dynamic_array.h>
 #include <collision.h>
+#include <movement.h>
+
+#define REPULSION_COEF 0.05
+#define RETURN_TO_MIDDLE_COEF 1
+#define FRICTION_COEF 1
+#define RUN_AWAY_COEF 0.45
+#define CATCHER_VELOCITY_RESET_THRESHOLD 0.001
+#define CATCHER_MAX_VELOCITY 1
+#define CATCHER_VELOCITY_INCR_COEF 0.01
+#define CATCHER_ANGLE_FITTING_COEF 0.1
+#define MIN_SECONDS_BEFORE_NEXT_CATCH 2
 
 enum UnitsLayout {
     CATCHER,
@@ -20,11 +31,12 @@ Simulation simulation_init(
     s.any_hit_just_occured = false;
     s.__units = init_dyn_array(Unit);
     s.__collisions = init_dyn_array(Collision);
+    s.__unit_to_catch = NULL;
     s.__integration_delta = 1 / fps;
     s.__unit_radius = unit_radius;
     s.__fps = fps;
-    s.__ticks_before_next_catch = 2 * fps;
-    s.__ticks_since_last_catch = s.__ticks_before_next_catch;
+    s.__min_ticks_before_next_catch = MIN_SECONDS_BEFORE_NEXT_CATCH * fps;
+    s.__ticks_since_last_catch = s.__min_ticks_before_next_catch;
     push_dyn_array(s.__units, catcher);
     for (size_t i = 0; i < runners_size; i++) {
         push_dyn_array(s.__units, runners[i]);
@@ -53,11 +65,16 @@ void check_if_any_hit_occured(Simulation *const s) {
 void simulation_reset(Simulation *const s) {
     s->any_hit_just_occured = false;
     s->catch_did_just_occured = false;
+    s->__unit_to_catch = NULL;
     clear_dyn_array(s->__collisions);
 }
 
+bool enough_time_passed_since_last_catch(Simulation *const s) {
+    return s->__ticks_since_last_catch < s->__min_ticks_before_next_catch;
+}
+
 void resolve_new_catcher(Simulation *const s) {
-    if (s->__ticks_since_last_catch < s->__ticks_before_next_catch) {
+    if (enough_time_passed_since_last_catch(s)) {
         s->__ticks_since_last_catch++;
         return;
     }
@@ -75,12 +92,59 @@ void resolve_new_catcher(Simulation *const s) {
     }
 }
 
+void resolve_catcher_movement(Simulation *const s) {
+    Unit *catcher = simulation_get_catcher(s);
+    reset_velocity_when_low(catcher, CATCHER_VELOCITY_RESET_THRESHOLD);
+    if (enough_time_passed_since_last_catch(s)) {
+        set_catch_velocity(
+            catcher,
+            s->__unit_to_catch,
+            CATCHER_MAX_VELOCITY,
+            CATCHER_VELOCITY_INCR_COEF,
+            CATCHER_VELOCITY_INCR_COEF
+        );
+    } else {
+        add_friction_accel(catcher, 3);
+    }
+}
+
+void resolve_unit_to_catch_if_needed(Simulation *const s) {
+    if (!enough_time_passed_since_last_catch(s)) return;
+    Unit *catcher = simulation_get_catcher(s);
+    s->__unit_to_catch = find_nearest(catcher, s->__units);
+}
+
+void resolve_runners_movement(Simulation *const s) {
+    add_return_to_middle_accel(s->__unit_to_catch, RETURN_TO_MIDDLE_COEF);
+    Unit *catcher = simulation_get_catcher(s);
+    size_t units_length = get_length_dyn_array(s->__units);
+    for (size_t i = RUNNERS; i < units_length; i++) {
+        Unit *runner = &s->__units[i];
+        add_friction_accel(runner, FRICTION_COEF);
+        add_return_to_middle_accel(runner, RETURN_TO_MIDDLE_COEF);
+        add_run_away_accel(runner, catcher, RUN_AWAY_COEF);
+        for (size_t k = RUNNERS; k < units_length; k++) {
+            Unit *neighbor = &s->__units[k];
+            if (neighbor->id == runner->id) continue;
+            add_repulsion_accel(runner, neighbor, REPULSION_COEF);
+        }
+    }
+}
+
+void resolve_movement(Simulation *const s) {
+    reset_accel(s->__units);
+    resolve_unit_to_catch_if_needed(s);
+    resolve_catcher_movement(s);
+    do_euler_integration(s->__units, s->__integration_delta);
+}
+
 void simulation_tick(Simulation *const s) {
     simulation_reset(s);
     detect_collisions(s->__units, s->__collisions, s->__unit_radius);
     check_if_any_hit_occured(s);
     resolve_collisions(s->__collisions, s->__unit_radius);
     resolve_new_catcher(s);
+    resolve_movement(s);
 }
 
 void simulation_free(Simulation *const simulation) {
