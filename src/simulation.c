@@ -1,8 +1,6 @@
 #include <simulation.h>
 #include <dynamic_array.h>
 #include <collision.h>
-#include <limits.h>
-#include <stdio.h>
 
 enum UnitsLayout {
     CATCHER,
