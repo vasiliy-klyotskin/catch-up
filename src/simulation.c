@@ -52,6 +52,10 @@ Unit *simulation_get_runner(const Simulation *const s, const size_t index) {
     return &s->__units[RUNNERS + index];
 }
 
+size_t simulation_get_runners_count(const Simulation *const s) {
+    return get_length_dyn_array(s->__units) - RUNNERS;
+}
+
 void simulation_add_runner(Simulation *const s, const Vector position) {
     push_rval_dyn_array(s->__units, Unit, unit_init(position.x, position.y));
 }

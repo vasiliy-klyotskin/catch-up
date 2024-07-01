@@ -29,6 +29,7 @@ Simulation simulation_init(
 );
 Unit *simulation_get_catcher(const Simulation *const s);
 Unit *simulation_get_runner(const Simulation *const s, const size_t index);
+size_t simulation_get_runners_count(const Simulation *const s);
 void simulation_add_runner(Simulation *const s, const Vector position);
 void simulation_tick(Simulation *const s);
 void simulation_free(Simulation *const s);
