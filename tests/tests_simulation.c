@@ -1,8 +1,6 @@
 #include <macroassert.h>
 #include <simulation.h>
 
-#include <stdio.h>
-
 #define FPS 60
 
 void test_simulation_get_catcher(void) {
@@ -36,16 +34,44 @@ void test_simulation_when_hit_occures_between_runners(void) {
     double unit_radius = 1;
     Simulation s = simulation_init(catcher_input, runners, 2, unit_radius, FPS);
 
+    assert_eq(s.any_hit_just_occured, false);
+
     simulation_tick(&s);
     assert_eq(s.any_hit_just_occured, true);
 
     simulation_tick(&s);
-    // printf("%f, %f, %f, %f", )
     assert_eq(s.any_hit_just_occured, false);
+}
+
+void test_simulation_when_catch_occures(void) {
+    Unit catcher = unit_init(0, 0);
+    double high_velocity = 100;
+    catcher.velocity.x = high_velocity;
+    Unit runners[1] = { unit_init(1.99, 0) };
+    double unit_radius = 1;
+    Simulation s = simulation_init(catcher, runners, 1, unit_radius, FPS);
+
+    assert_eq(s.catch_did_just_occured, false);
+    assert_eq(s.any_hit_just_occured, false);
+    assert_eq(simulation_get_runner(&s, 0)->id, runners[0].id);
+    assert_eq(simulation_get_catcher(&s)->id, catcher.id);
+
+    simulation_tick(&s);
+    assert_eq(s.catch_did_just_occured, true);
+    assert_eq(s.any_hit_just_occured, true);
+    assert_eq(simulation_get_runner(&s, 0)->id, catcher.id);
+    assert_eq(simulation_get_catcher(&s)->id, runners[0].id);
+
+    simulation_tick(&s);
+    assert_eq(s.catch_did_just_occured, false);
+    assert_eq(s.any_hit_just_occured, false);
+    assert_eq(simulation_get_runner(&s, 0)->id, catcher.id);
+    assert_eq(simulation_get_catcher(&s)->id, runners[0].id);
 }
 
 void tests_simulation(void) {
     test_simulation_get_catcher();
     test_simulation_get_runner();
     test_simulation_when_hit_occures_between_runners();
+    test_simulation_when_catch_occures();
 }
