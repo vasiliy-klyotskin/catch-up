@@ -10,5 +10,6 @@ typedef struct {
 } Unit;
 
 Unit unit_init(double pos_x, double pos_y);
+Unit *find_nearest(Unit *const unit, Unit *const others);
 
 #endif // UNIT_H
