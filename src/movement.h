@@ -3,7 +3,7 @@
 
 #include <unit.h>
 
-void do_euler_integration_step(Unit *const unit, const double delta);
+void do_euler_integration(Unit *const units, const double delta);
 void add_return_to_middle_accel(Unit *const unit, const double coef);
 void add_friction_accel(Unit *const unit, const double coef);
 void add_repulsion_accel(Unit *const unit, const Unit *const neighbor, const double coef);

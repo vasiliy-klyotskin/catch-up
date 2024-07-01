@@ -1,12 +1,17 @@
 #include <movement.h>
 #include <math.h>
 #include <stdbool.h>
+#include <dynamic_array.h>
 
-void do_euler_integration_step(Unit *const unit, const double delta) {
-    unit->velocity.x += unit->acceleration.x * delta;
-    unit->velocity.y += unit->acceleration.y * delta;
-    unit->position.x += unit->velocity.x * delta;
-    unit->position.y += unit->velocity.y * delta;
+void do_euler_integration(Unit *const units, const double delta) {
+    size_t units_length = get_length_dyn_array(units);
+    for (size_t i = 0; i < units_length; i++) {
+        Unit *unit = &units[i];
+        unit->velocity.x += unit->acceleration.x * delta;
+        unit->velocity.y += unit->acceleration.y * delta;
+        unit->position.x += unit->velocity.x * delta;
+        unit->position.y += unit->velocity.y * delta;
+    }
 }
 
 void add_return_to_middle_accel(Unit *const unit, const double coef) {

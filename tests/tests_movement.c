@@ -1,17 +1,33 @@
 #include <macroassert.h>
 #include <movement.h>
+#include <dynamic_array.h>
 
-void test_euler_integration_step(void) {
-    Unit u = unit_init(5, 6);
-    u.velocity = vector_init(-2, 3);
-    u.acceleration = vector_init(4, -1);
+void test_euler_integration(void) {
+    Unit u1 = unit_init(5, 6);
+    u1.velocity = vector_init(-2, 3);
+    u1.acceleration = vector_init(4, -1);
 
-    do_euler_integration_step(&u, 0.1);
+    Unit u2 = unit_init(7, 2);
+    u2.velocity = vector_init(-4, 1);
+    u2.acceleration = vector_init(-2, -4);
 
-    assert_fp_eq(u.velocity.x, -1.6);
-    assert_fp_eq(u.velocity.y, 2.9);
-    assert_fp_eq(u.position.x, 4.84);
-    assert_fp_eq(u.position.y, 6.29);
+    Unit *array = init_dyn_array(Unit);
+    push_dyn_array(array, u1);
+    push_dyn_array(array, u2);
+
+    do_euler_integration(array, 0.1);
+
+    Unit r_u1 = array[0];
+    assert_fp_eq(r_u1.velocity.x, -1.6);
+    assert_fp_eq(r_u1.velocity.y, 2.9);
+    assert_fp_eq(r_u1.position.x, 4.84);
+    assert_fp_eq(r_u1.position.y, 6.29);
+
+    Unit r_u2 = array[1];
+    assert_fp_eq(r_u2.velocity.x, -4.2);
+    assert_fp_eq(r_u2.velocity.y, 0.6);
+    assert_fp_eq(r_u2.position.x, 6.58);
+    assert_fp_eq(r_u2.position.y, 2.06);
 }
 
 void test_return_to_middle_when_position_is_zero(void) {
@@ -177,7 +193,7 @@ void test_reset_velocity(void) {
 }
 
 void tests_movement(void) {
-    test_euler_integration_step();
+    test_euler_integration();
     test_return_to_middle_when_position_is_zero();
     test_return_to_middle_when_position_is_not_zero();
     test_friction_when_velocity_is_zero();
