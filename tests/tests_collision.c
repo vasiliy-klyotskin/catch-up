@@ -3,6 +3,8 @@
 #include <dynamic_array.h>
 #include <stdbool.h>
 
+#include <stdio.h>
+
 void test_detect_collision_when_units_are_empty(void) {
     Unit *units = init_dyn_array(Unit);
     Collision *collisions = init_dyn_array(Collision);
@@ -35,6 +37,25 @@ void test_detect_collision(void) {
     assert_fp_eq(collision.offset.magnitude, 3.99);
 }
 
+void test_resolve_collision_when_velocity_is_zero(void) {
+    Unit u1 = unit_init(0.01, 0);
+    Unit u2 = unit_init(1.99, 0);
+    double radius = 1;
+
+    NormalizedVector offset = (NormalizedVector) { vector_init(1, 0), 1.98 };
+    Collision collision = (Collision) { &u1, &u2, offset };
+    Collision *collisions = init_dyn_array(Collision);
+    push_dyn_array(collisions, collision);
+
+    resolve_collisions(collisions, radius);
+
+    printf("%f %f %f %f", u1.position.x, u1.position.y, u2.position.x, u2.position.y);
+    assert_fp_eq(u1.position.x, 0);
+    assert_fp_eq(u1.position.y, 0);
+    assert_fp_eq(u2.position.x, 2);
+    assert_fp_eq(u2.position.y, 0);
+}
+
 void test_resolve_collisions(void) {
     Unit u1 = unit_init(-0.8, -0.85);
     u1.velocity.x = 0;
@@ -63,5 +84,6 @@ void test_resolve_collisions(void) {
 void tests_collision(void) {
     test_detect_collision_when_units_are_empty();
     test_detect_collision();
+    test_resolve_collision_when_velocity_is_zero();
     test_resolve_collisions();
 }
