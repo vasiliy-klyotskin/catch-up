@@ -98,7 +98,10 @@ void reset_velocity_when_low(Unit *const unit, const double threshold) {
     }
 }
 
-void reset_accel(Unit *const unit) {
-    unit->acceleration.x = 0;
-    unit->acceleration.y = 0;
+void reset_accel(Unit *const units) {
+    size_t units_length = get_length_dyn_array(units);
+    for (size_t i = 0; i < units_length; i++) {
+        units[i].acceleration.x = 0;
+        units[i].acceleration.y = 0;
+    }
 }
