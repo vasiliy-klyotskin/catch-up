@@ -16,21 +16,22 @@ Simulation simulation_init(
     const double unit_radius,
     const double fps
 ) {
-    Simulation simulation;
-    simulation.catch_count = 0;
-    simulation.catch_did_just_occured = false;
-    simulation.any_hit_just_occured = false;
-    simulation.__units = init_dyn_array(Unit);
-    simulation.__collisions = init_dyn_array(Collision);
-    simulation.__integration_delta = 1 / fps;
-    simulation.__unit_radius = unit_radius;
-    simulation.__fps = fps;
-    simulation.__ticks_since_last_catch = 1000;
-    push_dyn_array(simulation.__units, catcher);
+    Simulation s;
+    s.catch_count = 0;
+    s.catch_did_just_occured = false;
+    s.any_hit_just_occured = false;
+    s.__units = init_dyn_array(Unit);
+    s.__collisions = init_dyn_array(Collision);
+    s.__integration_delta = 1 / fps;
+    s.__unit_radius = unit_radius;
+    s.__fps = fps;
+    s.__ticks_before_next_catch = 2 * fps;
+    s.__ticks_since_last_catch = s.__ticks_before_next_catch;
+    push_dyn_array(s.__units, catcher);
     for (size_t i = 0; i < runners_size; i++) {
-        push_dyn_array(simulation.__units, runners[i]);
+        push_dyn_array(s.__units, runners[i]);
     }
-    return simulation;
+    return s;
 }
 
 Unit *simulation_get_catcher(const Simulation *const s) {
@@ -58,8 +59,7 @@ void simulation_reset(Simulation *const s) {
 }
 
 void resolve_new_catcher(Simulation *const s) {
-    printf("%d\n", s->__ticks_since_last_catch);
-    if (s->__ticks_since_last_catch < 2 * s->__fps) {
+    if (s->__ticks_since_last_catch < s->__ticks_before_next_catch) {
         s->__ticks_since_last_catch++;
         return;
     }

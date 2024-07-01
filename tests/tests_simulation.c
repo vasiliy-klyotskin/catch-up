@@ -3,7 +3,7 @@
 
 #define FPS 60
 
-void do_ticks(const Simulation *const s, const double count) {
+void do_ticks(Simulation *const s, const double count) {
     for (size_t i = 0; i < count; i++) {
         simulation_tick(s);
     }
