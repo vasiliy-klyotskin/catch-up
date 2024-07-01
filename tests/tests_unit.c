@@ -1,19 +1,22 @@
 #include <macroassert.h>
 #include <unit.h>
 #include <dynamic_array.h>
+#include <stdbool.h>
 
 void test_init(void) {
     double x = 5.0;
     double y = 7.0;
 
     Unit u = unit_init(x, y);
-
     assert_fp_eq(u.acceleration.x, 0);
     assert_fp_eq(u.acceleration.y, 0);
     assert_fp_eq(u.velocity.x, 0);
     assert_fp_eq(u.velocity.y, 0);
     assert_fp_eq(u.position.x, 5.0);
     assert_fp_eq(u.position.y, 7.0);
+
+    Unit u2 = unit_init(x, y);
+    assert_eq(u.id != u2.id, true);
 }
 
 void test_find_nearest_when_others_is_empty(void) {

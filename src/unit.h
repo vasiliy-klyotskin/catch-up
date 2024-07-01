@@ -4,6 +4,7 @@
 #include <geometry.h>
 
 typedef struct {
+    int id;
     Vector position;
     Vector velocity;
     Vector acceleration;
