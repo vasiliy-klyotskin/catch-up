@@ -18,6 +18,9 @@ Unit *find_nearest(Unit *const unit, Unit *const others) {
     double distance_to_nearest = INFINITY;
     for (size_t i = 0; i < others_length; i++) {
         Unit *other = &others[i];
+        if (other->id == unit->id) {
+            continue;
+        }
         Vector displacement = vector_difference(&unit->position, &other->position);
         double distance = vector_magnitude(&displacement);
         if (distance < distance_to_nearest) {

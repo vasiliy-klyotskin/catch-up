@@ -35,6 +35,7 @@ void test_find_nearest(void) {
     push_rval_dyn_array(others, Unit, unit_init(2, 1));
     push_rval_dyn_array(others, Unit, unit_init(0.1, 0.1));
     push_rval_dyn_array(others, Unit, unit_init(12, 4));
+    push_dyn_array(others, u);
 
     Unit *nearest = find_nearest(&u, others);
 
