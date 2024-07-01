@@ -1,5 +1,6 @@
 #include <simulation.h>
 #include <dynamic_array.h>
+#include <collision.h>
 
 enum UnitsLayout {
     CATCHER,
@@ -38,8 +39,22 @@ Unit *simulation_get_runner(const Simulation *const simulation, const size_t ind
     return &simulation->__units[RUNNERS + index];
 }
 
-void simulation_tick(Simulation *const simulation) {
+void check_if_any_hit_occured(Simulation *const s) {
+    if (get_length_dyn_array(s->__collisions) != 0) {
+        s->any_hit_just_occured = true;
+    }
+}
 
+void simulation_reset(Simulation *const s) {
+    s->any_hit_just_occured = false;
+    clear_dyn_array(s->__collisions);
+}
+
+void simulation_tick(Simulation *const s) {
+    simulation_reset(s);
+    detect_collisions(s->__units, s->__collisions, s->__unit_radius);
+    check_if_any_hit_occured(s);
+    resolve_collisions(s->__collisions, s->__unit_radius);
 }
 
 void simulation_free(Simulation *const simulation) {

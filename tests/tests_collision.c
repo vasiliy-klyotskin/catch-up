@@ -3,8 +3,6 @@
 #include <dynamic_array.h>
 #include <stdbool.h>
 
-#include <stdio.h>
-
 void test_detect_collision_when_units_are_empty(void) {
     Unit *units = init_dyn_array(Unit);
     Collision *collisions = init_dyn_array(Collision);
@@ -49,7 +47,6 @@ void test_resolve_collision_when_velocity_is_zero(void) {
 
     resolve_collisions(collisions, radius);
 
-    printf("%f %f %f %f", u1.position.x, u1.position.y, u2.position.x, u2.position.y);
     assert_fp_eq(u1.position.x, 0);
     assert_fp_eq(u1.position.y, 0);
     assert_fp_eq(u2.position.x, 2);
