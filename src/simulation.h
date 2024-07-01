@@ -25,8 +25,9 @@ Simulation simulation_init(
     const double unit_radius,
     const double fps
 );
-Unit *simulation_get_catcher(const Simulation *const simulation);
-Unit *simulation_get_runner(const Simulation *const simulation, const size_t index);
-void simulation_tick(Simulation *const simulation);
+Unit *simulation_get_catcher(const Simulation *const s);
+Unit *simulation_get_runner(const Simulation *const s, const size_t index);
+void simulation_add_runner(Simulation *const s, const Vector position);
+void simulation_tick(Simulation *const s);
 
 #endif // SIMULATION_H

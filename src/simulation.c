@@ -1,7 +1,7 @@
 #include <simulation.h>
 #include <dynamic_array.h>
 #include <collision.h>
-
+#include <limits.h>
 #include <stdio.h>
 
 enum UnitsLayout {
@@ -25,7 +25,7 @@ Simulation simulation_init(
     simulation.__integration_delta = 1 / fps;
     simulation.__unit_radius = unit_radius;
     simulation.__fps = fps;
-    simulation.__ticks_since_last_catch = 0;
+    simulation.__ticks_since_last_catch = 1000;
     push_dyn_array(simulation.__units, catcher);
     for (size_t i = 0; i < runners_size; i++) {
         push_dyn_array(simulation.__units, runners[i]);
@@ -33,12 +33,16 @@ Simulation simulation_init(
     return simulation;
 }
 
-Unit *simulation_get_catcher(const Simulation *const simulation) {
-    return &simulation->__units[CATCHER];
+Unit *simulation_get_catcher(const Simulation *const s) {
+    return &s->__units[CATCHER];
 }
 
-Unit *simulation_get_runner(const Simulation *const simulation, const size_t index) {
-    return &simulation->__units[RUNNERS + index];
+Unit *simulation_get_runner(const Simulation *const s, const size_t index) {
+    return &s->__units[RUNNERS + index];
+}
+
+void simulation_add_runner(Simulation *const s, const Vector position) {
+    push_rval_dyn_array(s->__units, Unit, unit_init(position.x, position.y));
 }
 
 void check_if_any_hit_occured(Simulation *const s) {
@@ -54,6 +58,11 @@ void simulation_reset(Simulation *const s) {
 }
 
 void resolve_new_catcher(Simulation *const s) {
+    printf("%d\n", s->__ticks_since_last_catch);
+    if (s->__ticks_since_last_catch < 2 * s->__fps) {
+        s->__ticks_since_last_catch++;
+        return;
+    }
     size_t collisions_length = get_length_dyn_array(s->__collisions);
     for (size_t i = 0; i < collisions_length; i++) {
         Collision collision = s->__collisions[i];
@@ -62,6 +71,7 @@ void resolve_new_catcher(Simulation *const s) {
             *collision.u1 = *collision.u2;
             *collision.u2 = previous_catcher;
             s->catch_did_just_occured = true;
+            s->__ticks_since_last_catch = 0;
             break;
         }
     }
