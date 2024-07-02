@@ -11,7 +11,7 @@ UI rl_ui_abstraction_init(RaylibUI *rl_ui){
     ui.make_catch_sound = (MakeCatchSoundFn)rl_make_catch_sound;
     ui.make_hit_sound = (MakeHitSoundFn)rl_make_hit_sound;
     ui.clean = (CleanFn)rl_clean;
-    ui.self = &rl_ui;
+    ui.self = rl_ui;
     return ui;
 }
 
@@ -22,6 +22,7 @@ RaylibUI rl_ui_init(int width, int height, double unit_radius, double fps) {
     rl_ui._unit_radius = unit_radius;
     rl_ui._fps = fps;
     rl_ui._controller = NULL;
+    return rl_ui;
 }
 
 void rl_set_controller(RaylibUI *self, Controller *controller) {
@@ -38,7 +39,9 @@ void rl_prepare(RaylibUI *self) {
 void rl_add_runner_if_user_clicked_mlb(RaylibUI *self) {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 position = GetMousePosition();
-        controller_add_runner(self->_controller, vector_init(position.x, position.y));
+        double x = (position.x - self->_width / 2) / (self->_width / 2);
+        double y = (position.y - self->_width / 2) / (self->_width / 2);
+        controller_add_runner(self->_controller, vector_init(x, y));
     }
 }
 
@@ -56,8 +59,10 @@ void rl_start(RaylibUI *self) {
 }
 
 void rl_draw_unit(RaylibUI *self, Vector *position, bool is_catcher) {
+    double x = position->x * (self->_width / 2) + self->_width / 2;
+    double y = position->y * (self->_width / 2) + self->_width / 2;
     Color unit_color = is_catcher ? RED : BLUE;
-    DrawCircle(position->x, position->y, self->_unit_radius, unit_color);
+    DrawCircle(x, y, self->_unit_radius * (self->_width / 2), unit_color);
 }
 
 void rl_draw_score(RaylibUI *self, int score) {
