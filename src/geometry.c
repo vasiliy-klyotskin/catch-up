@@ -1,8 +1,6 @@
 #include <geometry.h>
 #include <math.h>
 
-#include <stdio.h>
-
 Vector vector_init(double x, double y) {
     Vector v;
     v.x = x;
