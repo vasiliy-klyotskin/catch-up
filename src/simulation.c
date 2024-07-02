@@ -99,10 +99,11 @@ void resolve_new_catcher(Simulation *const s) {
 void resolve_catcher_movement(Simulation *const s) {
     Unit *catcher = simulation_get_catcher(s);
     reset_velocity_when_low(catcher, CATCHER_VELOCITY_RESET_THRESHOLD);
-    if (enough_time_passed_since_last_catch(s)) {
+    Unit *unit_to_catch = s->__unit_to_catch;
+    if (enough_time_passed_since_last_catch(s) && unit_to_catch != NULL) {
         set_catch_velocity(
             catcher,
-            s->__unit_to_catch,
+            unit_to_catch,
             CATCHER_MAX_VELOCITY,
             CATCHER_VELOCITY_INCR_COEF,
             CATCHER_VELOCITY_INCR_COEF
@@ -118,8 +119,15 @@ void resolve_unit_to_catch_if_needed(Simulation *const s) {
     s->__unit_to_catch = find_nearest(catcher, s->__units);
 }
 
+void resolve_unit_to_catch_movement(Simulation *s) {
+    Unit *unit_to_catch = s->__unit_to_catch;
+    if (unit_to_catch != NULL) {
+        add_return_to_middle_accel(unit_to_catch, RETURN_TO_MIDDLE_COEF);
+    }
+}
+
 void resolve_runners_movement(Simulation *const s) {
-    add_return_to_middle_accel(s->__unit_to_catch, RETURN_TO_MIDDLE_COEF);
+    resolve_unit_to_catch_movement(s);
     Unit *catcher = simulation_get_catcher(s);
     size_t units_length = get_length_dyn_array(s->__units);
     for (size_t i = RUNNERS; i < units_length; i++) {

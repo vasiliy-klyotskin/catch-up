@@ -48,6 +48,20 @@ void test_simulation_access_runners(void) {
     assert_eq(runner2->position.y, 6);
 }
 
+void test_simulation_tick_when_there_is_no_runners(void) {
+    Unit catcher_input = unit_init(1, 2);
+    Unit runners[0] = {};
+    Simulation s = simulation_init(catcher_input, runners, 0, 1, FPS);
+
+    simulation_tick(&s);
+
+    Unit *catcher = simulation_get_catcher(&s);
+    assert_fp_eq(catcher->position.x, 1);
+    assert_fp_eq(catcher->position.y, 2);
+    assert_fp_eq(catcher->velocity.x, 0);
+    assert_fp_eq(catcher->velocity.y, 0);
+}
+
 void test_simulation_tick_when_hit_occures_between_runners(void) {
     Unit catcher_input = unit_init(5, 5);
     Unit runners[2] = { unit_init(0, 0), unit_init(1.99, 0) };
@@ -112,6 +126,7 @@ void test_simulation_tick_catch_cant_occure_right_after_previous(void) {
 void tests_simulation(void) {
     test_simulation_get_catcher();
     test_simulation_access_runners();
+    test_simulation_tick_when_there_is_no_runners();
     test_simulation_tick_when_hit_occures_between_runners();
     test_simulation_tick_when_catch_occures();
     test_simulation_tick_catch_cant_occure_right_after_previous();
