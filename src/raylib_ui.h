@@ -3,6 +3,7 @@
 
 #include <controller.h>
 #include <geometry.h>
+#include <raylib.h>
 
 typedef struct {
     Controller *_controller;
