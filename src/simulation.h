@@ -7,7 +7,7 @@
 #include <stdbool.h>
 
 typedef struct {
-    double catch_count;
+    int catch_count;
     bool catch_did_just_occured;
     bool any_hit_just_occured;
     Unit *__units;

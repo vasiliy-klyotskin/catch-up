@@ -32,6 +32,7 @@ void rl_set_controller(RaylibUI *self, Controller *controller) {
 void rl_prepare(RaylibUI *self) {
     SetTargetFPS(self->_fps);
     InitWindow(self->_width, self->_height, "catch-up");
+    InitAudioDevice();
     self->_hit_sound = LoadSound("resources/hit.wav");
     self->_catch_sound = LoadSound("resources/catch.wav");
 }
@@ -50,7 +51,7 @@ void rl_start(RaylibUI *self) {
     while (!WindowShouldClose())
     {
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(BLACK);
         rl_add_runner_if_user_clicked_mlb(self);
         controller_update(self->_controller);
         EndDrawing();
@@ -61,7 +62,7 @@ void rl_start(RaylibUI *self) {
 void rl_draw_unit(RaylibUI *self, Vector *position, bool is_catcher) {
     double x = position->x * (self->_width / 2) + self->_width / 2;
     double y = position->y * (self->_width / 2) + self->_width / 2;
-    Color unit_color = is_catcher ? RED : BLUE;
+    Color unit_color = is_catcher ? PINK : SKYBLUE;
     DrawCircle(x, y, self->_unit_radius * (self->_width / 2), unit_color);
 }
 
@@ -81,4 +82,5 @@ void rl_make_catch_sound(RaylibUI *self) {
 
 void rl_clean(RaylibUI *self) {
     CloseWindow();
+    CloseAudioDevice();
 }

@@ -3,7 +3,7 @@
 #include <collision.h>
 #include <movement.h>
 
-#define REPULSION_COEF 0.05
+#define REPULSION_COEF 0.04
 #define RETURN_TO_MIDDLE_COEF 3
 #define FRICTION_COEF 1.5
 #define RUN_AWAY_COEF 0.45
@@ -97,6 +97,7 @@ void resolve_new_catcher(Simulation *const s) {
             *collision.u1 = *collision.u2;
             *collision.u2 = previous_catcher;
             s->catch_did_just_occured = true;
+            s->catch_count++;
             s->__ticks_since_last_catch = 0;
             break;
         }

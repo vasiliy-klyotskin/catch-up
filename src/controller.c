@@ -23,6 +23,13 @@ void controller_update(Controller *controller) {
         Unit *runner = simulation_get_runner(simulation, i);
         ui->draw_unit(ui->self, &runner->position, false);
     }
+    if (simulation->any_hit_just_occured) {
+        ui->make_hit_sound(ui->self);
+    }
+    if (simulation->catch_did_just_occured) {
+        ui->make_catch_sound(ui->self);
+    }
+    ui->draw_score(ui->self, simulation->catch_count);
 }
 
 void controller_add_runner(Controller *controller, Vector position) {
