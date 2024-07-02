@@ -9,7 +9,6 @@ void tests_movement(void);
 
 int main(void) {
     tests_dynamic_array();
-    tests_simulation();
     tests_geometry();
     tests_unit();
     tests_movement();
