@@ -4,7 +4,7 @@
 #include <dynamic_array.h>
 
 void do_euler_integration(Unit *const units, const double delta) {
-    size_t units_length = get_length_dyn_array(units);
+    const size_t units_length = get_length_dyn_array(units);
     for (size_t i = 0; i < units_length; i++) {
         Unit *unit = &units[i];
         unit->velocity.x += unit->acceleration.x * delta;
@@ -40,45 +40,45 @@ void add_run_away_accel(Unit *const unit, const Unit *const catcher, const doubl
     unit->acceleration.y += position_difference.y * dependence;
 }
 
-double min(double a, double b) {
+static double min(double a, double b) {
     return (a < b) ? a : b;
 }
 
-void set_catch_initial_velocity(
+static void set_catch_initial_velocity(
     Unit *const unit,
-    Vector disposition,
+    const Vector disposition,
     const double max_velocity,
     const double velocity_increment_coef
 ) {
-    Vector norm_disposition = vector_normalized(&disposition).direction;
+    const Vector norm_disposition = vector_normalized(&disposition).direction;
     const double multiplier = min(velocity_increment_coef, max_velocity);
     unit->velocity.x = norm_disposition.x * multiplier;
     unit->velocity.y = norm_disposition.y * multiplier;
 }
 
-void fit_current_velocity(
+static void fit_current_velocity(
     Unit *const unit,
     Vector disposition,
     const double max_velocity,
     const double velocity_increment_coef,
     const double angle_fitting_coef
 ) {
-    NormalizedVector norm_velocity = vector_normalized(&unit->velocity);
-    double incremented_vx = unit->velocity.x + norm_velocity.direction.x * velocity_increment_coef;
-    double incremented_vy = unit->velocity.y + norm_velocity.direction.y * velocity_increment_coef;
-    Vector incremented_velocity = vector_init(incremented_vx, incremented_vy);
-    double incremented_vel_magnitude = vector_normalized(&incremented_velocity).magnitude;
+    const NormalizedVector norm_velocity = vector_normalized(&unit->velocity);
+    const double incremented_vx = unit->velocity.x + norm_velocity.direction.x * velocity_increment_coef;
+    const double incremented_vy = unit->velocity.y + norm_velocity.direction.y * velocity_increment_coef;
+    const Vector incremented_velocity = vector_init(incremented_vx, incremented_vy);
+    const double incremented_vel_magnitude = vector_normalized(&incremented_velocity).magnitude;
     if (incremented_vel_magnitude > max_velocity) {
-        double max_vx = max_velocity * norm_velocity.direction.x;
-        double max_vy = max_velocity * norm_velocity.direction.y;
+        const double max_vx = max_velocity * norm_velocity.direction.x;
+        const double max_vy = max_velocity * norm_velocity.direction.y;
         unit->velocity = vector_init(max_vx, max_vy);
     } else {
-        double incremented_vx = unit->velocity.x + velocity_increment_coef * norm_velocity.direction.x;
-        double incremented_vy = unit->velocity.y + velocity_increment_coef * norm_velocity.direction.y;
+        const double incremented_vx = unit->velocity.x + velocity_increment_coef * norm_velocity.direction.x;
+        const double incremented_vy = unit->velocity.y + velocity_increment_coef * norm_velocity.direction.y;
         unit->velocity = vector_init(incremented_vx, incremented_vy);
     }
-    double radians = vector_radian(&unit->velocity, &disposition);
-    double fit_angle = radians * angle_fitting_coef;
+    const double radians = vector_radian(&unit->velocity, &disposition);
+    const double fit_angle = radians * angle_fitting_coef;
     unit->velocity = vector_rotated(&unit->velocity, fit_angle);
 }
 
@@ -89,8 +89,8 @@ void set_catch_velocity(
     const double velocity_increment_coef,
     const double angle_fitting_coef
 ) {
-    Vector disposition = vector_difference(&unit->position, &catchie->position);
-    bool is_velocity_zero = unit->velocity.x == 0 && unit->velocity.y == 0;
+    const Vector disposition = vector_difference(&unit->position, &catchie->position);
+    const bool is_velocity_zero = unit->velocity.x == 0 && unit->velocity.y == 0;
     if (is_velocity_zero) {
         set_catch_initial_velocity(unit, disposition, max_velocity, velocity_increment_coef);
     } else {
@@ -106,7 +106,7 @@ void reset_velocity_when_low(Unit *const unit, const double threshold) {
 }
 
 void reset_accel(Unit *const units) {
-    size_t units_length = get_length_dyn_array(units);
+    const size_t units_length = get_length_dyn_array(units);
     for (size_t i = 0; i < units_length; i++) {
         units[i].acceleration.x = 0;
         units[i].acceleration.y = 0;

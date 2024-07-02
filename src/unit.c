@@ -2,7 +2,7 @@
 #include <dynamic_array.h>
 #include <math.h>
 
-Unit unit_init(double pos_x, double pos_y) {
+Unit unit_init(const double pos_x, const double pos_y) {
     static int id = 0;
     Unit u;
     u.id = id++;
@@ -12,17 +12,17 @@ Unit unit_init(double pos_x, double pos_y) {
     return u;
 }
 
-Unit *find_nearest(Unit *const unit, Unit *const others) {
-    size_t others_length = get_length_dyn_array(others);
+Unit *find_nearest(const Unit *const unit, Unit *const others) {
+    const size_t others_length = get_length_dyn_array(others);
     Unit *nearest = NULL;
     double distance_to_nearest = INFINITY;
     for (size_t i = 0; i < others_length; i++) {
-        Unit *other = &others[i];
+        Unit *const other = &others[i];
         if (other->id == unit->id) {
             continue;
         }
-        Vector displacement = vector_difference(&unit->position, &other->position);
-        double distance = vector_magnitude(&displacement);
+        const Vector displacement = vector_difference(&unit->position, &other->position);
+        const double distance = vector_magnitude(&displacement);
         if (distance < distance_to_nearest) {
             nearest = other;
             distance_to_nearest = distance;

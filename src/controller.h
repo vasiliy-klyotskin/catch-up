@@ -5,8 +5,8 @@
 #include <simulation.h>
 
 typedef void (*StartFn)(void *self);
-typedef void (*DrawUnitFn)(void *self, Vector *position, bool is_catcher);
-typedef void (*DrawScoreFn)(void *self, int score);
+typedef void (*DrawUnitFn)(void *self, const Vector *const position, const bool is_catcher);
+typedef void (*DrawScoreFn)(void *self, const int score);
 typedef void (*MakeHitSoundFn)(void *self);
 typedef void (*MakeCatchSoundFn)(void *self);
 typedef void (*CleanFn)(void *self);
@@ -26,10 +26,10 @@ typedef struct {
     Simulation *__simulation;
 } Controller;
 
-Controller controller_init(UI *ui, Simulation *simulation);
-void controller_start(Controller *controller);
-void controller_update(Controller *controller);
-void controller_add_runner(Controller *controller, Vector position);
-void controller_clean(Controller *controller);
+const Controller controller_init(UI *const ui, Simulation *const simulation);
+void controller_start(const Controller *const controller);
+void controller_update(const Controller *const controller);
+void controller_add_runner(const Controller *const controller, const Vector position);
+void controller_clean(const Controller *const controller);
 
 #endif // CONTROLLER_H

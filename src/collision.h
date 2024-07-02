@@ -10,11 +10,11 @@ typedef struct {
     NormalizedVector offset;
 } Collision;
 
+void resolve_collisions(Collision *const collisions, const double radius);
 void detect_collisions(
     Unit *const units,
     Collision *collisions,
     const double radius
 );
-void resolve_collisions(Collision *const collisions, const double radius);
 
 #endif // COLLISION_H

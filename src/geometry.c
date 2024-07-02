@@ -1,7 +1,7 @@
 #include <geometry.h>
 #include <math.h>
 
-Vector vector_init(double x, double y) {
+Vector vector_init(const double x, const double y) {
     Vector v;
     v.x = x;
     v.y = y;
@@ -23,8 +23,8 @@ Vector vector_difference(const Vector *const v1, const Vector *const v2) {
     return vector_init(v2->x - v1->x, v2->y - v1->y);
 }
 
-NormalizedVector vector_normalized(const Vector *const v) {
-    double magnitude = vector_magnitude(v);
+const NormalizedVector vector_normalized(const Vector *const v) {
+    const double magnitude = vector_magnitude(v);
     NormalizedVector norm_v;
     if (magnitude == 0) {
         norm_v.direction.x = 0;
@@ -43,8 +43,8 @@ double vector_dot_product(const Vector *const v1, const Vector *const v2) {
 }
 
 double vector_radian(const Vector *const v1, const Vector *const v2) {
-    double angle1 = atan2(v1->y, v1->x);
-    double angle2 = atan2(v2->y, v2->x);
+    const double angle1 = atan2(v1->y, v1->x);
+    const double angle2 = atan2(v2->y, v2->x);
     double angle = angle2 - angle1;
     if (angle > M_PI) {
         angle -= 2 * M_PI;

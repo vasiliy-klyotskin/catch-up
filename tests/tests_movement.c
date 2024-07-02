@@ -17,13 +17,13 @@ void test_euler_integration(void) {
 
     do_euler_integration(array, 0.1);
 
-    Unit r_u1 = array[0];
+    const Unit r_u1 = array[0];
     assert_fp_eq(r_u1.velocity.x, -1.6);
     assert_fp_eq(r_u1.velocity.y, 2.9);
     assert_fp_eq(r_u1.position.x, 4.84);
     assert_fp_eq(r_u1.position.y, 6.29);
 
-    Unit r_u2 = array[1];
+    const Unit r_u2 = array[1];
     assert_fp_eq(r_u2.velocity.x, -4.2);
     assert_fp_eq(r_u2.velocity.y, 0.6);
     assert_fp_eq(r_u2.position.x, 6.58);
@@ -71,7 +71,7 @@ void test_friction_when_velocity_is_not_zero(void) {
 
 void test_repulsion_if_distance_to_neighbor_is_zero(void) {
     Unit u = unit_init(0, 0);
-    Unit neighbor = unit_init(0, 0);
+    const Unit neighbor = unit_init(0, 0);
 
     add_repulsion_accel(&u, &neighbor, 2);
 
@@ -81,7 +81,7 @@ void test_repulsion_if_distance_to_neighbor_is_zero(void) {
 
 void test_repulsion(void) {
     Unit u = unit_init(-1, -1);
-    Unit neighbor = unit_init(2, 3);
+    const Unit neighbor = unit_init(2, 3);
     u.acceleration = vector_init(-3, -3);
 
     add_repulsion_accel(&u, &neighbor, 2);
@@ -92,7 +92,7 @@ void test_repulsion(void) {
 
 void test_run_away_when_distance_is_zero(void) {
     Unit u = unit_init(0, 0);
-    Unit catcher = unit_init(0, 0);
+    const Unit catcher = unit_init(0, 0);
 
     add_run_away_accel(&u, &catcher, 2);
 
@@ -102,7 +102,7 @@ void test_run_away_when_distance_is_zero(void) {
 
 void test_run_away(void) {
     Unit u = unit_init(-1, -1);
-    Unit catcher = unit_init(2, 3);
+    const Unit catcher = unit_init(2, 3);
     u.acceleration = vector_init(-3, -3);
 
     add_run_away_accel(&u, &catcher, 2);
@@ -115,7 +115,7 @@ void test_catch_when_objet_velocity_is_zero(void) {
     Unit u = unit_init(1, 1);
     u.velocity.x = 0;
     u.velocity.y = 0;
-    Unit runner = unit_init(5, 4);
+    const Unit runner = unit_init(5, 4);
     const double any_max_velocity = 1;
     const double velocity_increment_coef = 0.01;
     const double any_angle_fitting_coef = 0;
@@ -130,7 +130,7 @@ void test_catch_when_objet_velocity_is_zero_and_max_velocity_is_less_than_increm
     Unit u = unit_init(1, 1);
     u.velocity.x = 0;
     u.velocity.y = 0;
-    Unit runner = unit_init(5, 4);
+    const Unit runner = unit_init(5, 4);
     const double any_max_velocity = 1;
     const double velocity_increment_coef = 1.01;
     const double any_angle_fitting_coef = 0;
@@ -145,7 +145,7 @@ void test_catch_when_object_velocity_is_not_collinear_to_displacement_and_veloci
     Unit u = unit_init(0, 1);
     u.velocity.x = 1;
     u.velocity.y = 0;
-    Unit runner = unit_init(0, 0);
+    const Unit runner = unit_init(0, 0);
     const double max_velocity = 10;
     const double velocity_increment_coef = 0.5;
     const double angle_fitting_coef = 0.5;
@@ -160,7 +160,7 @@ void test_catch_velocity_should_be_equal_max_velocity_when_increment_exceeds_max
     Unit u = unit_init(0, 1);
     u.velocity.x = 0.9;
     u.velocity.y = 0;
-    Unit runner = unit_init(0, 0);
+    const Unit runner = unit_init(0, 0);
     const double max_velocity = 1;
     const double velocity_increment_coef = 0.1001;
     const double angle_fitting_coef = 0.5;
@@ -181,7 +181,7 @@ void test_catch_velocity_should_be_equal_max_velocity_when_increment_exceeds_max
 
 void test_reset_velocity(void) {
     Unit u = unit_init(0, 0);
-    double threshold = 1;
+    const double threshold = 1;
 
     u.velocity.x = 0.6001;
     u.velocity.y = 0.8;

@@ -29,84 +29,84 @@ Simulation simulation_init(
     s.catch_count = 0;
     s.catch_did_just_occured = false;
     s.any_hit_just_occured = false;
-    s.__units = init_dyn_array(Unit);
-    s.__collisions = init_dyn_array(Collision);
-    s.__unit_to_catch = NULL;
-    s.__integration_delta = 1 / fps;
-    s.__unit_radius = unit_radius;
-    s.__fps = fps;
-    s.__min_ticks_before_next_catch = MIN_SECONDS_BEFORE_NEXT_CATCH * fps;
-    s.__ticks_since_last_catch = s.__min_ticks_before_next_catch;
-    push_dyn_array(s.__units, catcher);
+    s._units = init_dyn_array(Unit);
+    s._collisions = init_dyn_array(Collision);
+    s._unit_to_catch = NULL;
+    s._integration_delta = 1 / fps;
+    s._unit_radius = unit_radius;
+    s._fps = fps;
+    s._min_ticks_before_next_catch = MIN_SECONDS_BEFORE_NEXT_CATCH * fps;
+    s._ticks_since_last_catch = s._min_ticks_before_next_catch;
+    push_dyn_array(s._units, catcher);
     for (size_t i = 0; i < runners_size; i++) {
-        push_dyn_array(s.__units, runners[i]);
+        push_dyn_array(s._units, runners[i]);
     }
     return s;
 }
 
 Unit *simulation_get_catcher(const Simulation *const s) {
-    return &s->__units[CATCHER];
+    return &s->_units[CATCHER];
 }
 
 Unit *simulation_get_runner(const Simulation *const s, const size_t index) {
-    return &s->__units[RUNNERS + index];
+    return &s->_units[RUNNERS + index];
 }
 
 size_t simulation_get_runners_count(const Simulation *const s) {
-    return get_length_dyn_array(s->__units) - RUNNERS;
+    return get_length_dyn_array(s->_units) - RUNNERS;
 }
 
 void simulation_add_runner(Simulation *const s, const Vector position) {
-    push_rval_dyn_array(s->__units, Unit, unit_init(position.x, position.y));
+    push_rval_dyn_array(s->_units, Unit, unit_init(position.x, position.y));
 }
 
-void check_if_any_hit_occured(Simulation *const s) {
-    if (get_length_dyn_array(s->__collisions) != 0) {
+static void check_if_any_hit_occured(Simulation *const s) {
+    if (get_length_dyn_array(s->_collisions) != 0) {
         s->any_hit_just_occured = true;
     }
 }
 
-void simulation_reset(Simulation *const s) {
+static void simulation_reset(Simulation *const s) {
     s->any_hit_just_occured = false;
     s->catch_did_just_occured = false;
-    s->__unit_to_catch = NULL;
-    clear_dyn_array(s->__collisions);
+    s->_unit_to_catch = NULL;
+    clear_dyn_array(s->_collisions);
 }
 
-bool not_enough_time_passed_since_last_catch(Simulation *const s) {
-    return s->__ticks_since_last_catch < s->__min_ticks_before_next_catch;
+static bool not_enough_time_passed_since_last_catch(Simulation *const s) {
+    return s->_ticks_since_last_catch < s->_min_ticks_before_next_catch;
 }
 
-bool ready_to_perform_new_catch(Simulation *const s) {
-    return s->__ticks_since_last_catch == s->__min_ticks_before_next_catch;
+static bool ready_to_perform_new_catch(Simulation *const s) {
+    return s->_ticks_since_last_catch == s->_min_ticks_before_next_catch;
 }
 
-void update_ticks_since_last_catch(Simulation *const s) {
+static void update_ticks_since_last_catch(Simulation *const s) {
     if (not_enough_time_passed_since_last_catch(s)) {
-        s->__ticks_since_last_catch++;
+        s->_ticks_since_last_catch++;
         return;
     }
 }
 
-void resolve_new_catcher(Simulation *const s) {
-    size_t collisions_length = get_length_dyn_array(s->__collisions);
+static void resolve_new_catcher(Simulation *const s) {
+    const size_t collisions_length = get_length_dyn_array(s->_collisions);
     for (size_t i = 0; i < collisions_length; i++) {
-        Collision collision = s->__collisions[i];
+        const Collision collision = s->_collisions[i];
         if (collision.u1->id == simulation_get_catcher(s)->id) {
-            Unit previous_catcher = *collision.u1;
+            const Unit previous_catcher = *collision.u1;
             *collision.u1 = *collision.u2;
             *collision.u2 = previous_catcher;
             s->catch_did_just_occured = true;
             s->catch_count++;
-            s->__ticks_since_last_catch = 0;
+            s->_ticks_since_last_catch = 0;
             break;
         }
     }
 }
 
-void resolve_catcher_movement(Simulation *const s) {
-    Unit *unit_to_catch = s->__unit_to_catch;
-    Unit *catcher = simulation_get_catcher(s);
+static void resolve_catcher_movement(Simulation *const s) {
+    const Unit *const unit_to_catch = s->_unit_to_catch;
+    Unit *const catcher = simulation_get_catcher(s);
     reset_velocity_when_low(catcher, CATCHER_VELOCITY_RESET_THRESHOLD);
     if (ready_to_perform_new_catch(s) && (unit_to_catch != NULL)) {
         set_catch_velocity(
@@ -117,60 +117,60 @@ void resolve_catcher_movement(Simulation *const s) {
             CATCHER_ANGLE_FITTING_COEF
         );
     } else {
-        add_friction_accel(catcher, 3);
+        add_friction_accel(catcher, 10 * FRICTION_COEF);
     }
 }
 
-void resolve_unit_to_catch_if_needed(Simulation *const s) {
+static void resolve_unit_to_catch_if_needed(Simulation *const s) {
     if (ready_to_perform_new_catch(s)) {
-        Unit *catcher = simulation_get_catcher(s);
-        s->__unit_to_catch = find_nearest(catcher, s->__units);
+        Unit *const catcher = simulation_get_catcher(s);
+        s->_unit_to_catch = find_nearest(catcher, s->_units);
     }
 }
 
-void resolve_unit_to_catch_movement(Simulation *s) {
-    Unit *unit_to_catch = s->__unit_to_catch;
+static void resolve_unit_to_catch_movement(Simulation *s) {
+    Unit *const unit_to_catch = s->_unit_to_catch;
     if (unit_to_catch != NULL) {
         add_return_to_middle_accel(unit_to_catch, RETURN_TO_MIDDLE_COEF);
     }
 }
 
-void resolve_runners_movement(Simulation *const s) {
+static void resolve_runners_movement(Simulation *const s) {
     resolve_unit_to_catch_movement(s);
-    Unit *catcher = simulation_get_catcher(s);
-    size_t units_length = get_length_dyn_array(s->__units);
+    Unit *const catcher = simulation_get_catcher(s);
+    const size_t units_length = get_length_dyn_array(s->_units);
     for (size_t i = RUNNERS; i < units_length; i++) {
-        Unit *runner = &s->__units[i];
+        Unit *const runner = &s->_units[i];
         add_friction_accel(runner, FRICTION_COEF);
         add_return_to_middle_accel(runner, RETURN_TO_MIDDLE_COEF);
         add_run_away_accel(runner, catcher, RUN_AWAY_COEF);
         for (size_t k = RUNNERS; k < units_length; k++) {
-            Unit *neighbor = &s->__units[k];
+            const Unit *const neighbor = &s->_units[k];
             if (neighbor->id == runner->id) continue;
             add_repulsion_accel(runner, neighbor, REPULSION_COEF);
         }
     }
 }
 
-void resolve_movement(Simulation *const s) {
-    reset_accel(s->__units);
+static void resolve_movement(Simulation *const s) {
+    reset_accel(s->_units);
     resolve_unit_to_catch_if_needed(s);
     resolve_catcher_movement(s);
     resolve_runners_movement(s);
-    do_euler_integration(s->__units, s->__integration_delta);
+    do_euler_integration(s->_units, s->_integration_delta);
 }
 
 void simulation_tick(Simulation *const s) {
     simulation_reset(s);
     update_ticks_since_last_catch(s);
-    detect_collisions(s->__units, s->__collisions, s->__unit_radius);
+    detect_collisions(s->_units, s->_collisions, s->_unit_radius);
     check_if_any_hit_occured(s);
-    resolve_collisions(s->__collisions, s->__unit_radius);
+    resolve_collisions(s->_collisions, s->_unit_radius);
     resolve_new_catcher(s);
     resolve_movement(s);
 }
 
 void simulation_free(Simulation *const simulation) {
-    free_dyn_array(simulation->__units);
-    free_dyn_array(simulation->__collisions);
+    free_dyn_array(simulation->_units);
+    free_dyn_array(simulation->_collisions);
 }

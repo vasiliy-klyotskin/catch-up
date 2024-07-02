@@ -7,7 +7,7 @@ enum {
     HEADER_FIELDS
 };
 
-void *_init_dyn_array(size_t capacity, size_t stride) {
+void *_init_dyn_array(const size_t capacity, const size_t stride) {
     const size_t header_size = sizeof(size_t) * HEADER_FIELDS;
     const size_t content_size = capacity * stride;
     size_t *arr = (size_t *) malloc(header_size + content_size);
@@ -20,15 +20,15 @@ void *_init_dyn_array(size_t capacity, size_t stride) {
     return arr + HEADER_FIELDS;
 }
 
-static size_t get_header_field(void *array, size_t field) {
+static size_t get_header_field(const void *const array, const size_t field) {
     return ((size_t *)(array) - HEADER_FIELDS)[field];
 }
 
-static void set_header_field(void *array, size_t field, size_t value) {
+static void set_header_field(void *const array, const size_t field, const size_t value) {
     ((size_t *)(array) - HEADER_FIELDS)[field] = value;
 }
 
-void *_push_dyn_array(void *array, void *element) {
+void *_push_dyn_array(void *array, const void *const element) {
     const size_t capacity = get_header_field(array, CAPACITY);
     const size_t length = get_header_field(array, LENGTH);
     const size_t stride = get_header_field(array, STRIDE);
@@ -43,7 +43,7 @@ void *_push_dyn_array(void *array, void *element) {
     return array;
 }
 
-void pop_dyn_array(void *array, void *target) {
+void pop_dyn_array(void *const array, void *const target) {
     const size_t length = get_header_field(array, LENGTH);
     const size_t stride = get_header_field(array, STRIDE);
     if (length == 0) { 
@@ -53,7 +53,7 @@ void pop_dyn_array(void *array, void *target) {
     set_header_field(array, LENGTH, length - 1);
 }
 
-void remove_last_dyn_array(void *array) {
+void remove_last_dyn_array(void *const array) {
     const size_t length = get_header_field(array, LENGTH);
     if (length == 0) { 
         return;
@@ -61,14 +61,14 @@ void remove_last_dyn_array(void *array) {
     set_header_field(array, LENGTH, length - 1);
 }
 
-void clear_dyn_array(void *array) {
+void clear_dyn_array(void *const array) {
     set_header_field(array, LENGTH, 0);
 }
 
-size_t get_length_dyn_array(void *array) {
+size_t get_length_dyn_array(const void *const array) {
     return get_header_field(array, LENGTH);
 }
 
-void free_dyn_array(void *array) {
+void free_dyn_array(const void *const array) {
     free((size_t *)array - HEADER_FIELDS);
 }

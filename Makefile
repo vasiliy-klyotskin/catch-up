@@ -3,7 +3,7 @@ SRC_INCLUDE_DIR = src
 TESTS_INCLUDE_DIR = tests
 INTERNAL_INCLUDE = -I$(SRC_INCLUDE_DIR) -I$(TESTS_INCLUDE_DIR)
 EXTERNAL_INCLUDE = $(shell pkg-config --cflags raylib) 
-CFLAGS = -Wall -std=c99 -O2 $(INTERNAL_INCLUDE) $(EXTERNAL_INCLUDE)
+CFLAGS = -Wall -Werror -std=c99 -O2 $(INTERNAL_INCLUDE) $(EXTERNAL_INCLUDE)
 LDFLAGS = $(shell pkg-config --libs raylib)
 
 SRC_DIR = src

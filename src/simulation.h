@@ -10,14 +10,14 @@ typedef struct {
     int catch_count;
     bool catch_did_just_occured;
     bool any_hit_just_occured;
-    Unit *__units;
-    Collision *__collisions;
-    Unit *__unit_to_catch;
-    double __integration_delta;
-    double __unit_radius;
-    int __fps;
-    int __min_ticks_before_next_catch;
-    int __ticks_since_last_catch;
+    Unit *_units;
+    Collision *_collisions;
+    Unit *_unit_to_catch;
+    double _integration_delta;
+    double _unit_radius;
+    int _fps;
+    int _min_ticks_before_next_catch;
+    int _ticks_since_last_catch;
 } Simulation;
 
 Simulation simulation_init(
