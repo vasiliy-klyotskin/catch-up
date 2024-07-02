@@ -22,11 +22,11 @@ typedef struct {
 } UI;
 
 typedef struct {
-    UI *__ui;
+    const UI *__ui;
     Simulation *__simulation;
 } Controller;
 
-const Controller controller_init(UI *const ui, Simulation *const simulation);
+const Controller controller_init(const UI *const ui, Simulation *const simulation);
 void controller_start(const Controller *const controller);
 void controller_update(const Controller *const controller);
 void controller_add_runner(const Controller *const controller, const Vector position);

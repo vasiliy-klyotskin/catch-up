@@ -84,7 +84,6 @@ static bool ready_to_perform_new_catch(Simulation *const s) {
 static void update_ticks_since_last_catch(Simulation *const s) {
     if (not_enough_time_passed_since_last_catch(s)) {
         s->_ticks_since_last_catch++;
-        return;
     }
 }
 
@@ -117,7 +116,7 @@ static void resolve_catcher_movement(Simulation *const s) {
             CATCHER_ANGLE_FITTING_COEF
         );
     } else {
-        add_friction_accel(catcher, 10 * FRICTION_COEF);
+        add_friction_accel(catcher, 2 * FRICTION_COEF);
     }
 }
 
@@ -164,8 +163,8 @@ void simulation_tick(Simulation *const s) {
     simulation_reset(s);
     update_ticks_since_last_catch(s);
     detect_collisions(s->_units, s->_collisions, s->_unit_radius);
-    check_if_any_hit_occured(s);
     resolve_collisions(s->_collisions, s->_unit_radius);
+    check_if_any_hit_occured(s);
     resolve_new_catcher(s);
     resolve_movement(s);
 }

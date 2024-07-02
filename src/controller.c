@@ -1,6 +1,6 @@
 #include <controller.h>
 
-const Controller controller_init(UI *const ui, Simulation *const simulation) {
+const Controller controller_init(const UI *const ui, Simulation *const simulation) {
     Controller controller;
     controller.__simulation = simulation;
     controller.__ui = ui;

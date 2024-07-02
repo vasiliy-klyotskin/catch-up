@@ -9,8 +9,8 @@
 
 int main(void) {
     const Unit catcher = unit_init(0, 0);
-    const Simulation simulation = simulation_init(catcher, NULL, 0, UNIT_RADIUS, FPS);
-    const RaylibUI rl_ui = rl_ui_init(SCREEN_WIDTH, SCREEN_HEIGHT, UNIT_RADIUS, FPS);
+    Simulation simulation = simulation_init(catcher, NULL, 0, UNIT_RADIUS, FPS);
+    RaylibUI rl_ui = rl_ui_init(SCREEN_WIDTH, SCREEN_HEIGHT, UNIT_RADIUS, FPS);
     const UI ui = rl_ui_abstraction_init(&rl_ui);
     const Controller controller = controller_init(&ui, &simulation);
     rl_set_controller(&rl_ui, &controller);

@@ -30,6 +30,7 @@ void rl_set_controller(RaylibUI *const self, const Controller *const controller)
 }
 
 static void rl_prepare(RaylibUI *const self) {
+    SetTraceLogLevel(LOG_NONE);
     SetTargetFPS(self->_fps);
     InitWindow(self->_width, self->_height, "catch-up");
     InitAudioDevice();
