@@ -8,22 +8,21 @@ LDFLAGS = $(shell pkg-config --libs raylib)
 
 SRC_DIR = src
 SRC_MAIN = $(SRC_DIR)/main
-SRC = $(filter-out $(SRC_MAIN).c, $(wildcard $(SRC_DIR)/*.c))
-SRC_MAIN_OBJ = $(SRC_MAIN).o
-SRC_OBJ = $(SRC:.c=.o)
 SRC_OUTPUT = catch_up.out
+SRC = $(wildcard $(SRC_DIR)/*.c)
+SRC_OBJ = $(SRC:.c=.o)
+SRC_OBJ_WITHOUT_MAIN = $(filter-out $(SRC_MAIN).o, $(SRC_OBJ))
 
 TESTS_DIR = tests
 TESTS_MAIN = $(TESTS_DIR)/tests_main
-TESTS_SRC = $(wildcard $(TESTS_DIR)/*.c)
-TESTS_MAIN_OBJ = $(TESTS_MAIN).o
-TESTS_OBJ = $(TESTS_SRC:.c=.o)
 TESTS_OUTPUT = tests_catch_up.out
+TESTS_SRC = $(wildcard $(TESTS_DIR)/*.c)
+TESTS_OBJ = $(TESTS_SRC:.c=.o)
 
 all: $(SRC_OUTPUT)
 
-$(SRC_OUTPUT): $(SRC_MAIN_OBJ) $(SRC_OBJ) 
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ 
+$(SRC_OUTPUT): $(SRC_OBJ)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
@@ -31,11 +30,11 @@ $(SRC_OUTPUT): $(SRC_MAIN_OBJ) $(SRC_OBJ)
 test: $(TESTS_OUTPUT)
 	./$(TESTS_OUTPUT)
 
-$(TESTS_OUTPUT): $(TESTS_OBJ) $(SRC_OBJ) 
+$(TESTS_OUTPUT): $(TESTS_OBJ) $(SRC_OBJ_WITHOUT_MAIN)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
 run: $(SRC_OUTPUT)
 	./$(SRC_OUTPUT)
 
 clean:
-	rm -rf $(SRC_DIR)/*.o $(TESTS_DIR)/*.o $(SRC_OUTPUT) $(TESTS_OUTPUT) $(SRC_MAIN).o $(TESTS_MAIN).o
+	rm -rf $(SRC_OBJ) $(TESTS_OBJ) $(SRC_OUTPUT) $(TESTS_OUTPUT)
