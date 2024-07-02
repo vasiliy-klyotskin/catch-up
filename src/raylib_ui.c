@@ -15,12 +15,11 @@ UI rl_ui_abstraction_init(RaylibUI *rl_ui){
     return ui;
 }
 
-RaylibUI rl_ui_init(int width, int height, double unit_radius, double scale, double fps) {
+RaylibUI rl_ui_init(int width, int height, double unit_radius, double fps) {
     RaylibUI rl_ui;
     rl_ui._width = width;
     rl_ui._height = height;
     rl_ui._unit_radius = unit_radius;
-    rl_ui._scale = scale;
     rl_ui._fps = fps;
     rl_ui._controller = NULL;
 }

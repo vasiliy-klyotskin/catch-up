@@ -11,12 +11,11 @@ typedef struct {
     int _width;
     int _height;
     double _unit_radius;
-    double _scale;
     double _fps;
 } RaylibUI;
 
 UI rl_ui_abstraction_init(RaylibUI *rl_ui);
-RaylibUI rl_ui_init(int width, int height, double unit_radius, double scale, double fps);
+RaylibUI rl_ui_init(int width, int height, double unit_radius, double fps);
 void rl_set_controller(RaylibUI *self, Controller *controller);
 void rl_start(RaylibUI *self);
 void rl_draw_unit(RaylibUI *self, Vector *position, bool is_catcher);
