@@ -169,6 +169,14 @@ void test_catch_velocity_should_be_equal_max_velocity_when_increment_exceeds_max
 
     assert_fp_eq(u.velocity.x, 0.707106);
     assert_fp_eq(u.velocity.y, -0.707106);
+
+    u.velocity.x = -0.9;
+    u.velocity.y = 0;
+
+    set_catch_velocity(&u, &runner, max_velocity, velocity_increment_coef, angle_fitting_coef);
+
+    assert_fp_eq(u.velocity.x, -0.707106);
+    assert_fp_eq(u.velocity.y, -0.707106);
 }
 
 void test_reset_velocity(void) {
