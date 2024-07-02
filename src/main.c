@@ -2,9 +2,9 @@
 #include <raylib_ui.h>
 
 #define FPS 60
-#define UNIT_RADIUS 12
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 800
+#define UNIT_RADIUS 0.03
+#define SCREEN_WIDTH 700
+#define SCREEN_HEIGHT 700
 #define SCALE 1
 
 int main(void) {
@@ -13,5 +13,6 @@ int main(void) {
     RaylibUI rl_ui = rl_ui_init(SCREEN_WIDTH, SCREEN_HEIGHT, UNIT_RADIUS, FPS);
     UI ui = rl_ui_abstraction_init(&rl_ui);
     Controller controller = controller_init(&ui, &simulation);
+    rl_set_controller(&rl_ui, &controller);
     controller_start(&controller);
 }
