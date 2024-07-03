@@ -5,9 +5,9 @@
 #define REPULSION_COEF 0.05
 #define RETURN_TO_MIDDLE_COEF 3
 #define FRICTION_COEF 1.5
-#define RUN_AWAY_COEF 0.4
+#define RUN_AWAY_COEF 0.5
 #define CATCHER_VELOCITY_RESET_THRESHOLD 0.008
-#define CATCHER_MAX_VELOCITY 1.1
+#define CATCHER_MAX_VELOCITY 1
 #define CATCHER_VELOCITY_INCR_COEF 0.01
 #define CATCHER_ANGLE_FITTING_COEF 0.09
 #define MIN_SECONDS_BEFORE_NEXT_CATCH 2
@@ -86,6 +86,7 @@ static void update_ticks_since_last_catch(Simulation *const s) {
 }
 
 static void resolve_new_catcher(Simulation *const s) {
+    if (!ready_to_perform_new_catch(s)) { return; }
     const size_t collisions_length = get_length_dyn_array(s->_collisions);
     for (size_t i = 0; i < collisions_length; i++) {
         const Collision collision = s->_collisions[i];
@@ -119,16 +120,15 @@ static void resolve_catcher_movement(Simulation *const s) {
 }
 
 static void resolve_unit_to_catch_if_needed(Simulation *const s) {
-    if (ready_to_perform_new_catch(s)) {
-        Unit *const catcher = simulation_get_catcher(s);
-        s->_unit_to_catch = find_nearest(catcher, s->_units);
-    }
+    if (!ready_to_perform_new_catch(s)) return;
+    Unit *const catcher = simulation_get_catcher(s);
+    s->_unit_to_catch = find_nearest(catcher, s->_units);
 }
 
 static void resolve_unit_to_catch_movement(Simulation *s) {
     Unit *const unit_to_catch = s->_unit_to_catch;
     if (unit_to_catch != NULL) {
-        add_return_to_middle_accel(unit_to_catch, 0.5 * RETURN_TO_MIDDLE_COEF);
+        add_return_to_middle_accel(unit_to_catch, 0.75 * RETURN_TO_MIDDLE_COEF);
     }
 }
 
