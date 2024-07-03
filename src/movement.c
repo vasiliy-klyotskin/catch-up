@@ -63,18 +63,18 @@ static void fit_current_velocity(
     const double velocity_increment_coef,
     const double angle_fitting_coef
 ) {
-    const NormalizedVector norm_velocity = vector_normalized(&unit->velocity);
-    const double incremented_vx = unit->velocity.x + norm_velocity.direction.x * velocity_increment_coef;
-    const double incremented_vy = unit->velocity.y + norm_velocity.direction.y * velocity_increment_coef;
+    const Vector norm_velocity = vector_normalized(&unit->velocity).direction;
+    const double incremented_vx = unit->velocity.x + norm_velocity.x * velocity_increment_coef;
+    const double incremented_vy = unit->velocity.y + norm_velocity.y * velocity_increment_coef;
     const Vector incremented_velocity = vector_init(incremented_vx, incremented_vy);
-    const double incremented_vel_magnitude = vector_normalized(&incremented_velocity).magnitude;
+    const double incremented_vel_magnitude = vector_magnitude(&incremented_velocity);
     if (incremented_vel_magnitude > max_velocity) {
-        const double max_vx = max_velocity * norm_velocity.direction.x;
-        const double max_vy = max_velocity * norm_velocity.direction.y;
+        const double max_vx = max_velocity * norm_velocity.x;
+        const double max_vy = max_velocity * norm_velocity.y;
         unit->velocity = vector_init(max_vx, max_vy);
     } else {
-        const double incremented_vx = unit->velocity.x + velocity_increment_coef * norm_velocity.direction.x;
-        const double incremented_vy = unit->velocity.y + velocity_increment_coef * norm_velocity.direction.y;
+        const double incremented_vx = unit->velocity.x + velocity_increment_coef * norm_velocity.x;
+        const double incremented_vy = unit->velocity.y + velocity_increment_coef * norm_velocity.y;
         unit->velocity = vector_init(incremented_vx, incremented_vy);
     }
     const double radians = vector_radian(&unit->velocity, &disposition);
