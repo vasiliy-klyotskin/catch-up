@@ -4,7 +4,7 @@
 
 void detect_collisions(
     Unit *const units,
-    Collision *collisions,
+    Collision **collisions,
     const double radius
 ) {
     const size_t units_length = get_length_dyn_array(units);
@@ -20,7 +20,7 @@ void detect_collisions(
                 collision.u1 = u1;
                 collision.u2 = u2;
                 collision.offset = offset;
-                push_dyn_array(collisions, collision);
+                push_dyn_array(*collisions, collision);
             }
         }
     }

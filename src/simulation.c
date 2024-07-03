@@ -3,12 +3,12 @@
 #include <collision.h>
 #include <movement.h>
 
-#define REPULSION_COEF 0.04
+#define REPULSION_COEF 0.05
 #define RETURN_TO_MIDDLE_COEF 3
 #define FRICTION_COEF 1.5
-#define RUN_AWAY_COEF 0.45
+#define RUN_AWAY_COEF 0.4
 #define CATCHER_VELOCITY_RESET_THRESHOLD 0.008
-#define CATCHER_MAX_VELOCITY 1
+#define CATCHER_MAX_VELOCITY 1.1
 #define CATCHER_VELOCITY_INCR_COEF 0.01
 #define CATCHER_ANGLE_FITTING_COEF 0.09
 #define MIN_SECONDS_BEFORE_NEXT_CATCH 2
@@ -130,7 +130,7 @@ static void resolve_unit_to_catch_if_needed(Simulation *const s) {
 static void resolve_unit_to_catch_movement(Simulation *s) {
     Unit *const unit_to_catch = s->_unit_to_catch;
     if (unit_to_catch != NULL) {
-        add_return_to_middle_accel(unit_to_catch, RETURN_TO_MIDDLE_COEF);
+        add_return_to_middle_accel(unit_to_catch, 0.5 * RETURN_TO_MIDDLE_COEF);
     }
 }
 
@@ -162,14 +162,14 @@ static void resolve_movement(Simulation *const s) {
 void simulation_tick(Simulation *const s) {
     simulation_reset(s);
     update_ticks_since_last_catch(s);
-    detect_collisions(s->_units, s->_collisions, s->_unit_radius);
+    detect_collisions(s->_units, &s->_collisions, s->_unit_radius);
     resolve_collisions(s->_collisions, s->_unit_radius);
     check_if_any_hit_occured(s);
     resolve_new_catcher(s);
     resolve_movement(s);
 }
 
-void simulation_free(Simulation *const simulation) {
-    free_dyn_array(simulation->_units);
-    free_dyn_array(simulation->_collisions);
+void simulation_free(Simulation *const s) {
+    free_dyn_array(s->_units);
+    free_dyn_array(s->_collisions);
 }

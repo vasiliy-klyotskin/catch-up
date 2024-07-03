@@ -5,10 +5,10 @@
 
 void test_detect_collision_when_units_are_empty(void) {
     Unit *const units = init_dyn_array(Unit);
-    Collision *const collisions = init_dyn_array(Collision);
+    Collision *collisions = init_dyn_array(Collision);
     const double radius = 1;
 
-    detect_collisions(units, collisions, radius);
+    detect_collisions(units, &collisions, radius);
 
     assert_eq(get_length_dyn_array(collisions), 0);
 }
@@ -19,10 +19,10 @@ void test_detect_collision(void) {
     push_rval_dyn_array(units, Unit, unit_init(3.99, 0));
     push_rval_dyn_array(units, Unit, unit_init(-4, 0));
     push_rval_dyn_array(units, Unit, unit_init(0, 4.01));
-    Collision *const collisions = init_dyn_array(Collision);
+    Collision *collisions = init_dyn_array(Collision);
     const double radius = 2;
 
-    detect_collisions(units, collisions, radius);
+    detect_collisions(units, &collisions, radius);
 
     assert_eq(get_length_dyn_array(collisions), 1);
     const Collision collision = collisions[0];
