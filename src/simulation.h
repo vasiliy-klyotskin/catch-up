@@ -15,7 +15,6 @@ typedef struct {
     Unit *_unit_to_catch;
     double _integration_delta;
     double _unit_radius;
-    int _fps;
     int _min_ticks_before_next_catch;
     int _ticks_since_last_catch;
 } Simulation;

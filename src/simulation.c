@@ -33,7 +33,6 @@ Simulation simulation_init(
     s._unit_to_catch = NULL;
     s._integration_delta = 1 / fps;
     s._unit_radius = unit_radius;
-    s._fps = fps;
     s._min_ticks_before_next_catch = MIN_SECONDS_BEFORE_NEXT_CATCH * fps;
     s._ticks_since_last_catch = s._min_ticks_before_next_catch;
     push_dyn_array(s._units, catcher);
