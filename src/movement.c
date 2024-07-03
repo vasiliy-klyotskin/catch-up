@@ -2,6 +2,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include <dynamic_array.h>
+#include <util.h>
 
 void do_euler_integration(Unit *const units, const double delta) {
     const size_t units_length = get_length_dyn_array(units);
@@ -38,10 +39,6 @@ void add_run_away_accel(Unit *const unit, const Unit *const catcher, const doubl
     const double dependence = -coef / (distance * distance);
     unit->acceleration.x += position_difference.x * dependence;
     unit->acceleration.y += position_difference.y * dependence;
-}
-
-static double min(double a, double b) {
-    return (a < b) ? a : b;
 }
 
 static void set_catch_initial_velocity(

@@ -1,6 +1,7 @@
 #include <raylib_ui.h>
 #include <stdio.h>
 #include <math.h>
+#include <util.h>
 
 const UI rl_ui_abstraction_init(RaylibUI *const rl_ui){
     UI ui;
@@ -12,10 +13,6 @@ const UI rl_ui_abstraction_init(RaylibUI *const rl_ui){
     ui.clean = (CleanFn)rl_clean;
     ui.self = rl_ui;
     return ui;
-}
-
-static double min(double a, double b) {
-    return (a < b) ? a : b;
 }
 
 RaylibUI rl_ui_init(const int width, const int height, const double unit_radius, const double fps) {
