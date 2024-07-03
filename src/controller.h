@@ -22,8 +22,8 @@ typedef struct {
 } UI;
 
 typedef struct {
-    const UI *__ui;
-    Simulation *__simulation;
+    const UI *_ui;
+    Simulation *_simulation;
 } Controller;
 
 const Controller controller_init(const UI *const ui, Simulation *const simulation);
