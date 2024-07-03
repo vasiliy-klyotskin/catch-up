@@ -11,6 +11,8 @@ typedef struct {
     Sound _catch_sound;
     int _width;
     int _height;
+    Vector _translation;
+    double _scale_factor;
     double _unit_radius;
     double _fps;
 } RaylibUI;
@@ -22,12 +24,12 @@ RaylibUI rl_ui_init(
     const double unit_radius,
     const double fps
 );
-void rl_set_controller(RaylibUI *const self, const Controller *const controller);
-void rl_start(RaylibUI *const self);
-void rl_draw_unit(const RaylibUI *const self, const Vector *const position, const bool is_catcher);
-void rl_draw_score(const RaylibUI *const self, const int score);
-void rl_make_hit_sound(const RaylibUI *const self);
-void rl_make_catch_sound(const RaylibUI *const self);
-void rl_clean(const RaylibUI *const self);
+void rl_set_controller(RaylibUI *const ui, const Controller *const controller);
+void rl_start(RaylibUI *const ui);
+void rl_draw_unit(const RaylibUI *const ui, const Vector *const position, const bool is_catcher);
+void rl_draw_score(const RaylibUI *const ui, const int score);
+void rl_make_hit_sound(const RaylibUI *const ui);
+void rl_make_catch_sound(const RaylibUI *const ui);
+void rl_clean(const RaylibUI *const ui);
 
 #endif // RAYLIB_UI_H
