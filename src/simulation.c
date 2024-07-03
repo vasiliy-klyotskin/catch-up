@@ -1,6 +1,5 @@
 #include <simulation.h>
 #include <dynamic_array.h>
-#include <collision.h>
 #include <movement.h>
 
 #define REPULSION_COEF 0.05

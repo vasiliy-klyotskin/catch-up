@@ -1,6 +1,4 @@
 #include <raylib_ui.h>
-#include <raylib.h>
-#include <controller.h>
 #include <stdio.h>
 #include <math.h>
 

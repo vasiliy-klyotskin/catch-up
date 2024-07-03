@@ -2,7 +2,6 @@
 #define COLLISION_H
 
 #include <unit.h>
-#include <stdlib.h>
 
 typedef struct {
     Unit *u1;
