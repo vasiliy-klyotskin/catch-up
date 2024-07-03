@@ -5,7 +5,6 @@
 #define UNIT_RADIUS 0.03
 #define SCREEN_WIDTH 700
 #define SCREEN_HEIGHT 700
-#define SCALE 1
 
 int main(void) {
     const Unit catcher = unit_init(0, 0);
