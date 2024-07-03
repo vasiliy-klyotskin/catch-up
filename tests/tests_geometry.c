@@ -117,6 +117,26 @@ void test_vector_difference(void) {
     assert_fp_eq(difference.y, 2);
 }
 
+void test_vector_sum(void) {
+    const Vector v1 = vector_init(-5, 5);
+    const Vector v2 = vector_init(8, -7);
+
+    const Vector sum = vector_sum(&v1, &v2);
+
+    assert_fp_eq(sum.x, 3);
+    assert_fp_eq(sum.y, -2);
+}
+
+void test_vector_scale(void) {
+    const Vector v = vector_init(-5, 10);
+    const double factor = 1.5;
+
+    const Vector scaled = vector_scaled(&v, factor);
+
+    assert_fp_eq(scaled.x, -7.5);
+    assert_fp_eq(scaled.y, 15);
+}
+
 void tests_geometry(void) {
     test_vector_dot_product();
     test_vector_normalized_when_vector_is_zero();
@@ -125,4 +145,6 @@ void tests_geometry(void) {
     test_vector_magnitude();
     test_vector_difference();
     test_vector_radian();
+    test_vector_sum();
+    test_vector_scale();
 }

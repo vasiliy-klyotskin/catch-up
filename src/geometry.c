@@ -23,6 +23,14 @@ Vector vector_difference(const Vector *const v1, const Vector *const v2) {
     return vector_init(v2->x - v1->x, v2->y - v1->y);
 }
 
+Vector vector_sum(const Vector *const v1, const Vector *const v2) {
+    return vector_init(v1->x + v2->x, v1->y + v2->y);
+}
+
+Vector vector_scaled(const Vector *const v, const double factor) {
+    return vector_init(v->x * factor, v->y * factor);
+}
+
 const NormalizedVector vector_normalized(const Vector *const v) {
     const double magnitude = vector_magnitude(v);
     NormalizedVector norm_v;
