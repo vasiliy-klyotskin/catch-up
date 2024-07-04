@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <unit.h>
 #include <collision.h>
+#include <random_accels.h>
 #include <stdbool.h>
 
 typedef struct {
@@ -12,6 +13,7 @@ typedef struct {
     bool any_hit_just_occured;
     Unit *_units;
     Collision *_collisions;
+    RandomAccels _random_accels;
     Unit *_unit_to_catch;
     double _integration_delta;
     double _unit_radius;

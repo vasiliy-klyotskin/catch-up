@@ -1,13 +1,17 @@
 #include <simulation.h>
 #include <dynamic_array.h>
-#include <movement.h>
+#include <unit.h>
+#include <time.h>
+#include <util.h>
 
-#define REPULSION_COEF 0.05
-#define RETURN_TO_MIDDLE_COEF 3
-#define FRICTION_COEF 1.5
-#define RUN_AWAY_COEF 0.5
+#define REPULSION_COEF 0.06
+#define RETURN_TO_MIDDLE_COEF 4
+#define FRICTION_COEF 2
+#define RUN_AWAY_COEF 0.6
+#define RANDOM_ACCEL_RUNNER_COEF 0.85
+#define RANDOM_UPDATE_DELAY 100
 #define CATCHER_VELOCITY_RESET_THRESHOLD 0.008
-#define CATCHER_MAX_VELOCITY 1
+#define CATCHER_MAX_VELOCITY 0.88
 #define CATCHER_VELOCITY_INCR_COEF 0.01
 #define CATCHER_ANGLE_FITTING_COEF 0.09
 #define MIN_SECONDS_BEFORE_NEXT_CATCH 2
@@ -24,12 +28,14 @@ Simulation simulation_init(
     const double unit_radius,
     const double fps
 ) {
+    srand(time(NULL));
     Simulation s;
     s.catch_count = 0;
     s.catch_did_just_occured = false;
     s.any_hit_just_occured = false;
     s._units = init_dyn_array(Unit);
     s._collisions = init_dyn_array(Collision);
+    s._random_accels = random_accels_init(rand_minus1_1, RANDOM_UPDATE_DELAY, RANDOM_ACCEL_RUNNER_COEF);
     s._unit_to_catch = NULL;
     s._integration_delta = 1 / fps;
     s._unit_radius = unit_radius;
@@ -56,6 +62,7 @@ size_t simulation_get_runners_count(const Simulation *const s) {
 
 void simulation_add_runner(Simulation *const s, const Vector position) {
     push_rval_dyn_array(s->_units, Unit, unit_init(position.x, position.y));
+    random_accels_add(&s->_random_accels);
 }
 
 static void check_if_any_hit_occured(Simulation *const s) {
@@ -141,6 +148,7 @@ static void resolve_runners_movement(Simulation *const s) {
         add_friction_accel(runner, FRICTION_COEF);
         add_return_to_middle_accel(runner, RETURN_TO_MIDDLE_COEF);
         add_run_away_accel(runner, catcher, RUN_AWAY_COEF);
+        add_accel(runner, random_accels_get(&s->_random_accels, i - RUNNERS));
         for (size_t k = RUNNERS; k < units_length; k++) {
             const Unit *const neighbor = &s->_units[k];
             if (neighbor->id == runner->id) continue;
@@ -153,6 +161,7 @@ static void resolve_movement(Simulation *const s) {
     reset_accel(s->_units);
     resolve_unit_to_catch_if_needed(s);
     resolve_catcher_movement(s);
+    random_accels_update(&s->_random_accels);
     resolve_runners_movement(s);
     do_euler_integration(s->_units, s->_integration_delta);
 }
@@ -170,4 +179,5 @@ void simulation_tick(Simulation *const s) {
 void simulation_free(Simulation *const s) {
     free_dyn_array(s->_units);
     free_dyn_array(s->_collisions);
+    random_accels_free(&s->_random_accels);
 }
