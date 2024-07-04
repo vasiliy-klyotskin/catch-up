@@ -7,7 +7,7 @@ void collision_detect(
     Collision **collisions,
     const double radius
 ) {
-    const size_t units_length = get_length_dyn_array(units);
+    const size_t units_length = dyn_array_get_length(units);
     for (size_t u1_index = 0; u1_index < units_length; u1_index++) {
         for (size_t u2_index = u1_index; u2_index < units_length; u2_index++) {
             if (u1_index == u2_index) { continue; }
@@ -20,7 +20,7 @@ void collision_detect(
                 collision.u1 = u1;
                 collision.u2 = u2;
                 collision.offset = offset;
-                push_dyn_array(*collisions, collision);
+                dyn_array_push(*collisions, collision);
             }
         }
     }
@@ -50,7 +50,7 @@ static void resolve_velocity(const Collision *const collision) {
 }
 
 void collision_resolve(Collision *const collisions, const double radius) {
-    const size_t collisions_length = get_length_dyn_array(collisions);
+    const size_t collisions_length = dyn_array_get_length(collisions);
     for (size_t i = 0; i < collisions_length; i++) {
         const Collision *const collision = &collisions[i];
         resolve_positions(collision, radius);

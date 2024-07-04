@@ -15,7 +15,7 @@ Unit unit_init(const double pos_x, const double pos_y) {
 }
 
 Unit *unit_find_nearest(const Unit *const unit, Unit *const others) {
-    const size_t others_length = get_length_dyn_array(others);
+    const size_t others_length = dyn_array_get_length(others);
     Unit *nearest = NULL;
     double distance_to_nearest = INFINITY;
     for (size_t i = 0; i < others_length; i++) {

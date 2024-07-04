@@ -21,7 +21,7 @@ void test_init(void) {
 
 void test_find_nearest_when_others_is_empty(void) {
     const Unit u = unit_init(0, 0);
-    Unit *const others = init_dyn_array(Unit);
+    Unit *const others = dyn_array_init(Unit);
 
     const Unit *const nearest = unit_find_nearest(&u, others);
 
@@ -30,12 +30,12 @@ void test_find_nearest_when_others_is_empty(void) {
 
 void test_find_nearest(void) {
     const Unit u = unit_init(0, 0);
-    Unit *others = init_dyn_array(Unit);
-    push_rval_dyn_array(others, Unit, unit_init(-1, 1));
-    push_rval_dyn_array(others, Unit, unit_init(2, 1));
-    push_rval_dyn_array(others, Unit, unit_init(0.1, 0.1));
-    push_rval_dyn_array(others, Unit, unit_init(12, 4));
-    push_dyn_array(others, u);
+    Unit *others = dyn_array_init(Unit);
+    dyn_array_push_rval(others, Unit, unit_init(-1, 1));
+    dyn_array_push_rval(others, Unit, unit_init(2, 1));
+    dyn_array_push_rval(others, Unit, unit_init(0.1, 0.1));
+    dyn_array_push_rval(others, Unit, unit_init(12, 4));
+    dyn_array_push(others, u);
 
     const Unit *const nearest = unit_find_nearest(&u, others);
 

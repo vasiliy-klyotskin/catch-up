@@ -4,27 +4,27 @@
 #include <stdbool.h>
 
 void test_collision_detect_when_units_are_empty(void) {
-    Unit *const units = init_dyn_array(Unit);
-    Collision *collisions = init_dyn_array(Collision);
+    Unit *const units = dyn_array_init(Unit);
+    Collision *collisions = dyn_array_init(Collision);
     const double radius = 1;
 
     collision_detect(units, &collisions, radius);
 
-    assert_eq(get_length_dyn_array(collisions), 0);
+    assert_eq(dyn_array_get_length(collisions), 0);
 }
 
 void test_collision_detect(void) {
-    Unit *units = init_dyn_array(Unit);
-    push_rval_dyn_array(units, Unit, unit_init(0, 0));
-    push_rval_dyn_array(units, Unit, unit_init(3.99, 0));
-    push_rval_dyn_array(units, Unit, unit_init(-4, 0));
-    push_rval_dyn_array(units, Unit, unit_init(0, 4.01));
-    Collision *collisions = init_dyn_array(Collision);
+    Unit *units = dyn_array_init(Unit);
+    dyn_array_push_rval(units, Unit, unit_init(0, 0));
+    dyn_array_push_rval(units, Unit, unit_init(3.99, 0));
+    dyn_array_push_rval(units, Unit, unit_init(-4, 0));
+    dyn_array_push_rval(units, Unit, unit_init(0, 4.01));
+    Collision *collisions = dyn_array_init(Collision);
     const double radius = 2;
 
     collision_detect(units, &collisions, radius);
 
-    assert_eq(get_length_dyn_array(collisions), 1);
+    assert_eq(dyn_array_get_length(collisions), 1);
     const Collision collision = collisions[0];
     assert_fp_eq(collision.u1->position.x, 0);
     assert_fp_eq(collision.u1->position.y, 0);
@@ -42,8 +42,8 @@ void test_collision_resolve_when_velocity_is_zero(void) {
 
     const NormalizedVector offset = (NormalizedVector) { vector_init(1, 0), 1.98 };
     const Collision collision = (Collision) { &u1, &u2, offset };
-    Collision *collisions = init_dyn_array(Collision);
-    push_dyn_array(collisions, collision);
+    Collision *collisions = dyn_array_init(Collision);
+    dyn_array_push(collisions, collision);
 
     collision_resolve(collisions, radius);
 
@@ -63,8 +63,8 @@ void test_collision_resolve(void) {
     const double radius = 2.5;
     const NormalizedVector offset = (NormalizedVector) { vector_init(0.8, 0.6), 4.5 };
     const Collision collision = (Collision) { &u1, &u2, offset };
-    Collision *collisions = init_dyn_array(Collision);
-    push_dyn_array(collisions, collision);
+    Collision *collisions = dyn_array_init(Collision);
+    dyn_array_push(collisions, collision);
 
     collision_resolve(collisions, radius);
 

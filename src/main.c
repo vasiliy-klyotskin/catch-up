@@ -3,7 +3,7 @@
 
 #define FPS 60
 #define UNIT_RADIUS 0.03
-#define SCREEN_WIDTH 700
+#define SCREEN_WIDTH 1400
 #define SCREEN_HEIGHT 700
 #define MAX_RUNNERS 20
 

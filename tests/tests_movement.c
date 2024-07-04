@@ -11,9 +11,9 @@ void test_euler_integration(void) {
     u2.velocity = vector_init(-4, 1);
     u2.acceleration = vector_init(-2, -4);
 
-    Unit *array = init_dyn_array(Unit);
-    push_dyn_array(array, u1);
-    push_dyn_array(array, u2);
+    Unit *array = dyn_array_init(Unit);
+    dyn_array_push(array, u1);
+    dyn_array_push(array, u2);
 
     unit_do_euler_integration(array, 0.1);
 

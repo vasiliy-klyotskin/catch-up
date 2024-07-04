@@ -6,7 +6,7 @@
 #include <dynamic_array.h>
 
 void unit_do_euler_integration(Unit *const units, const double delta) {
-    const size_t units_length = get_length_dyn_array(units);
+    const size_t units_length = dyn_array_get_length(units);
     for (size_t i = 0; i < units_length; i++) {
         Unit *unit = &units[i];
         unit->velocity.x += unit->acceleration.x * delta;
@@ -104,7 +104,7 @@ void unit_reset_velocity_when_low(Unit *const unit, const double threshold) {
 }
 
 void unit_reset_accel(Unit *const units) {
-    const size_t units_length = get_length_dyn_array(units);
+    const size_t units_length = dyn_array_get_length(units);
     for (size_t i = 0; i < units_length; i++) {
         units[i].acceleration.x = 0;
         units[i].acceleration.y = 0;

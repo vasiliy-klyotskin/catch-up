@@ -10,7 +10,7 @@ CollisionSystem col_sys_init(Players *const players, const double fps, const dou
     col_sys.catch_did_just_occured = false;
     col_sys.any_hit_just_occured = false;
     col_sys._players = players;
-    col_sys._collisions = init_dyn_array(Collision);
+    col_sys._collisions = dyn_array_init(Collision);
     col_sys._unit_radius = radius;
     col_sys._min_ticks_before_next_catch = MIN_SECONDS_BEFORE_NEXT_CATCH * fps;
     col_sys._ticks_since_last_catch = col_sys._min_ticks_before_next_catch;
@@ -18,17 +18,17 @@ CollisionSystem col_sys_init(Players *const players, const double fps, const dou
 }
 
 void col_sys_free(const CollisionSystem *const col_sys) {
-    free_dyn_array(col_sys->_collisions);
+    dyn_array_free(col_sys->_collisions);
 }
 
 void col_sys_reset(CollisionSystem *const col_sys) {
     col_sys->any_hit_just_occured = false;
     col_sys->catch_did_just_occured = false;
-    clear_dyn_array(col_sys->_collisions);
+    dyn_array_clear(col_sys->_collisions);
 }
 
 static void check_if_any_hit_occured(CollisionSystem *const col_sys) {
-    if (get_length_dyn_array(col_sys->_collisions) != 0) {
+    if (dyn_array_get_length(col_sys->_collisions) != 0) {
         col_sys->any_hit_just_occured = true;
     }
 }
@@ -51,7 +51,7 @@ static void update_ticks_since_last_catch(CollisionSystem *const col_sys) {
 
 static void resolve_new_catcher(CollisionSystem *const col_sys) {
     if (!ready_to_perform_new_catch(col_sys)) { return; }
-    const size_t collisions_length = get_length_dyn_array(col_sys->_collisions);
+    const size_t collisions_length = dyn_array_get_length(col_sys->_collisions);
     for (size_t i = 0; i < collisions_length; i++) {
         const Collision collision = col_sys->_collisions[i];
         const Unit *const catcher = players_get_catcher(col_sys->_players);
