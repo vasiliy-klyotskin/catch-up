@@ -1,11 +1,11 @@
-#include <unit_movement.h>
+#include <movement.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <util.h>
 #include <math.h>
 #include <dynamic_array.h>
 
-void do_euler_integration(Unit *const units, const double delta) {
+void unit_do_euler_integration(Unit *const units, const double delta) {
     const size_t units_length = get_length_dyn_array(units);
     for (size_t i = 0; i < units_length; i++) {
         Unit *unit = &units[i];
@@ -16,17 +16,17 @@ void do_euler_integration(Unit *const units, const double delta) {
     }
 }
 
-void add_return_to_middle_accel(Unit *const unit, const double coef) {
+void unit_add_return_to_middle_accel(Unit *const unit, const double coef) {
     unit->acceleration.x += -coef * unit->position.x;
     unit->acceleration.y += -coef * unit->position.y;
 }
 
-void add_friction_accel(Unit *const unit, const double coef) {
+void unit_add_friction_accel(Unit *const unit, const double coef) {
     unit->acceleration.x += -coef * unit->velocity.x;
     unit->acceleration.y += -coef * unit->velocity.y;
 }
 
-void add_repulsion_accel(Unit *const unit, const Unit *const neighbor, double coef) {
+void unit_add_repulsion_accel(Unit *const unit, const Unit *const neighbor, double coef) {
     const Vector position_difference = vector_difference(&unit->position, &neighbor->position);
     const double distance = vector_magnitude(&position_difference);
     const double dependence = -coef / (distance * sqrt(distance));
@@ -34,7 +34,7 @@ void add_repulsion_accel(Unit *const unit, const Unit *const neighbor, double co
     unit->acceleration.y += position_difference.y * dependence;
 }
 
-void add_run_away_accel(Unit *const unit, const Unit *const catcher, const double coef) {
+void unit_add_run_away_accel(Unit *const unit, const Unit *const catcher, const double coef) {
     const Vector position_difference = vector_difference(&unit->position, &catcher->position);
     const double distance = vector_magnitude(&position_difference);
     const double dependence = -coef / (distance * distance);
@@ -80,7 +80,7 @@ static void fit_current_velocity(
     unit->velocity = vector_rotated(&unit->velocity, fit_angle);
 }
 
-void set_catch_velocity(
+void unit_set_catch_velocity(
     Unit *const unit, 
     const Unit *const catchie,
     const double max_velocity,
@@ -96,14 +96,14 @@ void set_catch_velocity(
     }
 }
 
-void reset_velocity_when_low(Unit *const unit, const double threshold) {
+void unit_reset_velocity_when_low(Unit *const unit, const double threshold) {
     if (vector_normalized(&unit->velocity).magnitude < threshold) {
         unit->velocity.x = 0;
         unit->velocity.y = 0;
     }
 }
 
-void reset_accel(Unit *const units) {
+void unit_reset_accel(Unit *const units) {
     const size_t units_length = get_length_dyn_array(units);
     for (size_t i = 0; i < units_length; i++) {
         units[i].acceleration.x = 0;
@@ -111,7 +111,7 @@ void reset_accel(Unit *const units) {
     }
 }
 
-void add_accel(Unit *const u, const Vector *const v) {
+void unit_add_accel(Unit *const u, const Vector *const v) {
     u->acceleration.x += v->x;
     u->acceleration.y += v->y;
 }

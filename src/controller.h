@@ -24,9 +24,10 @@ typedef struct {
 typedef struct {
     const UI *_ui;
     Simulation *_simulation;
+    int _max_runners;
 } Controller;
 
-const Controller controller_init(const UI *const ui, Simulation *const simulation);
+const Controller controller_init(const UI *const ui, Simulation *const simulation, const int max_runners);
 void controller_start(const Controller *const controller);
 void controller_update(const Controller *const controller);
 void controller_add_runner(const Controller *const controller, const Vector position);

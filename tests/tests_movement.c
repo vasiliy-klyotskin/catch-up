@@ -1,5 +1,5 @@
 #include <macroassert.h>
-#include <unit_movement.h>
+#include <movement.h>
 #include <dynamic_array.h>
 
 void test_euler_integration(void) {
@@ -15,7 +15,7 @@ void test_euler_integration(void) {
     push_dyn_array(array, u1);
     push_dyn_array(array, u2);
 
-    do_euler_integration(array, 0.1);
+    unit_do_euler_integration(array, 0.1);
 
     const Unit r_u1 = array[0];
     assert_fp_eq(r_u1.velocity.x, -1.6);
@@ -33,7 +33,7 @@ void test_euler_integration(void) {
 void test_return_to_middle_when_position_is_zero(void) {
     Unit u = unit_init(0, 0);
 
-    add_return_to_middle_accel(&u, 2);
+    unit_add_return_to_middle_accel(&u, 2);
 
     assert_fp_eq(u.acceleration.x, 0);
     assert_fp_eq(u.acceleration.y, 0);
@@ -43,7 +43,7 @@ void test_return_to_middle_when_position_is_not_zero(void) {
     Unit u = unit_init(-2, 3);
     u.acceleration = vector_init(5, 7);
 
-    add_return_to_middle_accel(&u, 2);
+    unit_add_return_to_middle_accel(&u, 2);
 
     assert_fp_eq(u.acceleration.x, 9);
     assert_fp_eq(u.acceleration.y, 1);
@@ -52,7 +52,7 @@ void test_return_to_middle_when_position_is_not_zero(void) {
 void test_friction_when_velocity_is_zero(void) {
     Unit u = unit_init(0, 0);
 
-    add_friction_accel(&u, 2);
+    unit_add_friction_accel(&u, 2);
 
     assert_fp_eq(u.acceleration.x, 0);
     assert_fp_eq(u.acceleration.y, 0);
@@ -63,7 +63,7 @@ void test_friction_when_velocity_is_not_zero(void) {
     u.acceleration = vector_init(5, 7);
     u.velocity = vector_init(-10, 20);
 
-    add_friction_accel(&u, 2);
+    unit_add_friction_accel(&u, 2);
  
     assert_fp_eq(u.acceleration.x, 25);
     assert_fp_eq(u.acceleration.y, -33);
@@ -73,7 +73,7 @@ void test_repulsion_if_distance_to_neighbor_is_zero(void) {
     Unit u = unit_init(0, 0);
     const Unit neighbor = unit_init(0, 0);
 
-    add_repulsion_accel(&u, &neighbor, 2);
+    unit_add_repulsion_accel(&u, &neighbor, 2);
 
     assert_fp_eq(u.acceleration.x, 0);
     assert_fp_eq(u.acceleration.y, 0);
@@ -84,7 +84,7 @@ void test_repulsion(void) {
     const Unit neighbor = unit_init(2, 3);
     u.acceleration = vector_init(-3, -3);
 
-    add_repulsion_accel(&u, &neighbor, 2);
+    unit_add_repulsion_accel(&u, &neighbor, 2);
 
     assert_fp_eq(u.acceleration.x, -3.5366563146);
     assert_fp_eq(u.acceleration.y, -3.7155417528);
@@ -94,7 +94,7 @@ void test_run_away_when_distance_is_zero(void) {
     Unit u = unit_init(0, 0);
     const Unit catcher = unit_init(0, 0);
 
-    add_run_away_accel(&u, &catcher, 2);
+    unit_add_run_away_accel(&u, &catcher, 2);
 
     assert_fp_eq(u.acceleration.x, 0);
     assert_fp_eq(u.acceleration.y, 0);
@@ -105,7 +105,7 @@ void test_run_away(void) {
     const Unit catcher = unit_init(2, 3);
     u.acceleration = vector_init(-3, -3);
 
-    add_run_away_accel(&u, &catcher, 2);
+    unit_add_run_away_accel(&u, &catcher, 2);
 
     assert_fp_eq(u.acceleration.x, -3.24);
     assert_fp_eq(u.acceleration.y, -3.32);
@@ -120,7 +120,7 @@ void test_catch_when_objet_velocity_is_zero(void) {
     const double velocity_increment_coef = 0.01;
     const double any_angle_fitting_coef = 0;
 
-    set_catch_velocity(&u, &runner, any_max_velocity, velocity_increment_coef, any_angle_fitting_coef);
+    unit_set_catch_velocity(&u, &runner, any_max_velocity, velocity_increment_coef, any_angle_fitting_coef);
 
     assert_fp_eq(u.velocity.x, 0.008);
     assert_fp_eq(u.velocity.y, 0.006);
@@ -135,7 +135,7 @@ void test_catch_when_objet_velocity_is_zero_and_max_velocity_is_less_than_increm
     const double velocity_increment_coef = 1.01;
     const double any_angle_fitting_coef = 0;
 
-    set_catch_velocity(&u, &runner, any_max_velocity, velocity_increment_coef, any_angle_fitting_coef);
+    unit_set_catch_velocity(&u, &runner, any_max_velocity, velocity_increment_coef, any_angle_fitting_coef);
 
     assert_fp_eq(u.velocity.x, 0.8);
     assert_fp_eq(u.velocity.y, 0.6);
@@ -150,7 +150,7 @@ void test_catch_when_object_velocity_is_not_collinear_to_displacement_and_veloci
     const double velocity_increment_coef = 0.5;
     const double angle_fitting_coef = 0.5;
 
-    set_catch_velocity(&u, &runner, max_velocity, velocity_increment_coef, angle_fitting_coef);
+    unit_set_catch_velocity(&u, &runner, max_velocity, velocity_increment_coef, angle_fitting_coef);
 
     assert_fp_eq(u.velocity.x, 1.06066);
     assert_fp_eq(u.velocity.y, -1.06066);
@@ -165,7 +165,7 @@ void test_catch_velocity_should_be_equal_max_velocity_when_increment_exceeds_max
     const double velocity_increment_coef = 0.1001;
     const double angle_fitting_coef = 0.5;
 
-    set_catch_velocity(&u, &runner, max_velocity, velocity_increment_coef, angle_fitting_coef);
+    unit_set_catch_velocity(&u, &runner, max_velocity, velocity_increment_coef, angle_fitting_coef);
 
     assert_fp_eq(u.velocity.x, 0.707106);
     assert_fp_eq(u.velocity.y, -0.707106);
@@ -173,7 +173,7 @@ void test_catch_velocity_should_be_equal_max_velocity_when_increment_exceeds_max
     u.velocity.x = -0.9;
     u.velocity.y = 0;
 
-    set_catch_velocity(&u, &runner, max_velocity, velocity_increment_coef, angle_fitting_coef);
+    unit_set_catch_velocity(&u, &runner, max_velocity, velocity_increment_coef, angle_fitting_coef);
 
     assert_fp_eq(u.velocity.x, -0.707106);
     assert_fp_eq(u.velocity.y, -0.707106);
@@ -186,7 +186,7 @@ void test_reset_velocity(void) {
     u.velocity.x = 0.6001;
     u.velocity.y = 0.8;
 
-    reset_velocity_when_low(&u, threshold);
+    unit_reset_velocity_when_low(&u, threshold);
 
     assert_fp_eq(u.velocity.x, 0.6001);
     assert_fp_eq(u.velocity.y, 0.8);
@@ -194,13 +194,13 @@ void test_reset_velocity(void) {
     u.velocity.x = 0.5999;
     u.velocity.y = 0.8;
 
-    reset_velocity_when_low(&u, threshold);
+    unit_reset_velocity_when_low(&u, threshold);
 
     assert_eq(u.velocity.x, 0);
     assert_eq(u.velocity.y, 0);
 }
 
-void tests_unit_movement(void) {
+void tests_movement(void) {
     test_euler_integration();
     test_return_to_middle_when_position_is_zero();
     test_return_to_middle_when_position_is_not_zero();

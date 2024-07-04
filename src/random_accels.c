@@ -1,8 +1,10 @@
 #include <random_accels.h>
 #include <dynamic_array.h>
 #include <stdbool.h>
+#include <time.h>
 
-RandomAccels random_accels_init(double (*const rand_minus1_1)(void), const int update_delay, const double coef) {
+RandomAccels random_accels_init(RandFnMinus1To1 rand_minus1_1, const int update_delay, const double coef) {
+    srand(time(NULL));
     RandomAccels accels;
     accels._rand_minus1_1 = rand_minus1_1;
     accels._elements = init_dyn_array(Vector);

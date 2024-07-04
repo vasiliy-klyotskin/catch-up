@@ -5,7 +5,7 @@ void tests_geometry(void);
 void tests_unit(void);
 void tests_collision(void);
 void tests_random_accels(void);
-void tests_unit_movement(void);
+void tests_movement(void);
 
 int main(void) {
     tests_dynamic_array();
@@ -13,7 +13,7 @@ int main(void) {
     tests_unit();
     tests_collision();
     tests_random_accels();
-    tests_unit_movement();
+    tests_movement();
     printf("All tests passed!");
     return 0;
 }

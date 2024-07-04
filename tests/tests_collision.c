@@ -3,17 +3,17 @@
 #include <dynamic_array.h>
 #include <stdbool.h>
 
-void test_detect_collision_when_units_are_empty(void) {
+void test_collision_detect_when_units_are_empty(void) {
     Unit *const units = init_dyn_array(Unit);
     Collision *collisions = init_dyn_array(Collision);
     const double radius = 1;
 
-    detect_collisions(units, &collisions, radius);
+    collision_detect(units, &collisions, radius);
 
     assert_eq(get_length_dyn_array(collisions), 0);
 }
 
-void test_detect_collision(void) {
+void test_collision_detect(void) {
     Unit *units = init_dyn_array(Unit);
     push_rval_dyn_array(units, Unit, unit_init(0, 0));
     push_rval_dyn_array(units, Unit, unit_init(3.99, 0));
@@ -22,7 +22,7 @@ void test_detect_collision(void) {
     Collision *collisions = init_dyn_array(Collision);
     const double radius = 2;
 
-    detect_collisions(units, &collisions, radius);
+    collision_detect(units, &collisions, radius);
 
     assert_eq(get_length_dyn_array(collisions), 1);
     const Collision collision = collisions[0];
@@ -35,7 +35,7 @@ void test_detect_collision(void) {
     assert_fp_eq(collision.offset.magnitude, 3.99);
 }
 
-void test_resolve_collision_when_velocity_is_zero(void) {
+void test_collision_resolve_when_velocity_is_zero(void) {
     Unit u1 = unit_init(0.01, 0);
     Unit u2 = unit_init(1.99, 0);
     const double radius = 1;
@@ -45,7 +45,7 @@ void test_resolve_collision_when_velocity_is_zero(void) {
     Collision *collisions = init_dyn_array(Collision);
     push_dyn_array(collisions, collision);
 
-    resolve_collisions(collisions, radius);
+    collision_resolve(collisions, radius);
 
     assert_fp_eq(u1.position.x, 0);
     assert_fp_eq(u1.position.y, 0);
@@ -53,7 +53,7 @@ void test_resolve_collision_when_velocity_is_zero(void) {
     assert_fp_eq(u2.position.y, 0);
 }
 
-void test_resolve_collisions(void) {
+void test_collision_resolve(void) {
     Unit u1 = unit_init(-0.8, -0.85);
     u1.velocity.x = 0;
     u1.velocity.y = 1;
@@ -66,7 +66,7 @@ void test_resolve_collisions(void) {
     Collision *collisions = init_dyn_array(Collision);
     push_dyn_array(collisions, collision);
 
-    resolve_collisions(collisions, radius);
+    collision_resolve(collisions, radius);
 
     assert_fp_eq(u1.position.x, -1);
     assert_fp_eq(u1.position.y, -1);
@@ -79,8 +79,8 @@ void test_resolve_collisions(void) {
 }
 
 void tests_collision(void) {
-    test_detect_collision_when_units_are_empty();
-    test_detect_collision();
-    test_resolve_collision_when_velocity_is_zero();
-    test_resolve_collisions();
+    test_collision_detect_when_units_are_empty();
+    test_collision_detect();
+    test_collision_resolve_when_velocity_is_zero();
+    test_collision_resolve();
 }

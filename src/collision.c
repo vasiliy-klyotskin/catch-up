@@ -2,7 +2,7 @@
 #include <dynamic_array.h>
 #include <geometry.h>
 
-void detect_collisions(
+void collision_detect(
     Unit *const units,
     Collision **collisions,
     const double radius
@@ -49,7 +49,7 @@ static void resolve_velocity(const Collision *const collision) {
     collision->u2->velocity.y = tang.y * u2_tang_dot_prod + norm->y * u1_norm_dot_prod;
 }
 
-void resolve_collisions(Collision *const collisions, const double radius) {
+void collision_resolve(Collision *const collisions, const double radius) {
     const size_t collisions_length = get_length_dyn_array(collisions);
     for (size_t i = 0; i < collisions_length; i++) {
         const Collision *const collision = &collisions[i];
