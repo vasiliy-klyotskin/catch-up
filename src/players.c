@@ -22,10 +22,6 @@ Unit *const players_get_catcher(const Players *const players) {
     return &players->all_players[CATCHER];
 }
 
-void players_set_catcher(Players *const players, const Unit *const catcher) {
-    players->all_players[CATCHER] = *catcher;
-}
-
 Unit *const players_get_runner(const Players *const players, const size_t index) {
     return &players->all_players[RUNNERS + index];
 }
