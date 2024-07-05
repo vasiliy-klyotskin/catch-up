@@ -16,6 +16,7 @@ typedef struct {
 
 RandomAccels random_accels_init(RandFnMinus1To1 rand_minus1_1, const int update_delay, const double coef);
 const Vector *const random_accels_get(const RandomAccels *const accels, const size_t index);
+size_t random_accels_get_count(const RandomAccels *const accels);
 void random_accels_update(RandomAccels *const accels);
 void random_accels_add(RandomAccels *const accels);
 void random_accels_free(const RandomAccels *const accels);

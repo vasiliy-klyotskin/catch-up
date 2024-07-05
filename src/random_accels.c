@@ -41,6 +41,10 @@ const Vector *const random_accels_get(const RandomAccels *const accels, const si
     return &accels->_elements[index];
 }
 
+size_t random_accels_get_count(const RandomAccels *const accels) {
+    return dyn_array_get_length(accels->_elements);
+}
+
 void random_accels_free(const RandomAccels *const accels) {
     dyn_array_free(accels->_elements);
 }
