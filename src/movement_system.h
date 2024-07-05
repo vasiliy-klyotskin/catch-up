@@ -18,7 +18,6 @@ MovementSystem mv_sys_init(
     const double integration_delta
 );
 void mv_sys_free(const MovementSystem *const mv_sys);
-void mv_sys_add_random_accel(MovementSystem *const mv_sys);
 void mv_sys_resolve_movement(MovementSystem *const mv_sys, const bool need_to_catch);
 void mv_sys_reset(MovementSystem *const mv_sys);
 

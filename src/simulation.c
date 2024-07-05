@@ -19,7 +19,6 @@ SimulationInfo simulation_get_info(const Simulation *const s) {
 
 void simulation_add_runner(Simulation *const s, const Vector position) {
     players_add_runner(&s->players, position);
-    mv_sys_add_random_accel(&s->_mv_sys);
 }
 
 void simulation_free(const Simulation *const s) {

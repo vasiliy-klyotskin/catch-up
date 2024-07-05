@@ -82,17 +82,22 @@ static void resolve_runners_movement(const MovementSystem *const mv_sys) {
     }
 }
 
+static void add_random_accels_if_needed(MovementSystem *const mv_sys) {
+    const size_t runners_count = players_runners_count(mv_sys->_players);
+    const size_t accels_count = random_accels_get_count(&mv_sys->_random_accels);
+    for (size_t i = 0; i < runners_count - accels_count; i++) {
+        random_accels_add(&mv_sys->_random_accels);
+    }
+}
+
 void mv_sys_resolve_movement(MovementSystem *const mv_sys, const bool need_to_catch) {
     unit_reset_accel(mv_sys->_players->all_players);
     if (need_to_catch) resolve_unit_to_catch(mv_sys);
-    resolve_catcher_movement(mv_sys, need_to_catch);
+    if (false) resolve_catcher_movement(mv_sys, need_to_catch);
+    add_random_accels_if_needed(mv_sys);
     random_accels_update(&mv_sys->_random_accels);
     resolve_runners_movement(mv_sys);
     unit_do_euler_integration(mv_sys->_players->all_players, mv_sys->_integration_delta);
-}
-
-void mv_sys_add_random_accel(MovementSystem *const mv_sys) {
-    random_accels_add(&mv_sys->_random_accels);
 }
 
 void mv_sys_reset(MovementSystem *const mv_sys) {
