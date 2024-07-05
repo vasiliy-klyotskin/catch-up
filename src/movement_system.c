@@ -93,7 +93,7 @@ static void add_random_accels_if_needed(MovementSystem *const mv_sys) {
 void mv_sys_resolve_movement(MovementSystem *const mv_sys, const bool need_to_catch) {
     unit_reset_accel(mv_sys->_players->all_players);
     if (need_to_catch) resolve_unit_to_catch(mv_sys);
-    if (false) resolve_catcher_movement(mv_sys, need_to_catch);
+    resolve_catcher_movement(mv_sys, need_to_catch);
     add_random_accels_if_needed(mv_sys);
     random_accels_update(&mv_sys->_random_accels);
     resolve_runners_movement(mv_sys);
