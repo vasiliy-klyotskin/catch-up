@@ -14,7 +14,7 @@ This repository presents a "catch-up" simulation project aimed at deepening my u
 
 ## Demonstration
 
-<video src="https://github.com/vasiliy-klyotskin/catch-up-simulation/blob/main/catch-up.mp4" width="700"/>
+<video src="https://github.com/vasiliy-klyotskin/catch-up-simulation/blob/main/catch-up.mp4" width="700">
 
 ## Installation and Usage
 
