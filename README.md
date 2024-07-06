@@ -3,6 +3,10 @@
 
 This repository presents a "catch-up" simulation project aimed at deepening my understanding and proficiency in the C programming language. The simulation allows users to add new runners by clicking the left mouse button. The catcher will then attempt to catch the runners. Once the catcher catches a runner, they switch roles.
 
+## Demonstration
+
+https://github.com/vasiliy-klyotskin/catch-up-simulation/assets/54911315/845d3384-1a82-47da-8fd9-56a389fedbde
+
 ## Project Objectives
 
 - **C Programming Practice**: Improve skills in C programming through a practical project.
@@ -11,10 +15,6 @@ This repository presents a "catch-up" simulation project aimed at deepening my u
 - **Polymorphism**: Use function pointers to achieve polymorphism in C.
 - **Generics**: Implement generics using void pointers.
 - **Minimal Dependencies**: Use raylib only for graphics and sound, without other physics libraries.
-
-## Demonstration
-
-https://github.com/vasiliy-klyotskin/catch-up-simulation/assets/54911315/845d3384-1a82-47da-8fd9-56a389fedbde
 
 ## Installation and Usage
 
