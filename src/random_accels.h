@@ -10,8 +10,8 @@ typedef struct {
     RandFnMinus1To1 _rand_minus1_1;
     Vector *_elements;
     double _coef;
-    int _updates_count_before_reset;
-    int _updates_count_since_last_reset;
+    int _updates_count_before_update;
+    int _updates_count_since_last_update;
 } RandomAccels;
 
 RandomAccels random_accels_init(RandFnMinus1To1 rand_minus1_1, const int update_delay, const double coef);

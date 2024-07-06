@@ -8,8 +8,8 @@ RandomAccels random_accels_init(RandFnMinus1To1 rand_minus1_1, const int update_
     RandomAccels accels;
     accels._rand_minus1_1 = rand_minus1_1;
     accels._elements = dyn_array_init(Vector);
-    accels._updates_count_before_reset = update_delay;
-    accels._updates_count_since_last_reset = 0;
+    accels._updates_count_before_update = update_delay;
+    accels._updates_count_since_last_update = 0;
     accels._coef = coef;
     return accels;
 }
@@ -20,15 +20,19 @@ static Vector get_random_accel_vec(const RandomAccels *const accels) {
     return vector_init(x, y);
 }
 
-void random_accels_update(RandomAccels *const accels) {
-    if (accels->_updates_count_since_last_reset >= accels->_updates_count_before_reset) {
-        size_t accels_count = dyn_array_get_length(accels->_elements);
-        for (size_t i = 0; i < accels_count; i++) {
-            accels->_elements[i] = get_random_accel_vec(accels);
-        }
-        accels->_updates_count_since_last_reset = 0;
+static void recalculate_accels(RandomAccels *const accels) {
+    size_t accels_count = dyn_array_get_length(accels->_elements);
+    for (size_t i = 0; i < accels_count; i++) {
+        accels->_elements[i] = get_random_accel_vec(accels);
     }
-    accels->_updates_count_since_last_reset++;
+}
+
+void random_accels_update(RandomAccels *const accels) {
+    if (accels->_updates_count_since_last_update >= accels->_updates_count_before_update) {
+        recalculate_accels(accels);
+        accels->_updates_count_since_last_update = 0;
+    }
+    accels->_updates_count_since_last_update++;
 }
 
 void random_accels_add(RandomAccels *const accels) {
@@ -36,8 +40,6 @@ void random_accels_add(RandomAccels *const accels) {
 }
 
 const Vector *const random_accels_get(const RandomAccels *const accels, const size_t index) {
-    size_t elements_count = dyn_array_get_length(accels->_elements);
-    if (index >= elements_count) return NULL;
     return &accels->_elements[index];
 }
 
