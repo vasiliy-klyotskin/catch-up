@@ -1,7 +1,7 @@
 #include <macroassert.h>
 #include <players.h>
 
-void test_players_get_catcher(void) {
+static void test_players_get_catcher(void) {
     const Players players = players_init();
     const Unit *const catcher = players_get_catcher(&players);
 
@@ -11,7 +11,7 @@ void test_players_get_catcher(void) {
     players_free(&players);
 }
 
-void test_players_get_runner(void) {
+static void test_players_get_runner(void) {
     Players players = players_init();
     assert_eq(players_runners_count(&players), 0);
 

@@ -3,7 +3,7 @@
 #include <dynamic_array.h>
 #include <stdbool.h>
 
-void test_collision_detect_when_units_are_empty(void) {
+static void test_collision_detect_when_units_are_empty(void) {
     Unit *const units = dyn_array_init(Unit);
     Collision *collisions = dyn_array_init(Collision);
     const double radius = 1;
@@ -13,7 +13,7 @@ void test_collision_detect_when_units_are_empty(void) {
     assert_eq(dyn_array_get_length(collisions), 0);
 }
 
-void test_collision_detect(void) {
+static void test_collision_detect(void) {
     Unit *units = dyn_array_init(Unit);
     dyn_array_push_rval(units, Unit, unit_init(0, 0));
     dyn_array_push_rval(units, Unit, unit_init(3.99, 0));
@@ -35,7 +35,7 @@ void test_collision_detect(void) {
     assert_fp_eq(collision.offset.magnitude, 3.99);
 }
 
-void test_collision_resolve_when_velocity_is_zero(void) {
+static void test_collision_resolve_when_velocity_is_zero(void) {
     Unit u1 = unit_init(0.01, 0);
     Unit u2 = unit_init(1.99, 0);
     const double radius = 1;
@@ -53,7 +53,7 @@ void test_collision_resolve_when_velocity_is_zero(void) {
     assert_fp_eq(u2.position.y, 0);
 }
 
-void test_collision_resolve(void) {
+static void test_collision_resolve(void) {
     Unit u1 = unit_init(-0.8, -0.85);
     u1.velocity.x = 0;
     u1.velocity.y = 1;

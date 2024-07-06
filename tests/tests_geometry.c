@@ -2,11 +2,11 @@
 #include <geometry.h>
 #include <math.h>
 
-Vector rotated_by(double radian) {
+static Vector rotated_by(double radian) {
     return vector_init(cos(radian), sin(radian));
 }
 
-void test_vector_dot_product(void) {
+static void test_vector_dot_product(void) {
     const Vector v3 = vector_init(2.25, -2);
     const Vector v4 = vector_init(3, -0.7);
 
@@ -15,7 +15,7 @@ void test_vector_dot_product(void) {
     assert_fp_eq(dp2, 8.15);
 }
 
-void test_vector_normalized_when_vector_is_zero(void) {
+static void test_vector_normalized_when_vector_is_zero(void) {
     const Vector v = vector_init(0, 0);
 
     const NormalizedVector norm_v = vector_normalized(&v);
@@ -25,7 +25,7 @@ void test_vector_normalized_when_vector_is_zero(void) {
     assert_eq(norm_v.magnitude, 0);
 }
 
-void test_vector_normalized(void) {
+static void test_vector_normalized(void) {
     const Vector v = vector_init(3, 4);
 
     const NormalizedVector norm_v = vector_normalized(&v);
@@ -35,7 +35,7 @@ void test_vector_normalized(void) {
     assert_fp_eq(norm_v.magnitude, 5);
 }
 
-void test_vector_rotation(void) {
+static void test_vector_rotation(void) {
     const Vector v = vector_init(1, 0);
 
     const Vector rotated_v1 = vector_rotated(&v, M_PI / 2);
@@ -51,7 +51,7 @@ void test_vector_rotation(void) {
     assert_fp_eq(rotated_v3.y, 0.5);
 }
 
-void test_vector_radian(void) {
+static void test_vector_radian(void) {
     Vector v1;
     Vector v2;
 
@@ -101,13 +101,13 @@ void test_vector_radian(void) {
     assert_fp_eq(vector_radian(&v1, &v2), -M_PI / 3);
 }
 
-void test_vector_magnitude(void) {
+static void test_vector_magnitude(void) {
     const Vector v = vector_init(3, 4);
 
     assert_fp_eq(vector_magnitude(&v), 5);
 }
 
-void test_vector_difference(void) {
+static void test_vector_difference(void) {
     const Vector v1 = vector_init(5, 5);
     const Vector v2 = vector_init(8, 7);
 
@@ -117,7 +117,7 @@ void test_vector_difference(void) {
     assert_fp_eq(difference.y, 2);
 }
 
-void test_vector_sum(void) {
+static void test_vector_sum(void) {
     const Vector v1 = vector_init(-5, 5);
     const Vector v2 = vector_init(8, -7);
 
@@ -127,7 +127,7 @@ void test_vector_sum(void) {
     assert_fp_eq(sum.y, -2);
 }
 
-void test_vector_scale(void) {
+static void test_vector_scale(void) {
     const Vector v = vector_init(-5, 10);
     const double factor = 1.5;
 

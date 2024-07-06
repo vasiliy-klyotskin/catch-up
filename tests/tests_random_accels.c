@@ -1,7 +1,7 @@
 #include <macroassert.h>
 #include <random_accels.h>
 
-double random_stub(void) {
+static double random_stub(void) {
     static double random_value = 0;
     random_value += 0.1;
     return random_value;

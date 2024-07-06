@@ -3,7 +3,7 @@
 #include <dynamic_array.h>
 #include <stdbool.h>
 
-void test_init(void) {
+static void test_init(void) {
     const double x = 5.0;
     const double y = 7.0;
 
@@ -19,7 +19,7 @@ void test_init(void) {
     assert_eq(u.id != u2.id, true);
 }
 
-void test_find_nearest_when_others_is_empty(void) {
+static void test_find_nearest_when_others_is_empty(void) {
     const Unit u = unit_init(0, 0);
     Unit *const others = dyn_array_init(Unit);
 
@@ -28,7 +28,7 @@ void test_find_nearest_when_others_is_empty(void) {
     assert_eq(nearest, NULL);
 }
 
-void test_find_nearest(void) {
+static void test_find_nearest(void) {
     const Unit u = unit_init(0, 0);
     Unit *others = dyn_array_init(Unit);
     dyn_array_push_rval(others, Unit, unit_init(-1, 1));

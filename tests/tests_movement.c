@@ -2,7 +2,7 @@
 #include <movement.h>
 #include <dynamic_array.h>
 
-void test_euler_integration(void) {
+static void test_euler_integration(void) {
     Unit u1 = unit_init(5, 6);
     u1.velocity = vector_init(-2, 3);
     u1.acceleration = vector_init(4, -1);
@@ -30,7 +30,7 @@ void test_euler_integration(void) {
     assert_fp_eq(r_u2.position.y, 2.06);
 }
 
-void test_return_to_middle_when_position_is_zero(void) {
+static void test_return_to_middle_when_position_is_zero(void) {
     Unit u = unit_init(0, 0);
 
     unit_add_return_to_middle_accel(&u, 2);
@@ -39,7 +39,7 @@ void test_return_to_middle_when_position_is_zero(void) {
     assert_fp_eq(u.acceleration.y, 0);
 }
 
-void test_return_to_middle_when_position_is_not_zero(void) {
+static void test_return_to_middle_when_position_is_not_zero(void) {
     Unit u = unit_init(-2, 3);
     u.acceleration = vector_init(5, 7);
 
@@ -49,7 +49,7 @@ void test_return_to_middle_when_position_is_not_zero(void) {
     assert_fp_eq(u.acceleration.y, 1);
 }
 
-void test_friction_when_velocity_is_zero(void) {
+static void test_friction_when_velocity_is_zero(void) {
     Unit u = unit_init(0, 0);
 
     unit_add_friction_accel(&u, 2);
@@ -58,7 +58,7 @@ void test_friction_when_velocity_is_zero(void) {
     assert_fp_eq(u.acceleration.y, 0);
 }
 
-void test_friction_when_velocity_is_not_zero(void) {
+static void test_friction_when_velocity_is_not_zero(void) {
     Unit u = unit_init(0, 0);
     u.acceleration = vector_init(5, 7);
     u.velocity = vector_init(-10, 20);
@@ -69,7 +69,7 @@ void test_friction_when_velocity_is_not_zero(void) {
     assert_fp_eq(u.acceleration.y, -33);
 }
 
-void test_repulsion_if_distance_to_neighbor_is_zero(void) {
+static void test_repulsion_if_distance_to_neighbor_is_zero(void) {
     Unit u = unit_init(0, 0);
     const Unit neighbor = unit_init(0, 0);
 
@@ -79,7 +79,7 @@ void test_repulsion_if_distance_to_neighbor_is_zero(void) {
     assert_fp_eq(u.acceleration.y, 0);
 }
 
-void test_repulsion(void) {
+static void test_repulsion(void) {
     Unit u = unit_init(-1, -1);
     const Unit neighbor = unit_init(2, 3);
     u.acceleration = vector_init(-3, -3);
@@ -90,7 +90,7 @@ void test_repulsion(void) {
     assert_fp_eq(u.acceleration.y, -3.7155417528);
 }
 
-void test_run_away_when_distance_is_zero(void) {
+static void test_run_away_when_distance_is_zero(void) {
     Unit u = unit_init(0, 0);
     const Unit catcher = unit_init(0, 0);
 
@@ -100,7 +100,7 @@ void test_run_away_when_distance_is_zero(void) {
     assert_fp_eq(u.acceleration.y, 0);
 }
 
-void test_run_away(void) {
+static void test_run_away(void) {
     Unit u = unit_init(-1, -1);
     const Unit catcher = unit_init(2, 3);
     u.acceleration = vector_init(-3, -3);
@@ -111,7 +111,7 @@ void test_run_away(void) {
     assert_fp_eq(u.acceleration.y, -3.32);
 }
 
-void test_catch_when_objet_velocity_is_zero(void) {
+static void test_catch_when_objet_velocity_is_zero(void) {
     Unit u = unit_init(1, 1);
     u.velocity.x = 0;
     u.velocity.y = 0;
@@ -126,7 +126,7 @@ void test_catch_when_objet_velocity_is_zero(void) {
     assert_fp_eq(u.velocity.y, 0.006);
 }
 
-void test_catch_when_objet_velocity_is_zero_and_max_velocity_is_less_than_increment_coef(void) {
+static void test_catch_when_objet_velocity_is_zero_and_max_velocity_is_less_than_increment_coef(void) {
     Unit u = unit_init(1, 1);
     u.velocity.x = 0;
     u.velocity.y = 0;
@@ -141,7 +141,7 @@ void test_catch_when_objet_velocity_is_zero_and_max_velocity_is_less_than_increm
     assert_fp_eq(u.velocity.y, 0.6);
 }
 
-void test_catch_when_object_velocity_is_not_collinear_to_displacement_and_velocity_is_not_max_yet(void) {
+static void test_catch_when_object_velocity_is_not_collinear_to_displacement_and_velocity_is_not_max_yet(void) {
     Unit u = unit_init(0, 1);
     u.velocity.x = 1;
     u.velocity.y = 0;
@@ -156,7 +156,7 @@ void test_catch_when_object_velocity_is_not_collinear_to_displacement_and_veloci
     assert_fp_eq(u.velocity.y, -1.06066);
 }
 
-void test_catch_velocity_should_be_equal_max_velocity_when_increment_exceeds_max_velocity(void) {
+static void test_catch_velocity_should_be_equal_max_velocity_when_increment_exceeds_max_velocity(void) {
     Unit u = unit_init(0, 1);
     u.velocity.x = 0.9;
     u.velocity.y = 0;
@@ -179,7 +179,7 @@ void test_catch_velocity_should_be_equal_max_velocity_when_increment_exceeds_max
     assert_fp_eq(u.velocity.y, -0.707106);
 }
 
-void test_reset_velocity(void) {
+static void test_reset_velocity(void) {
     Unit u = unit_init(0, 0);
     const double threshold = 1;
 
