@@ -13,17 +13,9 @@ void controller_start(const Controller *const controller) {
     ui->start(ui->self);
 }
 
-void controller_update(const Controller *const controller) {
+static void present_units(const Controller *const controller) {
     const UI *const ui = controller->_ui;
     const Players *const players = &controller->_simulation->players;
-    const SimulationInfo info = simulation_get_info(controller->_simulation);
-    simulation_tick(controller->_simulation);
-    if (info.any_hit_just_occured) {
-        ui->make_hit_sound(ui->self);
-    }
-    if (info.catch_did_just_occured) {
-        ui->make_catch_sound(ui->self);
-    }
     const size_t runners_count = players_runners_count(players);
     const Unit *const catcher = players_get_catcher(players);
     ui->draw_unit(ui->self, &catcher->position, true);
@@ -31,7 +23,30 @@ void controller_update(const Controller *const controller) {
         const Unit *const runner = players_get_runner(players, i);
         ui->draw_unit(ui->self, &runner->position, false);
     }
+}
+
+static void make_sounds(const Controller *const controller) {
+    const UI *const ui = controller->_ui;
+    const SimulationInfo info = simulation_get_info(controller->_simulation);
+    if (info.any_hit_just_occured) {
+        ui->make_hit_sound(ui->self);
+    }
+    if (info.catch_did_just_occured) {
+        ui->make_catch_sound(ui->self);
+    }
+}
+
+void present_score(const Controller *const controller) {
+    const UI *const ui = controller->_ui;
+    const SimulationInfo info = simulation_get_info(controller->_simulation);
     ui->draw_score(ui->self, info.catch_count);
+}
+
+void controller_update(const Controller *const controller) {
+    simulation_tick(controller->_simulation);
+    make_sounds(controller);
+    present_units(controller);
+    present_score(controller);
 }
 
 void controller_add_runner(const Controller *const controller, const Vector position) {
