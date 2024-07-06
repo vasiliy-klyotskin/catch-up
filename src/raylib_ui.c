@@ -82,7 +82,7 @@ void rl_draw_unit(const RaylibUI *const ui, const Vector *const position, const 
 }
 
 void rl_draw_score(const RaylibUI *const ui, int score) {
-    char text[20];
+    char text[50];
     sprintf(text, "Catches: %d", score);
     DrawText(text, ui->_width / 10, ui->_height / 10, 20, LIGHTGRAY);
 }
