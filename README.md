@@ -31,7 +31,7 @@ https://github.com/vasiliy-klyotskin/catch-up-simulation/assets/54911315/845d338
 
 2. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/catch-up-simulation.git
+   git clone https://github.com/vasiliy-klyotskin/catch-up-simulation.git
    ```
 
 3. Navigate to the project directory:
@@ -45,7 +45,3 @@ https://github.com/vasiliy-klyotskin/catch-up-simulation/assets/54911315/845d338
    ```
 
    The `Makefile` uses `pkg-config` for managing compiler and linker flags for raylib.
-
-## Contribution
-
-Contributions are welcome! Please fork this repository and submit pull requests.
