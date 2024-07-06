@@ -28,8 +28,6 @@ void simulation_free(const Simulation *const s) {
 }
 
 void simulation_tick(Simulation *const s) {
-    col_sys_reset(&s->_col_sys);
-    mv_sys_reset(&s->_mv_sys);
     col_sys_resolve_collisions(&s->_col_sys);
     mv_sys_resolve_movement(&s->_mv_sys, s->_col_sys.catch_is_allowed_now);
 }
