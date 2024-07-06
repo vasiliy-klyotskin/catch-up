@@ -2,9 +2,26 @@
 #include <dynamic_array.h>
 #include <geometry.h>
 
+static void add_collision_if_units_intersect(
+    Collision **collisions,
+    Unit *const u1,
+    Unit *const u2,
+    const double radius
+) {
+    const Vector difference = vector_difference(&u1->position, &u2->position);
+    const NormalizedVector offset = vector_normalized(&difference);
+    if (offset.magnitude < radius * 2) {
+        Collision collision;
+        collision.u1 = u1;
+        collision.u2 = u2;
+        collision.offset = offset;
+        dyn_array_push(*collisions, collision);
+    }
+}
+
 void collision_detect(
     Unit *const units,
-    Collision **collisions,
+    Collision **const collisions,
     const double radius
 ) {
     const size_t units_length = dyn_array_get_length(units);
@@ -13,15 +30,7 @@ void collision_detect(
             if (u1_index == u2_index) { continue; }
             Unit *const u1 = &units[u1_index];
             Unit *const u2 = &units[u2_index];
-            const Vector difference = vector_difference(&u1->position, &u2->position);
-            const NormalizedVector offset = vector_normalized(&difference);
-            if (offset.magnitude < radius * 2) {
-                Collision collision;
-                collision.u1 = u1;
-                collision.u2 = u2;
-                collision.offset = offset;
-                dyn_array_push(*collisions, collision);
-            }
+            add_collision_if_units_intersect(collisions, u1, u2, radius);
         }
     }
 }

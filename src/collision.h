@@ -12,7 +12,7 @@ typedef struct {
 void collision_resolve(Collision *const collisions, const double radius);
 void collision_detect(
     Unit *const units,
-    Collision **collisions,
+    Collision **const collisions,
     const double radius
 );
 
