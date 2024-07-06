@@ -18,7 +18,6 @@ typedef struct {
 } CollisionSystem;
 
 CollisionSystem col_sys_init(Players *const players, const double fps, const double radius);
-void col_sys_reset(CollisionSystem *const col_sys);
 void col_sys_free(const CollisionSystem *const col_sys);
 void col_sys_resolve_collisions(CollisionSystem *const col_sys);
 

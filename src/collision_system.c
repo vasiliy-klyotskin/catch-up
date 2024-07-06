@@ -21,36 +21,23 @@ void col_sys_free(const CollisionSystem *const col_sys) {
     dyn_array_free(col_sys->_collisions);
 }
 
-void col_sys_reset(CollisionSystem *const col_sys) {
-    col_sys->any_hit_just_occured = false;
-    col_sys->catch_did_just_occured = false;
-    dyn_array_clear(col_sys->_collisions);
-}
-
 static void check_if_any_hit_occured(CollisionSystem *const col_sys) {
     if (dyn_array_get_length(col_sys->_collisions) != 0) {
         col_sys->any_hit_just_occured = true;
     }
 }
 
-static bool not_enough_time_passed_since_last_catch(const CollisionSystem *const col_sys) {
-    return col_sys->_ticks_since_last_catch < col_sys->_min_ticks_before_next_catch;
-}
-
-static bool ready_to_perform_new_catch(const CollisionSystem *const col_sys) {
-    return col_sys->_ticks_since_last_catch >= col_sys->_min_ticks_before_next_catch;
-}
-
-static void update_ticks_since_last_catch(CollisionSystem *const col_sys) {
-    if (not_enough_time_passed_since_last_catch(col_sys)) {
+static void update_catch_is_allowed_now(CollisionSystem *const col_sys) {
+    if (col_sys->_ticks_since_last_catch < col_sys->_min_ticks_before_next_catch) {
         col_sys->_ticks_since_last_catch++;
+        col_sys->catch_is_allowed_now = false;
     } else {
         col_sys->catch_is_allowed_now = true;
     }
 }
 
 static void resolve_new_catcher(CollisionSystem *const col_sys) {
-    if (!ready_to_perform_new_catch(col_sys)) { return; }
+    if (!col_sys->catch_is_allowed_now) { return; }
     const size_t collisions_length = dyn_array_get_length(col_sys->_collisions);
     for (size_t i = 0; i < collisions_length; i++) {
         const Collision collision = col_sys->_collisions[i];
@@ -68,10 +55,17 @@ static void resolve_new_catcher(CollisionSystem *const col_sys) {
     }
 }
 
+static void col_sys_reset(CollisionSystem *const col_sys) {
+    col_sys->any_hit_just_occured = false;
+    col_sys->catch_did_just_occured = false;
+    dyn_array_clear(col_sys->_collisions);
+}
+
 void col_sys_resolve_collisions(CollisionSystem *const col_sys) {
-    update_ticks_since_last_catch(col_sys);
+    col_sys_reset(col_sys);
     collision_detect(col_sys->_players->all_players, &col_sys->_collisions, col_sys->_unit_radius);
     collision_resolve(col_sys->_collisions, col_sys->_unit_radius);
     check_if_any_hit_occured(col_sys);
     resolve_new_catcher(col_sys);
+    update_catch_is_allowed_now(col_sys);
 }

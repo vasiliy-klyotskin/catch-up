@@ -7,6 +7,7 @@ void tests_collision(void);
 void tests_random_accels(void);
 void tests_movement(void);
 void tests_players(void);
+void tests_collision_system(void);
 
 int main(void) {
     tests_dynamic_array();
@@ -16,6 +17,7 @@ int main(void) {
     tests_random_accels();
     tests_movement();
     tests_players();
+    tests_collision_system();
     printf("All tests passed!");
     return 0;
 }
