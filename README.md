@@ -14,7 +14,10 @@ This repository presents a "catch-up" simulation project aimed at deepening my u
 
 ## Demonstration
 
-![Demo Video](catch-up.mp4)
+<video width="700" controls>
+  <source src="catch-up.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 ## Installation and Usage
 
