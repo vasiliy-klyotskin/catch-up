@@ -14,6 +14,8 @@ This repository presents a "catch-up" simulation project aimed at deepening my u
 
 ## Demonstration
 
+https://github.com/vasiliy-klyotskin/catch-up-simulation/assets/54911315/845d3384-1a82-47da-8fd9-56a389fedbde
+
 ## Installation and Usage
 
 ### Prerequisites
