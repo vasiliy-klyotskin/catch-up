@@ -18,8 +18,8 @@ static void reposition_catcher_to_any_position(Players *const players) {
 }
 
 static void add_runner_colliding_with_catcher(Players *const players) {
-    Vector catcher_pos1 = players_get_catcher(players)->position;
-    Vector new_colliding_runner1 = vector_init(catcher_pos1.x + 0.01, catcher_pos1.y + 0.01);
+    const Vector catcher_pos1 = players_get_catcher(players)->position;
+    const Vector new_colliding_runner1 = vector_init(catcher_pos1.x + 0.01, catcher_pos1.y + 0.01);
     players_add_runner(players, new_colliding_runner1);
 }
 
