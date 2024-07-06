@@ -30,6 +30,6 @@ void rl_draw_unit(const RaylibUI *const ui, const Vector *const position, const 
 void rl_draw_score(const RaylibUI *const ui, const int score);
 void rl_make_hit_sound(const RaylibUI *const ui);
 void rl_make_catch_sound(const RaylibUI *const ui);
-void rl_clean(const RaylibUI *const ui);
+void rl_free(const RaylibUI *const ui);
 
 #endif // RAYLIB_UI_H

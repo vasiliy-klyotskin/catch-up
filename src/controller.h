@@ -18,7 +18,6 @@ typedef struct {
     DrawScoreFn draw_score;
     MakeHitSoundFn make_hit_sound;
     MakeCatchSoundFn make_catch_sound;
-    CleanFn clean;
 } UI;
 
 typedef struct {
@@ -31,6 +30,5 @@ const Controller controller_init(const UI *const ui, Simulation *const simulatio
 void controller_start(const Controller *const controller);
 void controller_update(const Controller *const controller);
 void controller_add_runner(const Controller *const controller, const Vector position);
-void controller_clean(const Controller *const controller);
 
 #endif // CONTROLLER_H

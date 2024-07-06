@@ -39,9 +39,3 @@ void controller_add_runner(const Controller *const controller, const Vector posi
     if (players_runners_count(&simulation->players) >= controller->_max_runners) return;
     simulation_add_runner(simulation, position);
 }
-
-void controller_clean(const Controller *const controller) {
-    const UI *const ui = controller->_ui;
-    ui->clean(ui->self);
-    simulation_free(controller->_simulation);
-}

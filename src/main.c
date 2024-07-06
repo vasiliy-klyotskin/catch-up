@@ -14,4 +14,6 @@ int main(void) {
     const Controller controller = controller_init(&ui, &simulation, MAX_RUNNERS);
     rl_set_controller(&rl_ui, &controller);
     controller_start(&controller);
+    simulation_free(&simulation);
+    rl_free(&rl_ui);
 }

@@ -10,7 +10,6 @@ const UI rl_ui_abstraction_init(RaylibUI *const rl_ui){
     ui.draw_score = (DrawScoreFn)rl_draw_score;
     ui.make_catch_sound = (MakeCatchSoundFn)rl_make_catch_sound;
     ui.make_hit_sound = (MakeHitSoundFn)rl_make_hit_sound;
-    ui.clean = (CleanFn)rl_clean;
     ui.self = rl_ui;
     return ui;
 }
@@ -63,7 +62,6 @@ void rl_start(RaylibUI *const ui) {
         controller_update(ui->_controller);
         EndDrawing();
     }
-    controller_clean(ui->_controller);
 }
 
 static Vector rl_transform_coordinate_from_simulation(const RaylibUI *const ui, const Vector *const coord) {
@@ -97,7 +95,7 @@ void rl_make_catch_sound(const RaylibUI *const ui) {
     PlaySound(ui->_catch_sound);
 }
 
-void rl_clean(const RaylibUI *const ui) {
+void rl_free(const RaylibUI *const ui) {
     CloseWindow();
     CloseAudioDevice();
 }
